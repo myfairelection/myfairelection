@@ -1,3 +1,5 @@
+require "bundler/capistrano"
+
 set :application, "myfairelection"
 set :repository,  "git://github.com/myfairelection/myfairelection.git"
 
