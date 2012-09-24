@@ -2,6 +2,7 @@ set :application, "myfairelection"
 set :repository,  "git://github.com/myfairelection/myfairelection.git"
 
 set :scm, :git
+set :branch, 'capistrano'
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
 set :user, "deployer"
