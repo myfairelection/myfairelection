@@ -6,6 +6,7 @@ set :repository,  "git://github.com/myfairelection/myfairelection.git"
 set :scm, :git
 set :branch, 'capistrano'
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+default_run_options[:pty] = true
 
 set :user, "deployer"
 role :web, "198.101.229.130"                          # Your HTTP server, Apache/etc
@@ -26,11 +27,11 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+    run "touch #{File.join(current_path,'tmp','restart.txt')}"
   end
 
   task :setup_config, roles: :app do
-    run "ln -nfs #{current_path}/config/apache.conf /etc/apache2/sites-available/#{application}"
+    sudo "ln -nfs #{current_path}/config/apache.conf /etc/apache2/sites-available/#{application}"
   end
   after "deploy:setup", "deploy:setup_config"
 end
