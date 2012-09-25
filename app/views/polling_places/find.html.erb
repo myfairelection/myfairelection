@@ -1,6 +1,8 @@
-<h1>PollingPlaces#find</h1>
-<p>Find me in app/views/polling_places/find.html.erb</p>
+<%= render "form" %>
+
+
 <% if @polling_place.valid? %>
+<p>Your polling place is:</p>
 <p><%= @polling_place.name %></p>
 <p><%= @polling_place.street %></p>
 <p><%= "#{@polling_place.city}, #{@polling_place.state} #{@polling_place.zip}" %></p>
