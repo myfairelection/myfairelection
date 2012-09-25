@@ -1,0 +1,29 @@
+body {
+	padding: 12px;
+}
+
+.section {
+	margin-bottom: 36px;
+}
+
+.small {
+	font-size: 0.8em;
+}
+
+.light {
+	color: #aaaaaa;
+}
+
+.txt-center {
+	text-align: center;
+}
+
+.header {
+	background-color: #cccccc;
+	padding: 12px;
+	margin: -12px -12px 0;
+}
+
+.signin form {
+	margin: 0;
+}
