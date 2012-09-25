@@ -2,12 +2,14 @@ require 'rest_client'
 
 class PollingPlace
   APIKEY = Settings.google_api_key
+  ELECTION_ID = Settings.google_election_id
+
   def self.lookup(address)
     PollingPlace.new(address)
   end
 
   def initialize(address)
-    response = RestClient.post "https://www.googleapis.com/civicinfo/us_v1/voterinfo/2000/lookup?key=#{APIKEY}",
+    response = RestClient.post "https://www.googleapis.com/civicinfo/us_v1/voterinfo/#{ELECTION_ID}/lookup?key=#{APIKEY}",
           { "address" => address }.to_json, :content_type => :json, :accept => :json
     @response = ActiveSupport::JSON.decode(response)
   end

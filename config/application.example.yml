@@ -2,9 +2,14 @@ development:
   # API key used for accessing the Civic Information API at Google
   # Get one at https://code.google.com/apis/console/
   google_api_key: 
+  # Election ID to use in Civic Information API calls
+  # 2000 is for testing, 4000 is for production
+  google_election_id: 2000
 
 test:
   google_api_key: 
+  google_election_id: 2000
 
 production:
-  google_api_key:
+  google_api_key:  
+  google_election_id: 4000
