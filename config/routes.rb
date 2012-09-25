@@ -1,4 +1,8 @@
 Myfairelection::Application.routes.draw do
+  match "polling_place/find" => 'polling_places#find'
+
+  root :to => 'home#index'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

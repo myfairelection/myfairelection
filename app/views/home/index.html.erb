@@ -1,0 +1,7 @@
+<h1>Home#index</h1>
+<p>Look up polling place</p>
+<%= form_tag("/polling_place/find", method: "get") do %>
+  <%= label_tag(:address, "Address:") %>
+  <%= text_field_tag(:address) %>
+  <%= submit_tag("Lookup") %>
+<% end %>
