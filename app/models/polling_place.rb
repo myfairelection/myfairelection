@@ -15,7 +15,10 @@ class PollingPlace
   def response
     @response
   end
-  # parsed_json = ActiveSupport::JSON.decode(your_json_string)
+
+  def valid?
+    @response["pollingLocations"] ? true : false
+  end
 
   def name
     @response["pollingLocations"][0]["address"]["locationName"]

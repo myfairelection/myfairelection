@@ -1,3 +1,7 @@
 <h1>PollingPlaces#find</h1>
 <p>Find me in app/views/polling_places/find.html.erb</p>
+<% if @polling_place.valid? %>
 <p><%= @polling_place.name %></p>
+<% else %>
+<p>No information is available.</p>
+<% end %>

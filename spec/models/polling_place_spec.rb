@@ -11,6 +11,9 @@ describe PollingPlace do
     context "with polling place data" do
       let (:address) { "1263 Pacific Ave. Kansas City KS" }
       let (:pp) { PollingPlace.lookup(address) }
+      it "is valid" do
+        expect(pp.valid?).to be_true
+      end
       it "has the name of the location" do
         expect(pp.name).to eq("National Guard Armory")
       end
@@ -31,6 +34,11 @@ describe PollingPlace do
       end
     end
     context "without polling place data" do
+      let (:address) { "631 San Bruno Ave, SF, CA" }
+      let (:pp) { PollingPlace.lookup(address) }
+      it "is not valid" do
+        expect(pp.valid?).to be_false
+      end
     end
   end
   context "with an invalid address" do

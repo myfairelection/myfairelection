@@ -14,3 +14,8 @@ Feature: Find My Polling Place
     And I click the "Lookup" button
     Then I should see "National Guard Armory"
 
+  Scenario: Look up address with no polling place information
+    Given that I am on the home page
+    And I fill in "address" with "631 San Bruno Ave, SF, CA"
+    And I click the "Lookup" button
+    Then I should see "No information is available."
