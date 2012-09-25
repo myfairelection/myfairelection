@@ -2,6 +2,9 @@
 <p>Find me in app/views/polling_places/find.html.erb</p>
 <% if @polling_place.valid? %>
 <p><%= @polling_place.name %></p>
+<p><%= @polling_place.street %></p>
+<p><%= "#{@polling_place.city}, #{@polling_place.state} #{@polling_place.zip}" %></p>
+
 <% else %>
 <p>No information is available.</p>
 <% end %>
