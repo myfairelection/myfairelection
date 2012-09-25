@@ -1,0 +1,10 @@
+development:
+  # API key used for accessing the Civic Information API at Google
+  # Get one at https://code.google.com/apis/console/
+  google_api_key: 
+
+test:
+  google_api_key: 
+
+production:
+  google_api_key:
