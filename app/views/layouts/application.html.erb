@@ -18,24 +18,29 @@
 </head>
 <body id="page">
 	<div class="header clearfix" role="banner">
-        <div class="signin pull-right clearfix">
-            <form class="form-inline" action="member.html" method="POST">
-                <input type="text" class="input-small" placeholder="Email" />
-                <input type="password" class="input-small" placeholder="Password" />
-                <input type="submit" class="btn btn-primary" name="submit" value="Sign In" />
-            </form>
-        </div>
-<!-- // If logged in, show below snippet intead of above //
+		<% if user_signed_in? %>
         <div class="memberinfo pull-right">
-            Bob Smith &nbsp;
-            <a href="index.html" class="btn btn-primary btn-small">Sign Out</a>
+            <%= current_user.email %> &nbsp;
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-primary btn-small" %>
         </div>
-// -->
+        <% else %>
+        <div class="signin pull-right clearfix">
+ 			<%= form_for("user", :url => user_session_path, :class => "form_inline") do |f| %>
+			  <%= f.email_field :email, class: "input-small", placeholder: "Email" %>
+			  <%= f.password_field :password, class: "input-small", placeholder: "Password" %>
+			  <%= f.submit "Sign In", class: "btn btn-primary" %>
+			<% end %>
+        </div>
+        <% end %>
 	</div>
 
 	<div class="content" role="main">
 		<h1>My Fair Election</h1>
 		<hr />
+
+		<% flash.each do |name, msg| %>
+    		<%= content_tag :div, msg, id: "flash_#{name}" %>
+  		<% end %>
 
 		<%= yield %>
 
