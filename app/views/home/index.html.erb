@@ -1,1 +1,46 @@
 <%= render "polling_places/form" %>
+<hr />
+<div class="section">
+    <h2>Share Information</h2>
+    <p>
+        Have comments or tips about your voting place? Want to let others know how long you had to wait to vote? Sign up and share information about your voting place with others in your area.
+    </p>
+    <p>
+        If you forget to check in here on voting day we'll send you a short survey about your voting experience the day after election day. We promise to only send you that reminder, and we will never share your personal information it with others. (click here for our privacy policy)
+    </p>
+    <p>
+        After election day we'll compile all of the information we gathered and deliver it to polling places across the country to help move towards a more efficient experience for everyone.
+    </p>
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>  
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <em class="light">Sign up with your email address</em>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="signupEmail">Email:</label>
+            <div class="controls">
+                <%= f.email_field :email %>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="signupPassword">Password:</label>
+            <div class="controls">
+                <%= f.password_field :password %>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="signupConfirm">Confirm Password:</label>
+            <div class="controls">
+                <%= f.password_field :password_confirmation %>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="signupButton"></label>
+            <div class="controls">
+                <%= f.submit "Sign up", class: "btn btn-primary" %>
+            </div>
+        </div>
+    <% end %>
+</div>
