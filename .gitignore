@@ -22,3 +22,6 @@
 
 # Ignore where compiled assets end up
 /public/assets
+
+# Ignore coverage data
+/coverage
