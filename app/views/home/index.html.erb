@@ -1,46 +1,79 @@
-<%= render "polling_places/form" %>
-<hr />
-<div class="section">
-    <h2>Share Information</h2>
-    <p>
-        Have comments or tips about your voting place? Want to let others know how long you had to wait to vote? Sign up and share information about your voting place with others in your area.
-    </p>
-    <p>
-        If you forget to check in here on voting day we'll send you a short survey about your voting experience the day after election day. We promise to only send you that reminder, and we will never share your personal information it with others. (click here for our privacy policy)
-    </p>
-    <p>
-        After election day we'll compile all of the information we gathered and deliver it to polling places across the country to help move towards a more efficient experience for everyone.
-    </p>
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>  
-        <div class="control-group">
-            <label class="control-label"></label>
-            <div class="controls">
-                <em class="light">Sign up with your email address</em>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="signupEmail">Email:</label>
-            <div class="controls">
-                <%= f.email_field :email %>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="signupPassword">Password:</label>
-            <div class="controls">
-                <%= f.password_field :password %>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="signupConfirm">Confirm Password:</label>
-            <div class="controls">
-                <%= f.password_field :password_confirmation %>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="signupButton"></label>
-            <div class="controls">
-                <%= f.submit "Sign up", class: "btn btn-primary" %>
-            </div>
-        </div>
-    <% end %>
+<div class="section section-primary">
+    <%= image_tag "myfairelection_logo.png", :alt => "My Fair Election" %>
+    <h3>Get ready to vote and rate your voting&nbsp;location</h3>
 </div>
+
+<div class="section section-location">
+    <h2>Find out about your voting&nbsp;location</h2>
+    <p>
+        We'll tell you you'll need to go to vote, the voter ID rules are in&nbsp;your&nbsp;state, and more!<br />
+        <strong>Enter the address of where you live to&nbsp;get&nbsp;started.</strong>
+    </p>
+    <%= render "polling_places/form" %>
+</div>
+
+<div class="section section-signup clearfix">
+    <h2>Sign up and rate your voting location</h2>
+    <strong>Share information about your voting experience with the voting location and others in your area.</strong><br />
+    <br />
+    <div class="row-fluid">
+        <div class="span6 txt-center">
+            <div class="signup">
+                <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>  
+<%
+=begin %>
+                    <a href="index.html" class="btn btn-primary btn-block">Facebook</a>
+                    <a href="index.html" class="btn btn-info btn-block">Twitter</a> 
+                    <p>
+                        Or with your email address
+                    </p>
+<% 
+=end %>
+                    <%= f.email_field :email, placeholder: "Email" %>
+                    <%= f.password_field :password, placeholder: "Password" %>
+                    <%= f.password_field :password_confirmation, placeholder: "Confirm Password" %>
+                    <%= f.submit "Sign up", class: "btn btn-primary" %>
+                <% end %>
+            </div>
+        </div>
+        <div class="span5">
+            <ul>
+                <li>Was it easy to vote?</li>
+                <li>Were there long lines, closed polling places, or broken machines?</li>
+                <li>Have comments or tips about your voting place?</li>
+                <li>Want to let others know how long you had to wait to vote?</li>
+            </ul>
+            <p>
+                <strong>Tell voting locations how they are doing</strong><br />
+                After election day we'll compile all of the information we gathered and deliver it to polling places across the country to help move towards a more efficient experience for everyone.
+            </p>
+            <p>
+                <strong>Check in reminder</strong><br />
+                If you forget to check in here on voting day we'll send you a short 5 question survey about your voting experience the day after election day. We promise to only send you that reminder, and we will never share your personal information it with others. (click here for our privacy policy)
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="section section-reminder">
+    <h2>Email Reminder to&nbsp;vote</h2>
+    <p>
+        On voting day, receive an email reminder from us to vote. We promise to only send you the reminder and to not share it with others. <em>(we don't like junk email either)</em>
+    </p>
+<%
+=begin %>
+    <div class="alert alert-success inline">
+        <strong>Success!</strong> On election day, we will send an email to blah@domain.com and remind you to vote.
+    </div>
+    <form id="" name="" action="index.html" method="POST">
+        <input type="text" name="address" value="" class="span4" placeholder="Example: email@address.com" />
+        <input type="submit" name="submit" value="Remind Me" class="btn btn-primary" /><br />
+    </form>
+<% 
+=end %>
+</div>
+
+<div class="section section-trouble">
+    <p>Having trouble at your polling place? <a href="#">Here are some resources to help you</a></p>
+</div>
+

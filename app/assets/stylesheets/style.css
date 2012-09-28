@@ -1,9 +1,4 @@
 body {
-	padding: 12px;
-}
-
-.section {
-	margin-bottom: 36px;
 }
 
 .small {
@@ -14,16 +9,194 @@ body {
 	color: #aaaaaa;
 }
 
+.inline {
+	display: inline-block;
+	text-align: left;
+}
+
+input[type="file"].btn-inline,
+input[type="image"].btn-inline,
+input[type="submit"].btn-inline,
+input[type="reset"].btn-inline,
+input[type="button"].btn-inline,
+input[type="radio"].btn-inline,
+input[type="checkbox"].btn-inline {
+	width: 150px;
+}
+
 .txt-center {
 	text-align: center;
 }
 
 .header {
-	background-color: #cccccc;
-	padding: 12px;
-	margin: -12px -12px 0;
+	background-color: #9fa17c;
+}
+
+.signin-btn {
+	border-bottom: 1px solid #adaf87;
+}
+
+.signin-btn a {
+	float: right;
+	background-color: #919371;
+	border-left: 1px solid #adaf87;
+	padding: 8px 12px;
+	margin-bottom: -1px;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+.signin {
+	background-color: #919371;
+	padding: 12px 12px 3px 12px;
 }
 
 .signin form {
 	margin: 0;
+}
+
+.section {
+	padding: 12px;
+}
+
+.section-primary {
+	background-color: #adaf87;
+	text-align: center;
+}
+
+.section-primary hr {
+	border-top: none;
+	border-bottom: 1px solid #9fa17c;
+}
+
+.section-primary .light {
+	color: #828365;
+}
+
+.signin input[type="text"],
+.signin input[type="password"],
+.section-primary select,
+.section-primary textarea,
+.section-primary input[type="text"],
+.section-primary input[type="password"],
+.section-primary input[type="datetime"],
+.section-primary input[type="datetime-local"],
+.section-primary input[type="date"],
+.section-primary input[type="month"],
+.section-primary input[type="time"],
+.section-primary input[type="week"],
+.section-primary input[type="number"],
+.section-primary input[type="email"],
+.section-primary input[type="url"],
+.section-primary input[type="search"],
+.section-primary input[type="tel"],
+.section-primary input[type="color"],
+.section-primary .uneditable-input {
+	border: 1px solid #919371;
+}
+
+.section-location {
+	text-align: center;
+}
+
+.section-signup {
+	background-color: #d6d7c3;
+}
+
+.section-trouble {
+	background-color: #eaebe1;
+}
+
+.signup {
+	display: inline-block;
+	width: 100%;
+	max-width: 320px;
+	text-align: left;
+	margin-bottom: 6px;
+}
+
+.signup input {
+	padding: 4px 0;
+	width: 100%;
+}
+
+.signup input[type="text"],
+.signup input[type="password"] {
+	width: 99.25%;
+}
+
+@media only screen and (max-width: 31.25em) {
+	select,
+	textarea,
+	input[type="text"],
+	input[type="password"],
+	input[type="datetime"],
+	input[type="datetime-local"],
+	input[type="date"],
+	input[type="month"],
+	input[type="time"],
+	input[type="week"],
+	input[type="number"],
+	input[type="email"],
+	input[type="url"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="color"],
+	.uneditable-input {
+		width: 94%;
+	}
+}
+
+/* 500 px */
+@media only screen and (min-width: 31.25em) {
+	input[type="file"].btn-inline,
+	input[type="image"].btn-inline,
+	input[type="submit"].btn-inline,
+	input[type="reset"].btn-inline,
+	input[type="button"].btn-inline,
+	input[type="radio"].btn-inline,
+	input[type="checkbox"].btn-inline {
+		width: auto;
+	}
+
+	select,
+	textarea,
+	input[type="text"],
+	input[type="password"],
+	input[type="datetime"],
+	input[type="datetime-local"],
+	input[type="date"],
+	input[type="month"],
+	input[type="time"],
+	input[type="week"],
+	input[type="number"],
+	input[type="email"],
+	input[type="url"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="color"],
+	.uneditable-input {
+	  display: inline-block;
+	}
+
+	.signin-btn {
+		display: none;
+	}
+
+	.signin {
+		background-color: inherit;
+		float: right;
+	}
+
+	.signin input[type="text"], .signin input[type="password"] {
+		width: 120px;
+	}
+
+	.signup {
+		width: 85%;
+	}
+}
+
+/* 900 px */
+@media only screen and (min-width: 56.25em) {
 }

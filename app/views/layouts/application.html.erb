@@ -19,31 +19,29 @@
 <body id="page">
 	<div class="header clearfix" role="banner">
 		<% if user_signed_in? %>
-        <div class="memberinfo pull-right">
-            <%= current_user.email %> &nbsp;
-            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-primary btn-small" %>
-        </div>
+	        <div class="memberinfo pull-right">
+	            <%= current_user.email %> &nbsp;
+	            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-primary btn-small" %>
+	        </div>
+			<h3>My Fair Election</h3>
         <% else %>
-        <div class="signin pull-right clearfix">
- 			<%= form_for("user", :url => user_session_path, :class => "form_inline") do |f| %>
-			  <%= f.email_field :email, class: "input-small", placeholder: "Email" %>
-			  <%= f.password_field :password, class: "input-small", placeholder: "Password" %>
-			  <%= f.submit "Sign In", class: "btn btn-primary" %>
-			<% end %>
-        </div>
+	        <div class="signin-btn clearfix"><a href="#">Log In</a></div>
+	        <div class="signin clearfix">
+	 			<%= form_for("user", :url => user_session_path, :class => "form_inline") do |f| %>
+				  <%= f.email_field :email, class: "input-small", placeholder: "Email" %>
+				  <%= f.password_field :password, class: "input-small", placeholder: "Password" %>
+				  <%= f.submit "Sign In", class: "btn btn-primary" %>
+				<% end %>
+	        </div>
         <% end %>
 	</div>
 
 	<div class="content" role="main">
-		<h1>My Fair Election</h1>
-		<hr />
-
 		<% flash.each do |name, msg| %>
     		<%= content_tag :div, msg, id: "flash_#{name}" %>
   		<% end %>
 
 		<%= yield %>
-
 	</div>
 
 	<div class="footer" role="footer">
