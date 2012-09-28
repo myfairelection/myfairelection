@@ -1,0 +1,10 @@
+user stories:
+
+As a voter, I can look up my polling place.
+As a voter, I can register with my email address and password
+As a voter, I can log in with my registered email address and password
+As a voter, I can register with my Twitter credentials
+As a voter, I can log in with my Twitter credentials
+As a voter, I can register with my Facebook credentials
+As a voter, I can log in with my Facebook credentials
+
