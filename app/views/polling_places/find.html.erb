@@ -2,7 +2,6 @@
 
 
 <% if @voter_info.polling_places.length > 0 %>
-  <% debugger %>
   <% polling_place = @voter_info.polling_places[0] %>
 	<p>Your polling place is:</p>
 	<p><%= polling_place.address["locationName"] %></p>
