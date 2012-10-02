@@ -1,11 +1,13 @@
 <%= render "form" %>
 
 
-<% if @polling_place.valid? %>
-<p>Your polling place is:</p>
-<p><%= @polling_place.name %></p>
-<p><%= @polling_place.street %></p>
-<p><%= "#{@polling_place.city}, #{@polling_place.state} #{@polling_place.zip}" %></p>
+<% if @voter_info.polling_places.length > 0 %>
+  <% debugger %>
+  <% polling_place = @voter_info.polling_places[0] %>
+	<p>Your polling place is:</p>
+	<p><%= polling_place.address["locationName"] %></p>
+	<p><%= polling_place.address["line1"] %></p>
+	<p><%= "#{polling_place.address["city"]}, #{polling_place.address["state"]} #{polling_place.address["zip"]}" %></p>
 
 <% else %>
 <p>No information is available.</p>

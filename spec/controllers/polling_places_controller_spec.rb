@@ -8,8 +8,8 @@ describe PollingPlacesController do
       get 'find', address: address
       response.should be_success
     end
-    it "asks the PollingPlace model to look up the address" do
-      PollingPlace.should_receive(:lookup).with(address)
+    it "asks the VoterInfo model to look up the address" do
+      VoterInfo.should_receive(:lookup).with(address)
       get 'find', address: address
     end
 
@@ -19,7 +19,7 @@ describe PollingPlacesController do
     end
     it "passes a PollingPlace object" do
       get 'find', address: address
-      assigns[:polling_place].should be_a(PollingPlace)
+      assigns[:voter_info].should be_a(VoterInfo)
     end
   end
 

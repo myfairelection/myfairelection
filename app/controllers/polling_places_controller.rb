@@ -1,6 +1,6 @@
 class PollingPlacesController < ApplicationController
   def find
     address = params[:address]
-    @polling_place = PollingPlace.lookup(address)
+    @voter_info = VoterInfo.lookup(address)
   end
 end
