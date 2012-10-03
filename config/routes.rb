@@ -1,5 +1,5 @@
 Myfairelection::Application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {omniauth_callbacks: "omniauth_callbacks"}
 
   match "polling_place/find" => 'polling_places#find'
 

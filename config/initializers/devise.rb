@@ -2,7 +2,7 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # Twitter configuration --dpassage
-  config.omniauth :twitter, ENV["TWITTER_CONSUMER_KEY"], ENV["TWITTER_CONSUMER_SECRET"]
+  config.omniauth :twitter, Settings.twitter_consumer_key, Settings.twitter_consumer_secret
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
