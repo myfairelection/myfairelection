@@ -20,7 +20,6 @@ Feature: Authentication
     And I follow "Sign in with Twitter"
     Then I should see "@test_user"
   
-  @wip
   Scenario: Second user from Twitter
     Given I am not logged in 
     And there is a "twitter" user named "test_user1"

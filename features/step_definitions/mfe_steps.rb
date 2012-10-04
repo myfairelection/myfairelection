@@ -6,8 +6,8 @@ Given /^I am on the home page$/ do
   visit "/"
 end
 
-Given /^there is a "([^"]*)" user named "([^"]*)"$/ do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+Given /^there is a "([^"]*)" user named "([^"]*)"$/ do |provider, username|
+  User.create!({username: username, provider: provider, uid: "134234", email: ""}, :without_protection => true)
 end
 
 Given /^I have an account on "([^"]*)" named "([^"]*)"$/ do |provider, username|
