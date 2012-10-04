@@ -5,12 +5,12 @@ Finished:
 As a voter, I can look up my polling place with my address.
 As a voter, I can register with my email address and password
 As a voter, I can log in with my registered email address and password
+As a voter, I can register with my Twitter credentials
+As a voter, I can log in with my Twitter credentials
 
 To do:
 --
 As a voter, I can see my early voting places
-As a voter, I can register with my Twitter credentials
-As a voter, I can log in with my Twitter credentials
 As a voter, I can register with my Facebook credentials
 As a voter, I can log in with my Facebook credentials
 As a voter, I can ask for a reminder to vote
