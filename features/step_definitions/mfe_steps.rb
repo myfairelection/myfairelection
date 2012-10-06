@@ -38,6 +38,14 @@ Given /^I am on the home page$/ do
   visit "/"
 end
 
+Given /^there is a feed with the url "([^"]*)"$/ do |url|
+  Feed.create!(url: url)
+end
+
+When /^I am on the "([^"]*)" page$/ do |path|
+  visit path
+end
+
 When /^I fill in "([^"]*)" in the form "([^"]*)" with "([^"]*)"$/ do |field, form, value|
   within("form\##{form}") do
     fill_in(field, with: value)
