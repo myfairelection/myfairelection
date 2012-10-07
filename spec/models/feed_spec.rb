@@ -42,7 +42,7 @@ describe Feed do
     end
     context "with a file url" do
       before(:each) do
-        @feed = Feed.new({:url => "spec/test_feeds/sample_feed_for_v4.0.xml"})
+        @feed = Feed.create!({:url => "spec/test_feeds/sample_feed_for_v4.0.xml"})
       end
       it "populates the version field" do
         @feed.load
@@ -56,10 +56,10 @@ describe Feed do
         @feed.load
         @feed.should be_loaded
       end
-      it "creates 3 PollingLocation objects" do
+      it "creates 4 PollingLocation objects" do
         expect {
           @feed.load
-        }.to change{PollingLocation.count}.by(3)
+        }.to change{PollingLocation.count}.by(4)
       end
     end
   end

@@ -89,3 +89,7 @@ end
 Then /^I should see a button named "([^"]*)"$/ do |button|
   expect(page).to have_button(button)
 end
+
+Then /^there should be "([^"]*)" "([^"]*)" objects in the database$/ do |n, klass|
+  Kernel.const_get(klass).count.should == n.to_i
+end

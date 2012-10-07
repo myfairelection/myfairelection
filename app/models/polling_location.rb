@@ -62,4 +62,5 @@ class PollingLocation < ActiveRecord::Base
   validates_presence_of :id_attribute, :properties, :address, :feed_id
   serialize :address, Hash
   serialize :properties, Hash
+  belongs_to :feed
 end
