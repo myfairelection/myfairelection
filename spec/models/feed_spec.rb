@@ -57,10 +57,9 @@ describe Feed do
         @feed.should be_loaded
       end
       it "creates 3 PollingLocation objects" do
-        pending 'creation of the PollingLocation class'
         expect {
           @feed.load
-        }.to_change(PollingLocation.count).by(3)
+        }.to change{PollingLocation.count}.by(3)
       end
     end
   end

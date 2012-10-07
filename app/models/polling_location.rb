@@ -58,4 +58,8 @@ class PollingLocation < ActiveRecord::Base
       PollingLocation.create!(attribs)
     end
   end
+  attr_accessible :address, :feed_id, :id_attribute, :properties
+  validates_presence_of :id_attribute, :properties, :address, :feed_id
+  serialize :address, Hash
+  serialize :properties, Hash
 end
