@@ -1,3 +1,4 @@
+require 'google-civic'
 require 'ostruct'
 
 class VoterInfo 
@@ -9,40 +10,19 @@ class VoterInfo
   end
 
   def initialize(address)
-    response = RestClient.post "https://www.googleapis.com/civicinfo/us_v1/voterinfo/#{ELECTION_ID}/lookup?key=#{APIKEY}",
-          { "address" => address }.to_json, :content_type => :json, :accept => :json
-    @response = ActiveSupport::JSON.decode(response)
+    client = GoogleCivic.new(:key => APIKEY)
+    @voter_info = client.voter_info(ELECTION_ID, address)
   end
 
   def normalized_address
-    @normalized_address ||= OpenStruct.new(@response["normalizedInput"])
+    @voter_info.normalizedInput
   end
 
   def polling_places
-    if @polling_places
-      @polling_places
-    else
-      locations = @response["pollingLocations"]
-      if locations
-        @polling_places = locations.map { |e| OpenStruct.new(e) }
-      else
-        @polling_places = []
-      end
-      @polling_places
-    end
+    @voter_info.pollingLocations ? @voter_info.pollingLocations : []
   end
 
   def early_voting_places
-    if @early_voting_places
-      @early_voting_places
-    else
-      evplaces = @response["earlyVoteSites"]
-      if evplaces
-        @early_voting_places = locations.map { |e| OpenStruct.new(e) }
-      else
-        @early_voting_places = []
-      end
-      @early_voting_places
-    end
+    @voter_info.earlyVoteSites
   end
 end
