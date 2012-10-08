@@ -1,0 +1,15 @@
+{
+ "kind": "civicinfo#voterinforesponse",
+ "status": "noStreetSegmentFound",
+ "election": {
+  "id": "2000",
+  "name": "VIP Test Election",
+  "electionDay": "2013-06-06"
+ },
+ "normalizedInput": {
+  "line1": "1600 Pennsylvania Ave NW",
+  "city": "Washington",
+  "state": "DC",
+  "zip": "20500"
+ }
+}

@@ -1,15 +1,11 @@
 require 'spec_helper'
 
 describe VoterInfo do
-  describe "::lookup" do
-    let (:address) { "1600 Pennsylvania Avenue Northwest, Washington, DC 20500" }
-    it "returns a polling place object" do
-      expect(VoterInfo.lookup(address)).to be_kind_of(VoterInfo)
-    end
-  end
   context "with a valid address without poll information" do
-    let (:address) { "1600 Pennsylvania Avenue Northwest, Washington, DC 20500" }
-    let (:vi) { VoterInfo.lookup(address) }
+    before(:each) do  
+      RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/white_house.json").read)
+    end
+    let (:vi) { VoterInfo.lookup("DC") }
     it "has a normalized version of the address" do
       vi.normalized_address.city.should eq 'Washington'
     end
@@ -18,8 +14,10 @@ describe VoterInfo do
     end
   end
   context "with a valid address with poll information" do
-    let (:address) { "1263 Pacific Ave. Kansas City KS" }
-    let (:vi) { VoterInfo.lookup(address) }
+    before(:each) do  
+      RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/ks_response.json").read)
+    end
+    let (:vi) { VoterInfo.lookup("KS") }
     it "has a normalized version of the address" do
       vi.normalized_address.city.should eq 'Kansas City'
     end

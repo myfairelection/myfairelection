@@ -29,8 +29,6 @@ gem 'devise'
 gem 'simplecov', :require => false, :group => :test
 gem 'omniauth-twitter'
 
-gem 'google-civic'
-
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
