@@ -7,6 +7,9 @@
 	<p><%= polling_place.address["locationName"] %></p>
 	<p><%= polling_place.address["line1"] %></p>
 	<p><%= "#{polling_place.address["city"]}, #{polling_place.address["state"]} #{polling_place.address["zip"]}" %></p>
+	<% if polling_place.pollingHours %>
+		<p>Hours: <%= polling_place.pollingHours %></p>
+	<% end %> 
 
 <% else %>
 <p>No information is available.</p>
