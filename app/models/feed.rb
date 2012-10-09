@@ -11,7 +11,7 @@ class Feed < ActiveRecord::Base
     url.rpartition("/")[2]
   end
 
-  def load
+  def load_objects
     feed_file = open(url)
     feed_xml = Nokogiri::XML(feed_file)
 
@@ -39,4 +39,11 @@ class Feed < ActiveRecord::Base
     self.loaded = true
     self.save
   end
+
+  def self.load_from_file(filename = nil)
+    filename = ARGV[0] unless filename
+    f = self.create!({url: filename})
+    f.load_objects
+  end
+
 end

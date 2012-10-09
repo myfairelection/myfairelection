@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 describe Feed do
+  describe "::load_from_file" do
+    let (:filename) { "spec/fixtures/test_feeds/sample_feed_for_v4.0.xml" }
+    it "creates a new feed object with the file" do
+      expect {
+        Feed.load_from_file filename
+      }.to change{Feed.count}.by(1)
+    end
+    it "calls load on the just created feed object" do
+      Feed.any_instance.should_receive(:load_objects)
+      Feed.load_from_file filename
+    end
+  end
   before(:each) do
     @feed = Feed.new({:url => "https://example.com/test.txt", :vip_id => "39", :version => "4.0"},
                      :without_protection => true)
@@ -33,32 +45,26 @@ describe Feed do
       @feed.url_basename.should == 'test.txt'
     end
   end
-  describe '#load' do
-    context "with a network url" do
-      before(:each) do
-        @feed = Feed.new({:url => "https://raw.github.com/votinginfoproject/vip-specification/master/sample_feed_for_v4.0.xml"})
-      end
-      it "retrieves the specified url" 
-    end
+  describe '#load_objects' do
     context "with a file url" do
       before(:each) do
-        @feed = Feed.create!({:url => "spec/test_feeds/sample_feed_for_v4.0.xml"})
+        @feed = Feed.create!({:url => "spec/fixtures/test_feeds/sample_feed_for_v4.0.xml"})
       end
       it "populates the version field" do
-        @feed.load
+        @feed.load_objects
         @feed.version.should eq("4.0")
       end
       it "populates the vip_id field" do
-        @feed.load
+        @feed.load_objects
         @feed.vip_id.should eq("39")
       end
       it "marks the feed as loaded" do
-        @feed.load
+        @feed.load_objects
         @feed.should be_loaded
       end
       it "creates 4 PollingLocation objects" do
         expect {
-          @feed.load
+          @feed.load_objects
         }.to change{PollingLocation.count}.by(4)
       end
     end

@@ -46,6 +46,10 @@ When /^I am on the "([^"]*)" page$/ do |path|
   visit path
 end
 
+When /^I visit the "([^"]*)" page$/ do |path|
+  visit path
+end
+
 When /^I fill in "([^"]*)" in the form "([^"]*)" with "([^"]*)"$/ do |field, form, value|
   within("form\##{form}") do
     fill_in(field, with: value)
@@ -80,6 +84,10 @@ end
 
 When /^I click on the link in the email$/ do
   pending # express the regexp above with the code you wish you had
+end
+
+When /^I run "([^"]*)"$/ do |command|
+  system command
 end
 
 Then /^I should see "([^"]*)"$/ do |content|
