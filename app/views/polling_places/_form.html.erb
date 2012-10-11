@@ -1,12 +1,12 @@
 <div class="section">
-  <h2>Where To Go To Vote</h2>
-  <p>
-      Find out where to go to vote, and what the Voter ID rules are in your state. Enter the address of where you live to get started.
-  </p>
-  <%= form_tag("/polling_place/find", method: "get") do %>
-    <%= text_field_tag :address, nil, :class => 'span5' %> <%= submit_tag("Show", :class => 'btn btn-primary') %> <br />
-    <em class="light small"><strong>Example:</strong> 1263 Pacific Ave. Kansas City KS</em>
-  <% end %>
-  
-  <p>Having trouble at your polling place? <a href="fraud.html">Here are some resources to help you</a></p>
+	<h2>Find out about&nbsp;your voting&nbsp;location</h2>
+	<p>
+	 	<strong>Many polling locations have changed. Enter the address of where you live to&nbsp;get&nbsp;started.</strong>
+	</p>
+	<%= form_tag("/polling_place/find", method: "get") do %>
+	<%= text_field_tag :address, nil, :class => 'span5' %> <%= submit_tag("Show", :class => 'btn btn-primary') %>
+	<% end %>
+    <p>
+        We'll tell you you'll need to go to vote, the voter ID rules in&nbsp;your&nbsp;state, and more!<br />
+    </p>
 </div>

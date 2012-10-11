@@ -314,6 +314,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 }
 
 .signup input[type="text"],
+.signup input[type="email"],
 .signup input[type="password"] {
 	width: 99.25%;
 }
@@ -453,7 +454,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 		float: right;
 	}
 
-	.signin input[type="text"], .signin input[type="password"] {
+	.signin input[type="text"], .signin input[type="email"], .signin input[type="password"] {
 		width: 120px;
 	}
 
