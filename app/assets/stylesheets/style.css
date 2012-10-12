@@ -277,6 +277,12 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 	        border-radius: 8px;
 }
 
+.signup form label {
+	margin-bottom: 0;
+	color: #AA998E;
+	font-size: 0.9em;
+}
+
 .signup_header {
 	color: #dacfc8;
 	text-shadow: 0 1px 0 #000000;

@@ -11,6 +11,7 @@
                 <div class="stripes"></div>
             </div>
         </div>
+    </div>
 </div>
 
 <div class="page">
@@ -23,20 +24,18 @@
         <div class="row-fluid">
             <div class="span6 txt-center">
                 <div class="signup">
-                <%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter) %>
                     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>  
-<%
-=begin %>
-                        <a href="index.html" class="btn btn-primary btn-block">Facebook</a>
-                        <a href="index.html" class="btn btn-info btn-block">Twitter</a> 
+                        <%= link_to "Sign up with Twitter", user_omniauth_authorize_path(:twitter), :class => "btn btn-twitter btn-block" %>
+                        <hr />
                         <p>
-                            Or with your email address
+                            Or with your email address:
                         </p>
-<% 
-=end %>
-                        <%= f.email_field :email, placeholder: "Email" %>
-                        <%= f.password_field :password, placeholder: "Password" %>
-                        <%= f.password_field :password_confirmation, placeholder: "Confirm Password" %>
+                        <label for="email_field">Email:</label>
+                        <%= f.email_field :email %>
+                        <label for="password">Password:</label>
+                        <%= f.password_field :password %>
+                        <label for="password_confirmation">Confirm Password:</label>
+                        <%= f.password_field :password_confirmation %>
                         <%= f.submit "Sign up", class: "btn btn-primary" %>
                     <% end %>
                 </div>
@@ -56,14 +55,14 @@
             </div>
         </div>
     </div>
+<%
+=begin %>
     <hr />
     <div class="section section-reminder">
         <h2>Reminder to&nbsp;vote</h2>
         <p>
             On voting day, receive an email reminder from us to vote. We promise to only send you the reminder and to not share it with others. <em>(we don't like junk email either)</em>
         </p>
-<%
-=begin %>
         <div class="alert alert-success inline">
             <strong>Success!</strong> On election day, we will send an email to blah@domain.com and remind you to vote.
         </div>
@@ -71,9 +70,9 @@
             <input type="text" name="address" value="" class="span4" placeholder="Example: email@address.com" />
             <input type="submit" name="submit" value="Remind Me" class="btn btn-primary" /><br />
         </form>
+    </div>
 <% 
 =end %>
-    </div>
 </div>
 <div class="section-trouble clearfix">
     Having trouble at your polling place? <span class="block_sm"><a href="#">Here are some resources to help you</a></span>
