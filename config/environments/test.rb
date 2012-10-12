@@ -34,7 +34,4 @@ Myfairelection::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-
-  # Put OmniAuth into test mode
-  OmniAuth.config.test_mode = true
 end

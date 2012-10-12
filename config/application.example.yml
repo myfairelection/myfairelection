@@ -5,10 +5,6 @@ development:
   # Election ID to use in Civic Information API calls
   # 2000 is for testing, 4000 is for production
   google_election_id: 2000
-  # Twitter app consumer key and secret
-  # From https://dev.twitter.com/apps/
-  twitter_consumer_key:
-  twitter_consumer_secret:
 
 test:
   google_api_key: 

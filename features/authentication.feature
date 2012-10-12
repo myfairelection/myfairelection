@@ -12,18 +12,3 @@ Feature: Authentication
     And I fill in "user_password_confirmation" in the form "new_user" with "voter123"
     And I click the "Sign up" button in the form "new_user"
     Then I should see "Welcome! You have signed up successfully."
-
-  Scenario: Sign in with Twitter
-    Given I am not logged in 
-    And I have an account on "twitter" named "test_user"
-    When I am on the home page
-    And I follow "Sign up with Twitter"
-    Then I should see "@test_user"
-  
-  Scenario: Second user from Twitter
-    Given I am not logged in 
-    And there is a "twitter" user named "test_user1"
-    And I have an account on "twitter" named "test_user2"
-    When I am on the home page
-    And I follow "Sign up with Twitter"
-    Then I should see "@test_user"

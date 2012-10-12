@@ -11,7 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121004001557) do
+ActiveRecord::Schema.define(:version => 20121012230104) do
+
+  create_table "feeds", :force => true do |t|
+    t.string   "url"
+    t.string   "vip_id"
+    t.string   "version"
+    t.boolean  "loaded",     :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "feeds", ["vip_id"], :name => "index_feeds_on_vip_id", :unique => true
+
+  create_table "polling_locations", :force => true do |t|
+    t.integer  "feed_id"
+    t.integer  "id_attribute"
+    t.text     "address"
+    t.text     "properties"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -26,12 +46,9 @@ ActiveRecord::Schema.define(:version => 20121004001557) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "username"
   end
 
-  add_index "users", ["email", "provider", "uid"], :name => "index_users_on_identity", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

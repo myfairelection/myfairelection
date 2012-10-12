@@ -10,18 +10,6 @@ Given /^there is a "([^"]*)" user named "([^"]*)"$/ do |provider, username|
   User.create!({username: username, provider: provider, uid: "134234", email: ""}, :without_protection => true)
 end
 
-Given /^I have an account on "([^"]*)" named "([^"]*)"$/ do |provider, username|
-  if provider == "twitter"
-    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
-      'uid' => '827724',
-      'provider' => 'twitter',
-      'info' => { 'nickname' => username }
-    })
-  else
-    pending "Cucumber: unknown auth provider #{provider}"
-  end
-end
-
 When /^I fill in "([^"]*)" in the form "([^"]*)" with "([^"]*)"$/ do |field, form, value|
   within("form\##{form}") do
     fill_in(field, with: value)
