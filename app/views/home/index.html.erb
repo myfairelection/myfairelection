@@ -1,6 +1,6 @@
 <div class="section section-primary">
     <div class="section-mast">
-        <%= image_tag "myfairelection_logo.png", :alt => "My Fair Election" %>
+        <h1 class="mfe_logo_lg">My Fair Election</h1>
         <h3>Improving the voting process through your&nbsp;feedback.</h3>
         <div class="section div-decor">
             <div class="subsec-location">
@@ -16,6 +16,9 @@
 
 <div class="page">
     <div class="section section-signup clearfix">
+        <% if user_signed_in? %>
+        <h2>Welcome back!</h2>
+        <% else %>
         <h2>Let's tell voting locations how&nbsp;they&nbsp;did</h2>
         <h4>Sign up to give us feedback about your voting experience</h4>
         <p>
@@ -54,6 +57,7 @@
                 </p>
             </div>
         </div>
+        <% end %>
     </div>
 <%
 =begin %>
