@@ -6,7 +6,7 @@ Feature: Find My Polling Place
 
   Scenario: View home page
     When I am on the home page
-    Then I should see "Where To Go To Vote"
+    Then I should see "Find out about your voting location"
 
   Scenario: Look up polling place with hours
     Given the Google API is stubbed to return "ks_response.json"
@@ -21,4 +21,4 @@ Feature: Find My Polling Place
     When I am on the home page
     And I fill in "address" with "1600 Pennsylvania Avenue NW, Washington, DC 20500"
     And I click the "Show" button
-    Then I should see "No information is available."
+    Then I should see "We could not find information for the address you provided."

@@ -17,7 +17,7 @@ Feature: Authentication
     Given I am not logged in 
     And I have an account on "twitter" named "test_user"
     When I am on the home page
-    And I follow "Sign in with Twitter"
+    And I follow "Sign up with Twitter"
     Then I should see "@test_user"
   
   Scenario: Second user from Twitter
@@ -25,5 +25,5 @@ Feature: Authentication
     And there is a "twitter" user named "test_user1"
     And I have an account on "twitter" named "test_user2"
     When I am on the home page
-    And I follow "Sign in with Twitter"
+    And I follow "Sign up with Twitter"
     Then I should see "@test_user"
