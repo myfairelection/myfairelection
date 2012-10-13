@@ -1,10 +1,10 @@
+<%= form_tag("/polling_place/find", method: "get") do %>
 	<h2>Find out about&nbsp;your voting&nbsp;location</h2>
 	<p>
 	 	<strong>Many polling locations have changed. Enter the address of where you live to&nbsp;get&nbsp;started.</strong>
 	</p>
-	<%= form_tag("/polling_place/find", method: "get") do %>
 	<%= text_field_tag :address, nil, :class => 'span5' %> <%= submit_tag("Show", :class => 'btn btn-primary') %>
-	<% end %>
     <p>
         We'll tell you you'll need to go to vote, the voter ID rules in&nbsp;your&nbsp;state, and more!<br />
     </p>
+<% end %>

@@ -2,15 +2,15 @@
     <div class="section-mast">
         <h1 class="mfe_logo_lg">My Fair Election</h1>
         <h3>Improving the voting process through your&nbsp;feedback.</h3>
+        <% if !user_signed_in? %>
         <div class="section div-decor">
             <div class="subsec-location">
-                <div class="stars"></div>
                 <div class="content">
                     <%= render "polling_places/form" %>
                 </div>
-                <div class="stripes"></div>
             </div>
         </div>
+        <% end %>
     </div>
 </div>
 
