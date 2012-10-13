@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="js/modernizr.js"></script>
 -->
 	<%= csrf_meta_tags %>
+	<%= analytics_init if Rails.env.production? %>
 </head>
 <body>
 	<div class="header clearfix" role="banner">
