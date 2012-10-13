@@ -25,7 +25,6 @@ describe VoterInfo do
       vi.polling_places.length.should be > 0
     end
     it "has early voting information" do
-      pending "test address with early voting information"
       vi.early_voting_places.length.should be > 0
     end
   end

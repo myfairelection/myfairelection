@@ -38,7 +38,7 @@ class VoterInfo
     else
       evplaces = @response["earlyVoteSites"]
       if evplaces
-        @early_voting_places = locations.map { |e| OpenStruct.new(e) }
+        @early_voting_places = evplaces.map { |e| OpenStruct.new(e) }
       else
         @early_voting_places = []
       end
