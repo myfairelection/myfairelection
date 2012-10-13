@@ -12,3 +12,5 @@ Feature: Authentication
     And I fill in "user_password_confirmation" in the form "new_user" with "voter123"
     And I click the "Sign up" button in the form "new_user"
     Then I should see "Welcome! You have signed up successfully."
+    And I should see "A message with a confirmation link has been sent to your email address."
+    And "voter@example.org" should receive an email with subject "Confirmation instructions"
