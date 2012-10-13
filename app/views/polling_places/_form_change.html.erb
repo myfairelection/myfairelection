@@ -1,0 +1,8 @@
+<%= form_tag("/polling_place/find", method: "get") do %>
+	<h4>Change your address</h4>
+	<p>
+		<strong>Enter your home address to get started.</strong><br />
+		<em class="light small">Example: 555 Smith St, Walla Walla, WA 55512</em>
+	<p>
+	<%= text_field_tag :address, nil, :class => 'span5' %> <%= submit_tag("Show Information", :class => 'btn btn-primary') %>
+<% end %>

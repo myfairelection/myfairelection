@@ -35,8 +35,19 @@ function isSmall() {
 $(document).ready(function() {
 	$('body').append('<div id="test-size"></div>');
 
+	$('.js-hide').hide();
+	$('.js-show').show();
+
+	$('.click_toggle').click(function() {
+		var t = $(this).attr('data-target');
+		console.log(t);
+		$('#' + t).slideToggle();
+		return false;
+	});
+
 	$('.signin-btn a').click(function() {
 		$('.signin').slideToggle();
+		return false;
 	});
 
 	checkSize();

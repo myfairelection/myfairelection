@@ -20,8 +20,32 @@ h4, h5, h6 {
 	color: #929378;
 }
 
-strong {
-	color: #646554;
+.codeq {
+	margin-left: -24px;
+	font-weight: bold;
+	color: #cc0000;
+	background-color: #f2bfbf;
+}
+
+.codeq2 {
+	margin-left: -12px;
+	font-weight: bold;
+	color: #00cc99;
+	background-color: #bff2e5;
+}
+
+.codecond {
+	margin-left: -18px;
+	font-weight: bold;
+	color: #cc6666;
+	background-color: #f2d9d9;
+}
+
+.codecond2 {
+	margin-left: -6px;
+	font-weight: bold;
+	color: #66cc99;
+	background-color: #d9f2e5;
 }
 
 .mfe_logo_lg {
@@ -51,6 +75,14 @@ body.svg .mfe_logo_lg {
 
 .block_sm {
 	display: block;
+}
+
+.no-top {
+	margin-top: 0;
+}
+
+.js-show {
+	display: none;
 }
 
 .alert-flash {
