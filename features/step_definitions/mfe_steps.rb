@@ -1,13 +1,25 @@
+Given /^I am registered user$/ do
+  @user = FactoryGirl.create(:user)
+end
+
+Given /^I am a registered user with email "([^"]*)" and password "([^"]*)"$/ do |email, password|
+  @user = FactoryGirl.create(:user, email: email, password: password)
+end
+
 Given /^I am not logged in$/ do
   # nothing to do here
 end
 
-Given /^I am on the home page$/ do
+Given /^I log in$/ do
   visit "/"
+  step 'I fill in "user_email" in the form "signin" with "#{@user.email}"'
+  step 'I fill in "user_password" in the form "signin" with "#{@user.password}"'
+  step 'I click the "Sign In" button in the form "signin"'
 end
 
-Given /^there is a "([^"]*)" user named "([^"]*)"$/ do |provider, username|
-  User.create!({username: username, provider: provider, uid: "134234", email: ""}, :without_protection => true)
+
+Given /^I am on the home page$/ do
+  visit "/"
 end
 
 When /^I fill in "([^"]*)" in the form "([^"]*)" with "([^"]*)"$/ do |field, form, value|
