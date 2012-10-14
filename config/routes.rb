@@ -1,7 +1,7 @@
 Myfairelection::Application.routes.draw do
   devise_for :users
 
-  match "polling_place/find" => 'polling_places#find'
+  match "voter_info/find" => 'voter_info#find'
 
   root :to => 'home#index'
 

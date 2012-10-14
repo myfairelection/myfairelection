@@ -6,7 +6,7 @@
         <div class="section div-decor">
             <div class="subsec-location">
                 <div class="content">
-                    <%= render "polling_places/form" %>
+                    <%= render "voter_info/form" %>
                 </div>
             </div>
         </div>
@@ -31,14 +31,14 @@
             <br />
             <div id="change_address" class="js-hide">
                 <hr class="no-top" />
-                <%= render "polling_places/form_change" %>
+                <%= render "voter_info/form_change" %>
                 <hr class="no-top" />
             </div>
             <p>
                 *** Place current voting information here. ***
             </p>
         <div class="codecond">else, show:</div>
-            <%= render "polling_places/form" %>
+            <%= render "voter_info/form" %>
         <div class="codecond">end</div>
 
         <br /><br />

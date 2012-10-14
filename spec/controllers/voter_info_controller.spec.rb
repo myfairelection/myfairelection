@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PollingPlacesController do
+describe VoterInfoController do
 
   describe "GET 'find'" do
     let (:address) { "1263 Pacific Ave. Kansas City KS" }
@@ -17,7 +17,7 @@ describe PollingPlacesController do
       get 'find', address: address
       response.should render_template("find")
     end
-    it "passes a PollingPlace object" do
+    it "passes a VoterInfo object to the view" do
       get 'find', address: address
       assigns[:voter_info].should be_a(VoterInfo)
     end
