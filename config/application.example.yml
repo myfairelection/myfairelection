@@ -5,6 +5,8 @@ development:
   # Election ID to use in Civic Information API calls
   # 2000 is for testing, 4000 is for production
   google_election_id: 2000
+  # Sendgrid is our email delivery service
+  sendgrid_password:
 
 test:
   google_api_key: 
