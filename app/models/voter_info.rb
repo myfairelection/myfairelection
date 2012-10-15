@@ -14,21 +14,25 @@ class VoterInfo
     @response = ActiveSupport::JSON.decode(response)
   end
 
+  def status
+    @status ||= @response["status"]
+  end
+
   def normalized_address
     @normalized_address ||= Address.new(@response["normalizedInput"])
   end
 
-  def polling_places
-    if @polling_places
-      @polling_places
+  def polling_locations
+    if @polling_locations
+      @polling_locations
     else
       locations = @response["pollingLocations"]
       if locations
-        @polling_places = locations.map { |e| OpenStruct.new(e) }
+        @polling_locations = locations.map { |e| PollingLocation.new(e) }
       else
-        @polling_places = []
+        @polling_locations = []
       end
-      @polling_places
+      @polling_locations
     end
   end
 
@@ -38,7 +42,7 @@ class VoterInfo
     else
       evplaces = @response["earlyVoteSites"]
       if evplaces
-        @early_voting_places = evplaces.map { |e| OpenStruct.new(e) }
+        @early_voting_places = evplaces.map { |e| PollingLocation.new(e) }
       else
         @early_voting_places = []
       end

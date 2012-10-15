@@ -6,6 +6,9 @@ describe VoterInfo do
       RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/white_house.json").read)
     end
     let (:vi) { VoterInfo.lookup("DC") }
+    it "has a status of noStreetSegmentFound" do
+      vi.status.should eq "noStreetSegmentFound"
+    end
     it "returns an Address object for the normalized address" do
       vi.normalized_address.should be_a(Address)
     end
@@ -13,7 +16,7 @@ describe VoterInfo do
       vi.normalized_address.city.should eq 'Washington'
     end
     it "has an empty array of polling places" do
-      vi.polling_places.should eq []
+      vi.polling_locations.should eq []
     end
   end
   context "with a valid address with poll information" do
@@ -25,10 +28,21 @@ describe VoterInfo do
       vi.normalized_address.city.should eq 'Kansas City'
     end
     it "has a polling place" do
-      vi.polling_places.length.should be > 0
+      vi.polling_locations.length.should be > 0
+    end
+    it "creates a polling location object for each location in the response" do
+      PollingLocation.should_receive(:new).and_return(nil)
+      vi.polling_locations.length
     end
     it "has early voting information" do
       vi.early_voting_places.length.should be > 0
+    end
+    it "creates an early voting place object for each location in the response" do
+      PollingLocation.should_receive(:new).and_return(nil)
+      vi.early_voting_places.length
+    end
+    it "has a status of success" do
+      vi.status.should eq "success"
     end
   end
 end

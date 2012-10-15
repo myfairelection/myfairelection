@@ -1,29 +1,38 @@
 <div class="page">
     <div class="section">
-		<%= render "form" %>
-		<p>We looked up your address:</p>
-		<% address = @voter_info.normalized_address %>
-		<%= render "address", :address => address %>
-		<%= form_tag(users_address_path, method: :post) do %>
-		  <% address.to_h.keys.each do |key| %>
-		    <%= hidden_field_tag key, address.to_h[key] %>
-		  <% end %>
-		  <%= submit_tag "Save this information" %>
-		<% end %>
-		<% if @voter_info.polling_places.length > 0 %>
-			<% polling_place = @voter_info.polling_places[0] %>
-			<p>Your polling place is:</p>
-			<p><%= polling_place.address["locationName"] %></p>
-			<p><%= polling_place.address["line1"] %></p>
-			<p><%= "#{polling_place.address["city"]}, #{polling_place.address["state"]} #{polling_place.address["zip"]}" %></p>
-			<% if polling_place.pollingHours %>
-				<p>Hours: <%= polling_place.pollingHours %></p>
-			<% end %> 
-		<% else %>
-		  <p>
-		  	<strong>We could not find information for the address you provided.</strong><br />
-		  	Please make sure the address is correct or try a different address.
-		  </p>
-		<% end %>
-	</div>
+    <%= render "form" %>
+    <p>We looked up your address:</p>
+    <% address = @voter_info.normalized_address %>
+    <%= render "address", :address => address %>
+    <%= form_tag(users_address_path, method: :post) do %>
+      <% address.to_h.keys.each do |key| %>
+        <%= hidden_field_tag key, address.to_h[key] %>
+      <% end %>
+      <%= submit_tag "Save this information" %>
+    <% end %>
+    <% case @voter_info.status %>
+    <% when "success" %>
+      <% if @voter_info.polling_locations.length > 0 %>
+        <% polling_location = @voter_info.polling_locations[0] %>
+        <p>On election day, your polling place is:</p>
+        <p><%= polling_location.location_name %></p>
+        <p><%= render "address", address: polling_location.address %></p>
+        <% if polling_location.polling_hours %>
+          <p>Hours: <%= polling_location.polling_hours %></p>
+        <% end %> 
+      <% end %>
+      <% if @voter_info.early_voting_places.length > 0 %>
+        <p>Before election day, you may vote early at one of these sites:</p>
+        <% @voter_info.early_voting_places.each do |evp| %>
+          <p><%= evp.name %></p>
+          <p><%= evp.location_name %></p>
+          <%= render "address", address: evp.address %>
+        <% end %>
+      <% end %>
+    <% when "noStreetSegmentFound" %>
+      <p>Your address is valid, but we could not find information for the address you provided.</p>
+    <% else %>
+      <p>Your address is invalid, or there was some other error.</p>
+    <% end %>
+  </div>
 </div>

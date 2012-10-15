@@ -33,15 +33,15 @@
   "earlyVoteSites": [
     {
       "address": {
-        "locationName": "National Guard Armory",
-        "line1": "100 S 20th St",
-        "city": "Denver",
-        "state": "CO",
-        "zip": "80201"
+        "locationName": "Kansas City Ballot Center",
+        "line1": "110 S 20th St",
+        "city": "Kansas City",
+        "state": "KS",
+        "zip": "66103"
       },
       "notes": "Ballot drop only",
       "pollingHours": "8am to 10pm",
-      "name": "Denver Ballot Center",
+      "name": "Kansas City Ballot Center",
       "voterServices": "Ballot drop for absentee/vote-by-mail ballots",
       "startDate": "2013-05-01",
       "endDate": "2013-06-05",
