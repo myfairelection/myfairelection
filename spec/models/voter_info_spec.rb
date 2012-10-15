@@ -6,6 +6,9 @@ describe VoterInfo do
       RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/white_house.json").read)
     end
     let (:vi) { VoterInfo.lookup("DC") }
+    it "returns an Address object for the normalized address" do
+      vi.normalized_address.should be_a(Address)
+    end
     it "has a normalized version of the address" do
       vi.normalized_address.city.should eq 'Washington'
     end

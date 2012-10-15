@@ -17,14 +17,11 @@
 <div class="page">
     <div class="section section-signup clearfix">
         <% if user_signed_in? %>
-
-        <div class="codeq">Do we have an address saved for this user?</div>
-        <div class="codecond">If yes, show:</div>
+          <% if !current_user.address.blank? %>
             <h2>Your current voting information</h2>
             <p>
                 <strong>Your home address:</strong><br />
-                555 Smith St.<br />
-                Walla Walla, WA 55512<br />
+                <%= render "voter_info/address", :address => current_user.address %>
                 <br />
                 <a href="#" class="btn click_toggle js-show" data-target="change_address">Change Address</a>
             </p>
@@ -37,9 +34,9 @@
             <p>
                 *** Place current voting information here. ***
             </p>
-        <div class="codecond">else, show:</div>
+          <% else %>
             <%= render "voter_info/form" %>
-        <div class="codecond">end</div>
+          <% end %>
 
         <br /><br />
 

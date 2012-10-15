@@ -3,6 +3,8 @@ Myfairelection::Application.routes.draw do
 
   match "voter_info/find" => 'voter_info#find'
 
+  match "users/address" => "users#address"
+
   root :to => 'home#index'
 
   # The priority is based upon order of creation:

@@ -12,8 +12,8 @@ end
 
 Given /^I log in$/ do
   visit "/"
-  step 'I fill in "user_email" in the form "signin" with "#{@user.email}"'
-  step 'I fill in "user_password" in the form "signin" with "#{@user.password}"'
+  step "I fill in \"user_email\" in the form \"signin\" with \"#{@user.email}\""
+  step "I fill in \"user_password\" in the form \"signin\" with \"#{@user.password}\""
   step 'I click the "Sign In" button in the form "signin"'
 end
 
@@ -49,3 +49,9 @@ end
 Then /^I should see "([^"]*)"$/ do |content|
   expect(page).to have_content(content)
 end
+
+Then /^I should see a button named "([^"]*)"$/ do |button|
+  expect(page).to have_button(button)
+end
+
+

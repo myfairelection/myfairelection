@@ -22,3 +22,23 @@ Feature: Find My Polling Place
     And I fill in "address" with "1600 Pennsylvania Avenue NW, Washington, DC 20500"
     And I click the "Show" button
     Then I should see "We could not find information for the address you provided."
+
+  Scenario: Save polling place info
+    Given I am registered user
+    And I log in
+    And the Google API is stubbed to return "ks_response.json"
+    When I am on the home page
+    And I fill in "address" with "1263 Pacific Ave. Kansas City KS"
+    And I click the "Show" button
+    And I click the "Save this information" button
+    Then I should see "Your address has been saved"
+
+  @wip
+  Scenario: See saved polling place info
+    Given I am a registerd user with the address "1263 Pacific Ave. Kansas City KS"
+    And the Google API is stubbed to return "ks_response.json"
+    When I am on the home page
+    Then I should see "Your current voting information"
+
+
+

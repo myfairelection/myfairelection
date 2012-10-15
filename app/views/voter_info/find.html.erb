@@ -1,8 +1,15 @@
 <div class="page">
     <div class="section">
 		<%= render "form" %>
-
-
+		<p>We looked up your address:</p>
+		<% address = @voter_info.normalized_address %>
+		<%= render "address", :address => address %>
+		<%= form_tag(users_address_path, method: :post) do %>
+		  <% address.to_h.keys.each do |key| %>
+		    <%= hidden_field_tag key, address.to_h[key] %>
+		  <% end %>
+		  <%= submit_tag "Save this information" %>
+		<% end %>
 		<% if @voter_info.polling_places.length > 0 %>
 			<% polling_place = @voter_info.polling_places[0] %>
 			<p>Your polling place is:</p>

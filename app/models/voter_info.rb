@@ -15,7 +15,7 @@ class VoterInfo
   end
 
   def normalized_address
-    @normalized_address ||= OpenStruct.new(@response["normalizedInput"])
+    @normalized_address ||= Address.new(@response["normalizedInput"])
   end
 
   def polling_places
