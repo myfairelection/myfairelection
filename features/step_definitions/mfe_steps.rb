@@ -1,10 +1,20 @@
-Given /^I am registered user$/ do
+Given /^I am a registered user$/ do
   @user = FactoryGirl.create(:user)
 end
 
 Given /^I am a registered user with email "([^"]*)" and password "([^"]*)"$/ do |email, password|
   @user = FactoryGirl.create(:user, email: email, password: password)
 end
+
+Given /^I am a registered user with the address "([^"]*)"$/ do |arg1|
+  step "I am a registered user"
+  @user.address = Address.new({"line1" => "1263 Pacific Avenue",
+                               "city" =>"Kansas City",
+                               "state" => "KS",
+                               "zip" => "66102"})
+  @user.save
+end
+
 
 Given /^I am not logged in$/ do
   # nothing to do here
