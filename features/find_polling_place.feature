@@ -40,7 +40,6 @@ Feature: Find My Polling Place
     And I click the "Save this information" button
     Then I should see "Your address has been saved"
 
-  @wip
   Scenario: See saved polling place info
     Given I am a registered user with the address "1263 Pacific Ave. Kansas City KS"
     And the Google API is stubbed to return "ks_response.json"

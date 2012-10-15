@@ -21,4 +21,12 @@ class Address
   def blank?
     ATTRIBUTES.inject(true) { |result, attrib| result && self.send(attrib).nil? }
   end
+  def to_s
+    ret = ""
+    ret << "#{line1}\n" if line1
+    ret << "#{@line2}\n" if @line2
+    ret << "#{@line3}\n" if @line3
+    ret << "#{@city}, #{@state} #{@zip}\n"
+    ret
+  end
 end

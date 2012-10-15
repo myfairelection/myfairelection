@@ -10,29 +10,6 @@
       <% end %>
       <%= submit_tag "Save this information" %>
     <% end %>
-    <% case @voter_info.status %>
-    <% when "success" %>
-      <% if @voter_info.polling_locations.length > 0 %>
-        <% polling_location = @voter_info.polling_locations[0] %>
-        <p>On election day, your polling place is:</p>
-        <p><%= polling_location.location_name %></p>
-        <p><%= render "address", address: polling_location.address %></p>
-        <% if polling_location.polling_hours %>
-          <p>Hours: <%= polling_location.polling_hours %></p>
-        <% end %> 
-      <% end %>
-      <% if @voter_info.early_voting_places.length > 0 %>
-        <p>Before election day, you may vote early at one of these sites:</p>
-        <% @voter_info.early_voting_places.each do |evp| %>
-          <p><%= evp.name %></p>
-          <p><%= evp.location_name %></p>
-          <%= render "address", address: evp.address %>
-        <% end %>
-      <% end %>
-    <% when "noStreetSegmentFound" %>
-      <p>Your address is valid, but we could not find information for the address you provided.</p>
-    <% else %>
-      <p>Your address is invalid, or there was some other error.</p>
-    <% end %>
+    <%= render "voter_info", voter_info: @voter_info %>
   </div>
 </div>

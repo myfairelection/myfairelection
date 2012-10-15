@@ -48,4 +48,17 @@ describe Address do
       Address.new({"city" => "San Francisco"}).should_not be_blank
     end
   end
+  describe "to_s" do
+    context "with a valid address" do
+      let(:addr_hash) { { "line1" => "11951 E Yale Ct",
+                          "line2" => "Suite 300",
+                          "line3" => "Fourth Floor",
+                         "city" => "Denver", "state" => "CO",
+                         "zip" => "80014"} }
+      it "renders the address in po format" do
+        a = Address.new(addr_hash)
+        a.to_s.should eq "11951 E Yale Ct\nSuite 300\nFourth Floor\nDenver, CO 80014\n"
+      end
+    end
+  end
 end
