@@ -56,6 +56,18 @@ When /^I follow "([^"]*)"$/ do |link|
   click_link(link)
 end
 
+When /^I register as a new user$/ do
+  step 'I am on the home page'
+  step 'I fill in "user_email" in the form "new_user" with "voter@example.org"'
+  step 'I fill in "user_password" in the form "new_user" with "voter123"'
+  step 'I fill in "user_password_confirmation" in the form "new_user" with "voter123"'
+  step 'I click the "Sign up" button in the form "new_user"'
+end
+
+When /^I click on the link in the email$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
 Then /^I should see "([^"]*)"$/ do |content|
   expect(page).to have_content(content)
 end
@@ -63,5 +75,3 @@ end
 Then /^I should see a button named "([^"]*)"$/ do |button|
   expect(page).to have_button(button)
 end
-
-
