@@ -37,4 +37,15 @@ describe Address do
                          "zip" => "80014"})
     end
   end
+  describe "#blank?" do
+    it "returns true for an empty object" do
+      Address.new.should be_blank
+    end
+    it "returns false for an object initialized with invalid keys" do
+      Address.new({"foobar" => "garply"}).should be_blank
+    end
+    it "returns false if the object has data" do
+      Address.new({"city" => "San Francisco"}).should_not be_blank
+    end
+  end
 end

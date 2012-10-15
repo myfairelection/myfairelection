@@ -24,6 +24,12 @@ Feature: Find My Polling Place
     And I click the "Show" button
     Then I should see "we could not find information for the address you provided."
 
+  Scenario: Log in with no saved address
+    Given I am a registered user
+    And I log in
+    When I am on the home page
+    Then I should see "Find out about your voting location"
+ 
   Scenario: Save polling place info
     Given I am a registered user
     And I log in

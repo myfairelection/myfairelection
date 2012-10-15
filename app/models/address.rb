@@ -17,4 +17,8 @@ class Address
     end
     ret
   end
+
+  def blank?
+    ATTRIBUTES.inject(true) { |result, attrib| result && self.send(attrib).nil? }
+  end
 end
