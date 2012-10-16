@@ -1,5 +1,3 @@
-    <% case voter_info.status %>
-    <% when "success" %>
       <% if voter_info.polling_locations.length > 0 %>
         <% polling_location = voter_info.polling_locations[0] %>
         <p>On election day, your polling place is:</p>
@@ -17,8 +15,3 @@
           <%= render "address", address: evp.address %>
         <% end %>
       <% end %>
-    <% when "noStreetSegmentFound" %>
-      <p>Your address is valid, but we could not find information for the address you provided.</p>
-    <% else %>
-      <p>Your address is invalid, or there was some other error.</p>
-    <% end %>
