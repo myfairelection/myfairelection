@@ -99,7 +99,7 @@ ul.clean {
 	margin-bottom: 24px;
 }
 
-.links a {
+.links a, .links .link {
 	font-size: 1.75em;
 	line-height: 1.125em;
 }
