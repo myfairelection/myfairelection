@@ -12,10 +12,9 @@
 	<%= stylesheet_link_tag    "bootstrap-em-nojs-grid", :media => "all" %>
 	<%= stylesheet_link_tag    "style", :media => "all" %>
 
-	<!--[if (lt IE 9)&(!IEMobile)]><![endif]-->
-<!--
-	<script type="text/javascript" src="js/modernizr.js"></script>
--->
+	<!--[if (lt IE 9)&(!IEMobile)]>
+		<%= stylesheet_link_tag    "ie", :media => "all" %>
+	<![endif]-->
 	<%= csrf_meta_tags %>
 	<%= analytics_init if Rails.env.production? %>
 </head>
@@ -56,13 +55,17 @@
 	</div>
 
 	<div class="footer" role="footer" align="center">
+        <a href="/">Home</a>
+        <span class="divider">&bull;</span>
 <!--
         <a href="#">Contact Us</a>
         <span class="divider">&bull;</span>
 -->
+        <a href="/credits.html">Credits</a>
+        <span class="divider">&bull;</span>
         <a href="/terms_of_use.html">Terms of Use</a>
         <span class="divider">&bull;</span>
-        <a href="/privacy_policy.html">Privacy Policy</a>
+        <a href="/privacy_policy.html">Privacy&nbsp;Policy</a>
         <div class="copyright">&copy; 2012 My Fair Election</div>
 	</div>
 
