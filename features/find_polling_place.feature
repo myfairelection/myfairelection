@@ -24,6 +24,14 @@ Feature: Find My Polling Place
     And I click the "Show" button
     Then I should see "we could not find information for the address you provided."
 
+  @wip
+  Scenario: Look up empty string
+    Given the Google API is stubbed to return "no_address.json"
+    When I am on the home page
+    And I fill in "address" with ""
+    And I click the "Show" button
+    Then I should see "Please enter an address."
+
   Scenario: Log in with no saved address
     Given I am a registered user
     And I log in

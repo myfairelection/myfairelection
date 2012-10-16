@@ -4,6 +4,7 @@ class Address
   ATTRIBUTES = "line1", "line2", "line3", "city", "state", "zip"
 
   def initialize(addr = {})
+    return if addr.nil?
     raise TypeError unless addr.is_a?(Hash)
     addr.keys.each do |key|
       self.instance_variable_set("@#{key}", addr[key]) if ATTRIBUTES.include?(key)

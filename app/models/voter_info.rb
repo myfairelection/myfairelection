@@ -19,7 +19,7 @@ class VoterInfo
   end
 
   def normalized_address
-    @normalized_address ||= Address.new(@response["normalizedInput"])
+    @normalized_address ||= @response["normalizedInput"] ? Address.new(@response["normalizedInput"]) : nil 
   end
 
   def polling_locations

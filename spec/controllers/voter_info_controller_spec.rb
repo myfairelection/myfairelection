@@ -10,10 +10,9 @@ describe VoterInfoController do
         response.should be_success
       end
       it "asks the VoterInfo model to look up the address" do
-        VoterInfo.should_receive(:lookup).with(address)
+        VoterInfo.should_receive(:lookup, &VoterInfo.method(:lookup)).with(address)
         get 'find', address: address
       end
-
       it "renders the find view" do
         get 'find', address: address
         response.should render_template("find")
@@ -25,10 +24,6 @@ describe VoterInfoController do
     end
     context "with an empty address" do
       let (:address) { "" }
-      it "returns http success" do
-        get 'find', address: address
-        response.should be_success
-      end
       it "sets the error flash" do
         get 'find', address: address
         flash[:error].should_not be_nil

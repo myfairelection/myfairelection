@@ -1,0 +1,9 @@
+{
+ "kind": "civicinfo#voterInfoResponse",
+ "status": "noAddressParameter",
+ "election": {
+  "id": "4000",
+  "name": "U.S. 2012 General Election",
+  "electionDay": "2012-11-06"
+ }
+}

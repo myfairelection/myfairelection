@@ -45,4 +45,22 @@ describe VoterInfo do
       vi.status.should eq "success"
     end
   end
+  context "with a no address returned message" do
+    before (:each) do
+      RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/no_address.json").read)
+    end
+    let (:vi) { VoterInfo.lookup("")}
+    it "has a status of noAddressParameter" do
+      vi.status.should eq 'noAddressParameter'
+    end
+    it "returns nil for the address" do
+      vi.normalized_address.should be_nil
+    end
+    it "has an empty polling place array" do
+      vi.polling_locations.length.should eq 0
+    end
+    it "has an empty early voting array" do
+      vi.polling_locations.length.should eq 0
+    end
+  end
 end
