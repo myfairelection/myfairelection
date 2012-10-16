@@ -16,4 +16,13 @@ describe User do
       @user.save
     }.to_not raise_error
   end
+  it "does not want reminder by default" do
+    @user.wants_reminder?.should be_false
+  end
+  it "remembers if the user wants a reminder" do
+    @user.wants_reminder = true
+    @user.save
+    newuser = User.find(@user.id)
+    newuser.wants_reminder?.should be_true
+  end
 end

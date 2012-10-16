@@ -15,6 +15,12 @@ Given /^I am a registered user with the address "([^"]*)"$/ do |arg1|
   @user.save
 end
 
+Given /^I am a confirmed user with email "([^"]*)" and password "([^"]*)"$/ do |email, password|
+  step "I am a registered user with email \"#{email}\" and password \"#{password}\""
+  @user.confirmed_at = Time.now
+  @user.save
+end
+
 
 Given /^I am not logged in$/ do
   # nothing to do here

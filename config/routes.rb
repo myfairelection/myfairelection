@@ -5,6 +5,8 @@ Myfairelection::Application.routes.draw do
 
   match "users/address" => "users#address"
 
+  match "users/reminder" => "users#reminder"
+
   root :to => 'home#index'
 
   # The priority is based upon order of creation:

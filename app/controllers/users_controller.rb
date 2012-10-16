@@ -11,4 +11,19 @@ class UsersController < ApplicationController
       redirect_to new_user_session_path
     end
   end
+  def reminder
+    if current_user
+      current_user.wants_reminder = params[:user][:wants_reminder]
+      current_user.save
+      if current_user.wants_reminder?
+        flash[:notice] = "We will send you a reminder email on election day"
+      else
+        flash[:notice] = "We have canceled your election day reminder. Be sure to remember yourself!"
+      end
+      redirect_to root_path
+    else
+      flash[:error] = "Must be signed in"
+      redirect_to new_user_session_path
+    end
+  end
 end
