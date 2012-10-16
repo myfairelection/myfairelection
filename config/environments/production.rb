@@ -59,7 +59,7 @@ Myfairelection::Application.configure do
     password:             Settings.sendgrid_password,
     authentication:       'plain',
     enable_starttls_auto: true  }
-
+  config.action_mailer.default_url_options = { :host => 'myfairelection.davinator.org' }
 
   # Enable threaded mode
   # config.threadsafe!
