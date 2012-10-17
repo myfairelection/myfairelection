@@ -9,8 +9,8 @@ set :branch, 'production'
 default_run_options[:pty] = true
 
 set :user, "myfairelection"
-role :web, "198.61.213.70"                          # Your HTTP server, Apache/etc
-role :app, "198.61.213.70"                          # This may be the same as your `Web` server
+role :web, "198.61.213.70", "198.101.255.157" # Your HTTP server, Apache/etc
+role :app, "198.61.213.70", "198.101.255.157" # This may be the same as your `Web` server
 role :db,  "198.61.213.70", :primary => true # This is where Rails migrations will run
 set :deploy_to, "/home/#{user}/apps/#{application}"
 
@@ -19,10 +19,6 @@ set :deploy_to, "/home/#{user}/apps/#{application}"
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
 
-# if you're still using the script/reaper helper you will need
-# these http://github.com/rails/irs_process_scripts
-
-#If you are using Passenger mod_rails uncomment this:
 namespace :deploy do
   %w[start stop restart].each do |command|
     desc "#{command} unicorn server"
