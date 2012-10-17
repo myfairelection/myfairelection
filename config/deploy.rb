@@ -4,14 +4,14 @@ set :application, "myfairelection"
 set :repository,  "git://github.com/myfairelection/myfairelection.git"
 
 set :scm, :git
-set :branch, 'master'
+set :branch, 'production'
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 default_run_options[:pty] = true
 
-set :user, "deployer"
-role :web, "198.101.229.130"                          # Your HTTP server, Apache/etc
-role :app, "198.101.229.130"                          # This may be the same as your `Web` server
-role :db,  "198.101.229.130", :primary => true # This is where Rails migrations will run
+set :user, "myfairelection"
+role :web, "198.61.213.70"                          # Your HTTP server, Apache/etc
+role :app, "198.61.213.70"                          # This may be the same as your `Web` server
+role :db,  "198.61.213.70", :primary => true # This is where Rails migrations will run
 set :deploy_to, "/home/#{user}/apps/#{application}"
 
 #role :db,  "your slave db-server here"
@@ -24,14 +24,16 @@ set :deploy_to, "/home/#{user}/apps/#{application}"
 
 #If you are using Passenger mod_rails uncomment this:
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{File.join(current_path,'tmp','restart.txt')}"
+  %w[start stop restart].each do |command|
+    desc "#{command} unicorn server"
+    task command, roles: :app, except: {no_release: true} do
+      run "/etc/init.d/unicorn_#{application} #{command}"
+    end
   end
 
   task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/apache.conf /etc/apache2/sites-available/#{application}"
+    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
+    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
     run "mkdir -p #{shared_path}/config"
     put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
     put File.read("config/application.example.yml"), "#{shared_path}/config/application.yml"
@@ -47,8 +49,8 @@ namespace :deploy do
 
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/master`
-      puts "WARNING: HEAD is not the same as origin/master"
+    unless `git rev-parse HEAD` == `git rev-parse origin/production`
+      puts "WARNING: HEAD is not the same as origin/production"
       puts "Run `git push` to sync changes."
       exit
     end
