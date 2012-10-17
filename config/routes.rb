@@ -1,4 +1,14 @@
 Myfairelection::Application.routes.draw do
+  get "info/contact_us"
+
+  get "info/credits"
+
+  get "info/fraud"
+
+  get "info/privacy_policy"
+
+  get "info/terms_of_use"
+
   devise_for :users
 
   match "voter_info/find" => 'voter_info#find'

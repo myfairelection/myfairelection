@@ -50,7 +50,7 @@
 		<%= yield %>
 
 		<div class="section-trouble clearfix">
-		    Having trouble at your polling place? <span class="block_sm"><a href="#">Here are some resources to help you</a></span>
+		    Having trouble at your polling place? <span class="block_sm"><%= link_to_unless_current "Here are some resources to help you", info_fraud_path %></a></span>
 		</div>
 	</div>
 
@@ -61,11 +61,11 @@
         <a href="#">Contact Us</a>
         <span class="divider">&bull;</span>
 -->
-        <a href="/credits.html">Credits</a>
+        <%= link_to_unless_current "Credits", info_credits_path %>
         <span class="divider">&bull;</span>
-        <a href="/terms_of_use.html">Terms of Use</a>
+        <%= link_to_unless_current "Terms of Use", info_terms_of_use_path %>
         <span class="divider">&bull;</span>
-        <a href="/privacy_policy.html">Privacy&nbsp;Policy</a>
+        <%= link_to_unless_current "Privacy Policy", info_privacy_policy_path %>
         <div class="copyright">&copy; 2012 My Fair Election</div>
 	</div>
 
