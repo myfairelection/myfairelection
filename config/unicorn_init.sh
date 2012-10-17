@@ -1,4 +1,15 @@
 #!/bin/sh
+### BEGIN INIT INFO
+# Provides:   unicorn_myfairelection
+# Required-Start:    $local_fs $remote_fs $network $syslog $named
+# Required-Stop:     $local_fs $remote_fs $network $syslog $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts myfairelection
+# Description:       starts unicorn for myfairelection using start-stop-daemon
+### END INIT INFO
+
+
 set -e
 
 # Feel free to change any of the following variables for your app:
