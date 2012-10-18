@@ -47,5 +47,7 @@ Myfairelection::Application.configure do
     password:             Settings.sendgrid_password,
     authentication:       'plain',
     enable_starttls_auto: true  }
+  # for google analytics
+  GA.tracker = "UA-35559818-2"
 
 end

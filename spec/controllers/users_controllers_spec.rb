@@ -20,6 +20,10 @@ describe UsersController do
         post 'address', params
         flash[:notice].should_not be_nil
       end
+      it "logs an event" do
+        post 'address', params
+        session[:events].should be_include({category: "User", action: "Save Address", label: ""})
+      end
     end
     context "without a signed in user" do
       it "redirects to signin page" do

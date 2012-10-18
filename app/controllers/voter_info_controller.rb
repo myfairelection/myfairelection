@@ -18,5 +18,6 @@ class VoterInfoController < ApplicationController
       flash[:error] = "A problem happened while looking up your polling place. Please try again."
       redirect_to root_path
     end
+    log_event("VoterInfo", "Find", voter_info.status)
   end
 end

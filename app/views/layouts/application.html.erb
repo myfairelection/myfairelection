@@ -16,7 +16,18 @@
 		<%= stylesheet_link_tag    "ie", :media => "all" %>
 	<![endif]-->
 	<%= csrf_meta_tags %>
-	<%= analytics_init if Rails.env.production? %>
+	<% unless Rails.env.test? %>
+		<%= analytics_init :local => Rails.env.development? %>
+		<% unless session[:events].nil? %>
+		    <script>
+		  	<% session[:events].each do |event|%>
+				<%= analytics_track_event(event[:category], event[:action], event[:label]) %>
+			<% end %>
+			</script>
+		<% end %>
+		<% session[:events] = Array.new %>
+	<% end %>
+
 </head>
 <body>
 	<% flash.each do |name, msg| %>

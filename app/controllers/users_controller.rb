@@ -5,6 +5,7 @@ class UsersController < ApplicationController
       current_user.address = addr
       current_user.save
       flash[:notice] = "Your address has been saved."
+      log_event("User", "Save Address")
       redirect_to root_path
     else
       flash[:error] = "Must be signed in"

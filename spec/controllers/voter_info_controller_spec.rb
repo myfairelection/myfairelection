@@ -24,6 +24,10 @@ describe VoterInfoController do
         get 'find', address: address
         assigns[:voter_info].should be_a(VoterInfo)
       end
+      it "logs a lookup event" do
+        get 'find', address: address
+        session[:events].should be_include({category: "VoterInfo", action: "Find", label: "success"})
+      end
     end
     context "with an empty address" do
       before(:each) do  
@@ -42,6 +46,10 @@ describe VoterInfoController do
         get 'find', address: address
         assigns.keys.should_not be_include(:voter_info)
       end
+      it "logs a lookup event" do
+        get 'find', address: address
+        session[:events].should be_include({category: "VoterInfo", action: "Find", label: "noAddressParameter"})
+      end        
     end
     context "with an unparseable address" do
       before(:each) do  
@@ -60,6 +68,10 @@ describe VoterInfoController do
         get 'find', address: address
         assigns.keys.should_not be_include(:voter_info)
       end
+      it "logs a lookup event" do
+        get 'find', address: address
+        session[:events].should be_include({category: "VoterInfo", action: "Find", label: "addressUnparseable"})
+      end        
     end
   end
 end
