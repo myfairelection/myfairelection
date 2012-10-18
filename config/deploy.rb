@@ -4,14 +4,14 @@ set :application, "myfairelection"
 set :repository,  "git://github.com/myfairelection/myfairelection.git"
 
 set :scm, :git
-set :branch, 'staging'
+set :branch, 'production'
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 default_run_options[:pty] = true
 
 set :user, "myfairelection"
-role :web, "198.101.255.80" # Your HTTP server, Apache/etc
-role :app, "198.101.255.80" # This may be the same as your `Web` server
-role :db,  "198.101.255.80", :primary => true # This is where Rails migrations will run
+role :web, "198.61.213.70", "198.101.255.157" # Your HTTP server, Apache/etc
+role :app, "198.61.213.70", "198.101.255.157" # This may be the same as your `Web` server
+role :db,  "198.61.213.70", :primary => true # This is where Rails migrations will run
 set :deploy_to, "/home/#{user}/apps/#{application}"
 
 #role :db,  "your slave db-server here"
@@ -45,8 +45,8 @@ namespace :deploy do
 
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/staging`
-      puts "WARNING: HEAD is not the same as origin/staging"
+    unless `git rev-parse HEAD` == `git rev-parse origin/production`
+      puts "WARNING: HEAD is not the same as origin/production"
       puts "Run `git push` to sync changes."
       exit
     end
