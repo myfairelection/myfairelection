@@ -1,22 +1,4 @@
-<div class="section section-primary">
-    <div class="section-mast">
-        <a href="/"><h1 class="mfe_logo_lg">My Fair Election</h1></a>
-        <h3>Improving the voting process through your&nbsp;feedback.</h3>
-        <% if !user_signed_in? %>
-        <div class="section div-decor">
-            <div class="subsec-location">
-                <div class="content">
-                    <%= render "voter_info/form" %>
-                </div>
-            </div>
-        </div>
-        <% end %>
-    </div>
-</div>
-
-<div class="page">
-    <div class="section section-signup clearfix">
-        <% if user_signed_in? %>
+       <% if user_signed_in? %>
           <% if !current_user.address.blank? %>
             <h2>Your current voting information</h2>
             <p>
@@ -120,7 +102,6 @@
         </div>
 
         <% end %>
-    </div>
 <%
 =begin %>
     <hr />
@@ -139,4 +120,3 @@
     </div>
 <% 
 =end %>
-</div>

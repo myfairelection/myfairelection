@@ -47,7 +47,29 @@
 	</div>
 
 	<div class="content" role="main" align="center">
-		<%= yield %>
+		<div class="section section-primary">
+		    <div class="section-mast">
+		        <a href="/"><h1 class="mfe_logo_lg">My Fair Election</h1></a>
+		        <h3>Improving the voting process through your&nbsp;feedback.</h3>
+		        <% if !user_signed_in? %>
+		        <div class="section div-decor">
+		            <div class="subsec-location">
+		                <div class="content">
+		                    <%= render "voter_info/form" %>
+		                </div>
+		            </div>
+		        </div>
+		        <% end %>
+		    </div>
+		</div>
+
+		<div class="page">
+		    <div class="section clearfix">
+				<!-- Start Content -->
+				<%= yield %>
+				<!-- End Content -->
+		    </div>
+		</div>
 
 		<div class="section-trouble clearfix">
 		    Having trouble at your polling place? <span class="block_sm"><%= link_to_unless_current "Here are some resources to help you", info_fraud_path %></a></span>
