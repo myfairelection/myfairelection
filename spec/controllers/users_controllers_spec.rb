@@ -36,4 +36,36 @@ describe UsersController do
       end
     end
   end
+  describe "POST 'reminder'" do
+    let(:params) { { "user" => { "wants_reminder" => "true" } } }
+    context "with a signed in user" do
+      login_user
+      it "sets the signing in the user object" do
+        post 'reminder', params
+        User.find(@user.id).wants_reminder.should be_true
+      end
+      it "redirects to the home page" do
+        post 'reminder', params
+        response.should redirect_to root_path
+      end
+      it "sets the notice flash" do
+        post 'reminder', params
+        flash[:notice].should_not be_nil
+      end
+      it "logs the event" do
+        post 'reminder', params
+        session[:events].should be_include({category: "User", action: "Reminder", label: "true"})
+      end
+    end
+    context "without a signed in user" do
+      it "redirects to signin page" do
+        post 'reminder', params
+        response.should redirect_to new_user_session_path
+      end
+      it "sets the error flash" do
+        post 'reminder', params
+        flash[:error].should_not be_nil
+      end
+    end
+  end
 end

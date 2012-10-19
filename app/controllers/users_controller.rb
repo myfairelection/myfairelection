@@ -21,6 +21,7 @@ class UsersController < ApplicationController
       else
         flash[:notice] = "We have canceled your election day reminder. Be sure to remember yourself!"
       end
+      log_event("User", "Reminder", current_user.wants_reminder?.to_s)
       redirect_to root_path
     else
       flash[:error] = "Must be signed in"
