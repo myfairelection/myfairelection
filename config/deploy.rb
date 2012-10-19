@@ -4,7 +4,7 @@ set :application, "myfairelection"
 set :repository,  "git://github.com/myfairelection/myfairelection.git"
 
 set :scm, :git
-set :branch, 'production'
+set :branch, 'master'
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 default_run_options[:pty] = true
 
@@ -45,8 +45,8 @@ namespace :deploy do
 
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/production`
-      puts "WARNING: HEAD is not the same as origin/production"
+    unless `git rev-parse HEAD` == `git rev-parse origin/master`
+      puts "WARNING: HEAD is not the same as origin/master"
       puts "Run `git push` to sync changes."
       exit
     end
