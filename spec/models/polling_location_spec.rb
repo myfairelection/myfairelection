@@ -1,42 +1,122 @@
 require 'spec_helper'
 
 describe PollingLocation do
-  describe "#initialize" do
-    it "works with no args" do
-      a = PollingLocation.new
-      a.should be_a(PollingLocation)
+  before(:each) do
+    @pl = PollingLocation.new(
+      :name => "Precinct 235253 Polling Place",
+      :location_name => "My house",
+      :line1 => "230 Shazam Lane",
+      :line2 => "4th Floor",
+      :line3 => "Suite 400",
+      :city => "San Diego",
+      :state => "CA",
+      :zip => "92003",
+      :county => "06073",
+      :latitude => 32.7153, 
+      :longitude => 117.1564,
+      :properties => {"foo" => "bar", "photo" => "http://myfairelection.com/favicon.ico"})
+  end
+  it "is valid with valid parameters" do
+    @pl.should be_valid
+  end
+  [:line1, :city, :state, :zip].each do |param|
+      it "is not valid without #{param}" do
+        @pl.send("#{param}=", nil)
+        @pl.should_not be_valid
+      end
+  end
+  [:name, :location_name, :line2, :line3, :county, :latitude, :longitude, :properties].each do |param|
+    it "is valid without #{param}" do
+      @pl.send("#{param}=", nil)
+      @pl.should be_valid
     end
-    context "with a full location object" do
-      let (:location_hash) {
-        {
-         "address" => {
+  end
+  it "returns the properties in a hash" do
+    @pl.properties.should be_a(Hash)
+  end
+
+  describe "::find_or_create_from_google!" do
+    let (:location_hash) {
+      {
+        "address" => {
           "locationName" => "National Guard Armory",
           "line1" => "100 S 20th St",
-          "city" => "Kansas City",
-          "state" => "KS",
-          "zip" => "66102 "
-         },
-         "pollingHours" => "8:00am to 8:00pm",
-         "sources" => [
+          "line2" => "string",
+          "line3" => "string",
+          "city" => "string",
+          "state" => "string",
+          "zip" => "string",
+        },
+        "notes" => "string",
+        "pollingHours" => "string",
+        "name" => "Precinct 23452 Polling Place",
+        "voterServices" => "string",
+        "startDate" => "string",
+        "endDate" => "string",
+        "sources" => [
           {
-           "name" => "Voting Information Project",
-           "official" => "true"
+            "name" => "string",
+            "official" => true
           }
-         ]
-        }
+        ]
       }
-      let (:location) { PollingLocation.new(location_hash) }
+    }
+    context "with a new polling place" do
+      let (:location) { PollingLocation.find_or_create_from_google!(location_hash) }
       it "sets location_name" do
         location.location_name.should eq "National Guard Armory"
       end
       it "sets address" do
-        location.address.should be_a(Address)
+        location.line1.should eq "100 S 20th St"
       end
-      it "sets polling_hours" do
-        location.polling_hours.should eq "8:00am to 8:00pm"
+      it "sets name" do
+        location.name.should eq "Precinct 23452 Polling Place"
+      end
+      it "leaves unprovided fields nil" do
+        ["county", "latitude", "longitude"].each do |field|
+          location.send(field).should be_nil
+        end
       end
       it "puts everything else in properties" do
-        location.properties.keys.should eq ["sources"]
+        ["notes", "pollingHours", "voterServices", "startDate", "endDate", "sources"].each do |field|
+          location.properties.keys.include?(field).should be_true
+        end
+      end
+    end
+    context "with a duplicate polling place" do
+      it "returns the existing polling place" do
+        loc1 = PollingLocation.find_or_create_from_google!(location_hash)
+        PollingLocation.find_or_create_from_google!(location_hash).should eq loc1
+      end
+    end
+    context "with an identical address, but other has changed" do
+      let(:updated_location_hash) {
+        {
+          "address" => {
+            "locationName" => "National Guard Armory",
+            "line1" => "100 S 20th St",
+            "line2" => "string",
+            "line3" => "string",
+            "city" => "string",
+            "state" => "string",
+            "zip" => "string",
+          },
+          "notes" => "New notes!",
+          "pollingHours" => "New polling hours!",
+          "name" => "New name!",
+         }
+      }
+      before(:each) do
+        @loc1 = PollingLocation.find_or_create_from_google!(location_hash)
+        @loc2 = PollingLocation.find_or_create_from_google!(updated_location_hash)
+      end
+      it "returns the existing object" do
+        @loc1.should eq @loc2
+      end
+      it "updates the object with the new information" do
+        @loc2.name.should eq "New name!"
+        @loc2.properties["notes"].should eq "New notes!"
+        @loc2.properties["pollingHours"].should eq "New polling hours!"
       end
     end
   end

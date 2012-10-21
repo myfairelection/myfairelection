@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121015235718) do
+ActiveRecord::Schema.define(:version => 20121019210048) do
+
+  create_table "polling_locations", :force => true do |t|
+    t.string "name"
+    t.string "location_name"
+    t.string "line1",         :null => false
+    t.string "line2"
+    t.string "line3"
+    t.string "city",          :null => false
+    t.string "state",         :null => false
+    t.string "zip",           :null => false
+    t.string "county"
+    t.float  "latitude"
+    t.float  "longitude"
+    t.text   "properties"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false

@@ -20,29 +20,41 @@ describe VoterInfo do
     end
   end
   context "with a valid address with poll information" do
-    before(:each) do  
-      RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/ks_response.json").read)
+    context "with polling places not in the database" do
+      before(:each) do  
+        RestClient.stub(:post).and_return(File.open("spec/fixtures/voter_info_responses/ks_response.json").read)
+      end
+      let (:vi) { VoterInfo.lookup("KS") }
+      it "has a normalized version of the address" do
+        vi.normalized_address.city.should eq 'Kansas City'
+      end
+      it "returns all the polling places" do
+        pending "fix polling locations"
+        vi.polling_locations.length.should eq 1
+      end
+      context "the polling place list" do
+        it "contains activerecord objects" do
+          pending "a real polling_location object"
+          vi.polling_locations.each do |pl|
+            pl.should be_persisted
+          end
+        end
+        it "created these new objects" do
+          pending "a real polling_location object"
+          expect {
+            vi = VoterInfo.lookup("KS")
+          }.to change{PollingLocation.count}.by(1)
+        end
+      end
+      it "returns all the early vote sites"
+      context "the early voting site list" do
+        it "contains activerecord objects"
+        it "created these new objects"
+      end
     end
-    let (:vi) { VoterInfo.lookup("KS") }
-    it "has a normalized version of the address" do
-      vi.normalized_address.city.should eq 'Kansas City'
-    end
-    it "has a polling place" do
-      vi.polling_locations.length.should be > 0
-    end
-    it "creates a polling location object for each location in the response" do
-      PollingLocation.should_receive(:new).and_return(nil)
-      vi.polling_locations.length
-    end
-    it "has early voting information" do
-      vi.early_voting_places.length.should be > 0
-    end
-    it "creates an early voting place object for each location in the response" do
-      PollingLocation.should_receive(:new).and_return(nil)
-      vi.early_voting_places.length
-    end
-    it "has a status of success" do
-      vi.status.should eq "success"
+    context "with polling places already in the database" do
+      it "does not create new polling places"
+      it "returns the polling places already in the database"
     end
   end
   context "with a no address returned message" do
