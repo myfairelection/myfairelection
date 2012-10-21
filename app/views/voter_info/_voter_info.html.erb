@@ -1,17 +1,12 @@
       <% if voter_info.polling_locations.length > 0 %>
-        <% polling_location = voter_info.polling_locations[0] %>
-        <p>On election day, your polling place is:</p>
-        <p><%= polling_location.location_name %></p>
-        <p><%= render "address", address: polling_location.address %></p>
-        <% if polling_location.polling_hours %>
-          <p>Hours: <%= polling_location.polling_hours %></p>
-        <% end %> 
+        <p>On election day, you may vote at any of the following places:</p>
+        <% voter_info.polling_locations.each do |pl| %>
+          <%= render "voter_info/polling_location", polling_location: pl %>
+        <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length > 0 %>
-        <p>Before election day, you may vote early at one of these sites:</p>
-        <% voter_info.early_voting_places.each do |evp| %>
-          <p><%= evp.name %></p>
-          <p><%= evp.location_name %></p>
-          <%= render "address", address: evp.address %>
+        <p>Before election day, you may vote early at any of the following places:</p>
+        <% voter_info.early_voting_places.each do |pl| %>
+          <%= render "voter_info/polling_location", polling_location: pl %>
         <% end %>
       <% end %>

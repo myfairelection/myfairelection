@@ -29,32 +29,35 @@ describe VoterInfo do
         vi.normalized_address.city.should eq 'Kansas City'
       end
       it "returns all the polling places" do
-        pending "fix polling locations"
         vi.polling_locations.length.should eq 1
       end
       context "the polling place list" do
         it "contains activerecord objects" do
-          pending "a real polling_location object"
           vi.polling_locations.each do |pl|
             pl.should be_persisted
           end
         end
         it "created these new objects" do
-          pending "a real polling_location object"
           expect {
-            vi = VoterInfo.lookup("KS")
+            VoterInfo.lookup("KS").polling_locations
           }.to change{PollingLocation.count}.by(1)
         end
       end
-      it "returns all the early vote sites"
-      context "the early voting site list" do
-        it "contains activerecord objects"
-        it "created these new objects"
+      it "returns all the early vote sites" do
+        vi.early_voting_places.length.should eq 1
       end
-    end
-    context "with polling places already in the database" do
-      it "does not create new polling places"
-      it "returns the polling places already in the database"
+      context "the early voting site list" do
+        it "contains activerecord objects" do
+          vi.early_voting_places.each do |pl|
+            pl.should be_persisted
+          end
+        end
+        it "created these new objects" do
+          expect {
+            VoterInfo.lookup("KS").early_voting_places
+          }.to change{PollingLocation.count}.by(1)
+        end
+      end
     end
   end
   context "with a no address returned message" do
