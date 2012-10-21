@@ -36,7 +36,7 @@ Feature: Find My Polling Place
     When I am on the home page
     And I fill in "address" with "safasdfasdasdf"
     And I click the "Show" button
-    Then I should see "Could not parse your address. Please try again."
+    Then I should see "Could not figure out your address. Please check the address you gave us."
 
   Scenario: Log in with no saved address
     Given I am a registered user
