@@ -19,11 +19,14 @@ describe Address do
       a = Address.new({"foobar" => "garply"})
       a.to_h.should be_empty
     end
-    it "sets the getters based on the hash" do
-      ["line1", "line2", "line3", "city", "state", "zip"].each do |attrib|
+    it "sets most of the getters based on the hash" do
+      ["line1", "line2", "line3", "city", "zip"].each do |attrib|
         a = Address.new({attrib => "foobar"})
         a.send(attrib).should eq "foobar"
       end
+    end
+    it "always converts state to uppercase" do
+      Address.new({"state" => "co"}).state.should eq "CO"
     end
   end
   describe "#to_h" do

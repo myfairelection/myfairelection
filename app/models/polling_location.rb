@@ -1,10 +1,16 @@
 class PollingLocation < ActiveRecord::Base
   attr_accessible :line1, :line2, :line3, :city, :state, :zip, :name, :location_name,  :county, :latitude, :longitude, :properties
   validates_presence_of :line1, :city, :state, :zip
+  validates :state, :format => { :with => /^[A-Z][A-Z]$/ }
   serialize :properties, JSON
   UNIQUE_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
   # This model is designed to correspond to both "pollingLocation" and
   # "earlyVoteSite" objects from the Google API/VIP Feed
+
+  # state should always be all caps. 
+  def state=(s)
+    write_attribute(:state, s ? s.upcase : nil)
+  end
 
   # Builds and saves a new PollingLocation using the JSON returned by the Google Civic Information API.
   # Sample:

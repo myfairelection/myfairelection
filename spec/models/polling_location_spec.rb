@@ -34,6 +34,20 @@ describe PollingLocation do
   it "returns the properties in a hash" do
     @pl.properties.should be_a(Hash)
   end
+  context "for the state property" do
+    it "converts the state to all caps" do
+      @pl.state = "dc"
+      @pl.state.should eq "DC"
+    end
+    it "is invalid if state is too short" do
+      @pl.state= "a"
+      @pl.should_not be_valid
+    end
+    it "is invalid if state is too long" do
+      @pl.state = "Louisiana"
+      @pl.should_not be_valid
+    end
+  end
 
   describe "::find_or_create_from_google!" do
     let (:location_hash) {
@@ -44,7 +58,7 @@ describe PollingLocation do
           "line2" => "string",
           "line3" => "string",
           "city" => "string",
-          "state" => "string",
+          "state" => "NV",
           "zip" => "string",
         },
         "notes" => "string",
@@ -98,7 +112,7 @@ describe PollingLocation do
             "line2" => "string",
             "line3" => "string",
             "city" => "string",
-            "state" => "string",
+            "state" => "NV",
             "zip" => "string",
           },
           "notes" => "New notes!",
