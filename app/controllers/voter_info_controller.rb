@@ -9,13 +9,13 @@ class VoterInfoController < ApplicationController
       flash[:error] = "Please enter an address."
       redirect_to root_path
     when 'addressUnparseable'
-      flash[:error] = "Could not parse your address. Please try again."
+      flash[:error] = "Could not figure out your address. Please check the address you gave us."
       redirect_to root_path
     when 'noStreetSegmentFound'
       flash[:error] = "Your address was valid, but we could not find information for the address you provided."
       redirect_to root_path      
     else
-      flash[:error] = "Unknown error looking up your polling place. Please try again."
+      flash[:error] = "A problem happened while looking up your polling place. Please try again."
       redirect_to root_path
     end
   end
