@@ -1,6 +1,6 @@
 class PollingLocation < ActiveRecord::Base
   attr_accessible :line1, :line2, :line3, :city, :state, :zip, :name, :location_name,  :county, :latitude, :longitude, :properties
-  validates_presence_of :line1, :city, :state, :zip
+  validates_presence_of :line1, :city, :state
   validates :state, :format => { :with => /^[A-Z][A-Z]$/ }
   serialize :properties, JSON
   UNIQUE_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
