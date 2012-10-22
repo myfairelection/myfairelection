@@ -40,13 +40,13 @@ class PollingLocation < ActiveRecord::Base
           when "locationName"
             attribs[:location_name] = location_hash[key][addr_key]
           else
-            attribs[addr_key] = location_hash[key][addr_key]
+            attribs[addr_key.to_sym] = location_hash[key][addr_key]
           end
         end
       when "name"
-        attribs[key] = location_hash[key]
+        attribs[key.to_sym] = location_hash[key]
       else
-        attribs[:properties][key] = location_hash[key]
+        attribs[:properties][key.to_sym] = location_hash[key]
       end
     end
     address = attribs.select {|k,v| UNIQUE_ATTRIBS.include?(k)}

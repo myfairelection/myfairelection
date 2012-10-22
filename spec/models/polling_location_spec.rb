@@ -133,5 +133,28 @@ describe PollingLocation do
         @loc2.properties["pollingHours"].should eq "New polling hours!"
       end
     end
+    it "creates two polling locations with inputs with different addresses" do
+      hash1 = 
+        { "address" => {
+            "locationName" => "National Guard Armory",
+            "line1" => "100 S 20th St",
+            "city" => "Reno",
+            "state" => "NV",
+            "zip" => "80014",
+          }
+        }
+      hash2 = 
+        { "address" => {
+            "locationName" => "The White House",
+            "line1" => "1600 Pennsylvania Ave NW",
+            "city" => "Washington",
+            "state" => "DC",
+            "zip" => "20500",
+          }
+        }
+      PollingLocation.find_or_create_from_google!(hash1)
+      PollingLocation.find_or_create_from_google!(hash2)
+      PollingLocation.count.should eq 2
+    end
   end
 end
