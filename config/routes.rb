@@ -9,8 +9,8 @@ Myfairelection::Application.routes.draw do
 
   get "info/terms_of_use"
 
-  devise_for :users
-
+  devise_for :users, :controllers => {:confirmations => 'users/confirmations' }
+  
   match "voter_info/find" => 'voter_info#find'
 
   match "users/address" => "users#address"

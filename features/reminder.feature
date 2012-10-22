@@ -13,7 +13,7 @@ Feature: Reminder
     Given I am a registered user with email "voter@example.org" and password "foobar"
     When I log in
     And I click the "Resend confirmation instructions" button
-    Then I should see "You are already signed in"
+    Then I should see "You will receive an email with instructions about how to confirm your account in a few minutes."
     And "voter@example.org" should receive 2 emails with subject "Confirmation instructions"
 
   Scenario: Already confirmed
