@@ -15,6 +15,7 @@ describe PollingLocation do
       :latitude => 32.7153, 
       :longitude => 117.1564,
       :properties => {"foo" => "bar", "photo" => "http://myfairelection.com/favicon.ico"})
+    @pl.feed = FactoryGirl.create(:feed)
   end
   it "is valid with valid parameters" do
     @pl.should be_valid
@@ -25,10 +26,14 @@ describe PollingLocation do
         @pl.should_not be_valid
       end
   end
-  [:name, :location_name, :line2, :line3, :county, :latitude, :longitude, :properties, :zip].each do |param|
+  [:name, :location_name, :line2, :line3, :county, :latitude, :longitude, :properties, :zip, :feed].each do |param|
     it "is valid without #{param}" do
       @pl.send("#{param}=", nil)
       @pl.should be_valid
+    end
+    it "can be saved without #{param}" do
+      @pl.send("#{param}=", nil)
+      @pl.save.should be_true
     end
   end
   it "returns the properties in a hash" do
@@ -155,6 +160,147 @@ describe PollingLocation do
       PollingLocation.find_or_create_from_google!(hash1)
       PollingLocation.find_or_create_from_google!(hash2)
       PollingLocation.count.should eq 2
+    end
+  end
+
+  describe "::update_or_create_from_xml!" do
+    let (:location_xml) {
+      Nokogiri::XML <<POLLING_LOCATION
+<early_vote_site id="30203">
+  <name>Adams Early Vote Center</name>
+  <address>
+    <location_name>Adams County Government Center</location_name>
+    <line1>321 Main St.</line1>
+    <line2>Suite 200</line2>
+    <city>Adams</city>
+    <state>OH</state>
+    <zip>42224</zip>
+    <point>
+      <lat>39.03991</lat>
+      <long>-76.99542</long>
+    </point>
+  </address>
+  <directions>Follow signs to early vote</directions>
+  <voter_services>Early voting is available.</voter_services>
+  <start_date>2012-10-01</start_date>
+  <end_date>2012-11-04</end_date>
+  <days_times_open>Mon-Fri: 9am - 6pm. Sat. and Sun.: 10am - 7pm.</days_times_open>
+</early_vote_site>
+POLLING_LOCATION
+    }
+    context "with a new polling place" do
+      let (:location) { PollingLocation.update_or_create_from_xml!(location_xml) }
+      it "sets location_name" do
+        location.location_name.should eq "Adams County Government Center"
+      end
+      it "sets address" do
+        location.line1.should eq "321 Main St."
+      end
+      it "sets name" do
+        location.name.should eq "Adams Early Vote Center"
+      end
+      it "sets latitude" do
+        location.latitude.should eq "39.03991".to_f
+      end
+      it "sets longitude" do
+        location.longitude.should eq "-76.99542".to_f
+      end
+      it "leaves county nil" do
+        location.county.should be_nil
+      end
+      it "puts everything else in properties" do
+        ["directions", "voter_services", "start_date", "end_date", "days_times_open"].each do |field|
+          location.properties.keys.include?(field).should be_true
+        end
+      end
+    end
+    context "with a duplicate polling place" do
+      it "returns the existing polling place" do
+        loc1 = PollingLocation.update_or_create_from_xml!(location_xml)
+        PollingLocation.update_or_create_from_xml!(location_xml).should eq loc1
+      end
+    end
+    context "with an identical address, but other has changed" do
+      let(:updated_location_xml) {
+      Nokogiri::XML <<POLLING_LOCATION
+<early_vote_site id="30203">
+  <name>New name!</name>
+  <address>
+    <location_name>Adams County Government Center</location_name>
+    <line1>321 Main St.</line1>
+    <line2>Suite 200</line2>
+    <city>Adams</city>
+    <state>OH</state>
+    <zip>42224</zip>
+    <point>
+      <lat>39.03991</lat>
+      <long>-76.99542</long>
+    </point>
+  </address>
+  <directions>New directions!</directions>
+  <voter_services>Early voting is available.</voter_services>
+  <start_date>2012-10-01</start_date>
+  <end_date>2012-11-04</end_date>
+  <days_times_open>Mon-Fri: 9am - 6pm. Sat. and Sun.: 10am - 7pm.</days_times_open>
+</early_vote_site>
+POLLING_LOCATION
+      }
+      before(:each) do
+        @loc1 = PollingLocation.update_or_create_from_xml!(location_xml)
+        @loc2 = PollingLocation.update_or_create_from_xml!(updated_location_xml)
+      end
+      it "returns the existing object" do
+        @loc1.should eq @loc2
+      end
+      it "updates the object with the new information" do
+        @loc2.name.should eq "New name!"
+        @loc2.properties["directions"].should eq "New directions!"
+      end
+    end
+    it "creates two polling locations with inputs with different addresses" do
+      xml1 = 
+      Nokogiri::XML <<POLLING_LOCATION
+<early_vote_site id="30203">
+  <address>
+    <location_name>Adams County Government Center</location_name>
+    <line1>321 Main St.</line1>
+    <line2>Suite 200</line2>
+    <city>Adams</city>
+    <state>OH</state>
+    <zip>42224</zip>
+  </address>
+</early_vote_site>
+POLLING_LOCATION
+      xml2 = 
+      Nokogiri::XML <<POLLING_LOCATION
+<early_vote_site id="30203">
+  <address>
+    <location_name>The White House</location_name>
+    <line1>1600 Pennsylvania Ave NW</line1>
+    <city>Washington</city>
+    <state>DC</state>
+    <zip>20500</zip>
+  </address>
+</early_vote_site>
+POLLING_LOCATION
+      PollingLocation.update_or_create_from_xml!(xml1)
+      PollingLocation.update_or_create_from_xml!(xml2)
+      PollingLocation.count.should eq 2
+    end
+    it "works correctly when loading from a file" do
+      feed_file = open("spec/fixtures/test_feeds/sample_feed_for_v4.0.xml")
+      feed_xml = Nokogiri::XML(feed_file)
+
+      ["//polling_location", "//early_vote_site"].each do |xpath|
+        pl_nodes = feed_xml.xpath(xpath)
+
+        pl_nodes.each do |pl_node|
+          pl = PollingLocation.update_or_create_from_xml!(pl_node)
+          pl.save!
+        end   
+      end
+
+      PollingLocation.count.should eq 6
     end
   end
 end

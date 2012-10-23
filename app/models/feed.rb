@@ -15,25 +15,16 @@ class Feed < ActiveRecord::Base
     feed_file = open(url)
     feed_xml = Nokogiri::XML(feed_file)
 
-    pl_nodes = feed_xml.xpath("//polling_location")
+    ["//polling_location", "//early_vote_site"].each do |xpath|
+      pl_nodes = feed_xml.xpath(xpath)
 
-    address = {}
-    properties = {}
-    pl_nodes.each do |pl_node|
-      pl_node.children.each do |node|
-        if node.node_name == 'address'
-          node.children.each do |addr_element|
-            address[addr_element.node_name] = addr_element.content
-          end
-        else
-          properties[node.node_name] = node.content
-        end
-      end          
-      self.polling_locations.create(address: address, 
-                                    properties:properties, 
-                                    id_attribute:pl_node["id"])
-    end   
-
+      pl_nodes.each do |pl_node|
+        pl = PollingLocation.update_or_create_from_xml!(pl_node)
+        pl.feed = self
+        pl.save!
+      end   
+    end
+    
     self.version = feed_xml.xpath("//vip_object/@schemaVersion").to_s
     self.vip_id = feed_xml.xpath("//vip_id/text()").to_s
     self.loaded = true

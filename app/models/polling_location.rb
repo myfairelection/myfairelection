@@ -4,6 +4,7 @@ class PollingLocation < ActiveRecord::Base
   validates :state, :format => { :with => /^[A-Z][A-Z]$/ }
   serialize :properties, JSON
   UNIQUE_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
+  ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county, :latitude, :longitude]
   belongs_to :feed
 
   # This model is designed to correspond to both "pollingLocation" and
@@ -49,6 +50,34 @@ class PollingLocation < ActiveRecord::Base
         attribs[key.to_sym] = location_hash[key]
       else
         attribs[:properties][key.to_sym] = location_hash[key]
+      end
+    end
+    address = attribs.select {|k,v| UNIQUE_ATTRIBS.include?(k)}
+    pl = PollingLocation.where(address).first
+    if pl
+      pl.update_attributes!(attribs)
+      pl
+    else
+      PollingLocation.create!(attribs)
+    end
+  end
+
+  def PollingLocation.update_or_create_from_xml!(node)
+    nodes = node.xpath(".//*[count(*)=0]")
+    attribs = {:properties => {}}
+    nodes.each do |n|
+      case n.name
+      when "lat"
+        attribs[:latitude] = n.text.to_f
+      when "long"
+        attribs[:longitude] = n.text.to_f
+      else
+        sym = n.name.to_sym
+        if ATTRIBS.include?(sym)
+          attribs[sym] = n.text
+        else
+          attribs[:properties][sym] = n.text
+        end
       end
     end
     address = attribs.select {|k,v| UNIQUE_ATTRIBS.include?(k)}

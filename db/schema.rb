@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019210048) do
+ActiveRecord::Schema.define(:version => 20121023213822) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -25,18 +25,19 @@ ActiveRecord::Schema.define(:version => 20121019210048) do
   add_index "feeds", ["vip_id"], :name => "index_feeds_on_vip_id", :unique => true
 
   create_table "polling_locations", :force => true do |t|
-    t.string "name"
-    t.string "location_name"
-    t.string "line1",         :null => false
-    t.string "line2"
-    t.string "line3"
-    t.string "city",          :null => false
-    t.string "state",         :null => false
-    t.string "zip",           :null => false
-    t.string "county"
-    t.float  "latitude"
-    t.float  "longitude"
-    t.text   "properties"
+    t.string  "name"
+    t.string  "location_name"
+    t.string  "line1",         :null => false
+    t.string  "line2"
+    t.string  "line3"
+    t.string  "city",          :null => false
+    t.string  "state",         :null => false
+    t.string  "zip"
+    t.string  "county"
+    t.float   "latitude"
+    t.float   "longitude"
+    t.text    "properties"
+    t.integer "feed_id"
   end
 
   create_table "users", :force => true do |t|

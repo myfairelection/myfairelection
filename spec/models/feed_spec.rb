@@ -49,6 +49,7 @@ describe Feed do
     context "with a file url" do
       before(:each) do
         @feed = Feed.create!({:url => "spec/fixtures/test_feeds/sample_feed_for_v4.0.xml"})
+        PollingLocation.should_receive(:update_or_create_from_xml!).with(any_args()).exactly(6).times.and_return(FactoryGirl.create(:polling_location))
       end
       it "populates the version field" do
         @feed.load_objects
@@ -61,11 +62,6 @@ describe Feed do
       it "marks the feed as loaded" do
         @feed.load_objects
         @feed.should be_loaded
-      end
-      it "creates 4 PollingLocation objects" do
-        expect {
-          @feed.load_objects
-        }.to change{PollingLocation.count}.by(4)
       end
     end
   end
