@@ -4,6 +4,8 @@ class PollingLocation < ActiveRecord::Base
   validates :state, :format => { :with => /^[A-Z][A-Z]$/ }
   serialize :properties, JSON
   UNIQUE_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
+  belongs_to :feed
+
   # This model is designed to correspond to both "pollingLocation" and
   # "earlyVoteSite" objects from the Google API/VIP Feed
 
@@ -58,9 +60,4 @@ class PollingLocation < ActiveRecord::Base
       PollingLocation.create!(attribs)
     end
   end
-  attr_accessible :address, :feed_id, :id_attribute, :properties
-  validates_presence_of :id_attribute, :properties, :address, :feed_id
-  serialize :address, Hash
-  serialize :properties, Hash
-  belongs_to :feed
 end
