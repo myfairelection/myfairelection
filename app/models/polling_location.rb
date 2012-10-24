@@ -65,7 +65,6 @@ class PollingLocation < ActiveRecord::Base
   end
 
   def PollingLocation.update_or_create_from_xml!(node)
-    puts "Loading id #{node["id"]}"
     nodes = node.xpath(".//*[count(*)=0]")
     attribs = {:properties => {}}
     nodes.each do |n|
@@ -86,10 +85,21 @@ class PollingLocation < ActiveRecord::Base
     address = attribs.select {|k,v| UNIQUE_ATTRIBS.include?(k)}
     pl = PollingLocation.where(address).first
     if pl
-      pl.update_attributes!(attribs)
+      attribs.each do |k,v|
+        pl.send("#{k}=",v)
+      end
+    else
+      pl = PollingLocation.new(attribs)
+    end
+    if pl.valid?
+      pl.save!
       pl
     else
-      PollingLocation.create!(attribs)
+      puts "Node #{node['id']} is invalid because:"
+      pl.errors.to_a.each do |message|
+        puts "    #{message}"
+      end
+      nil
     end
   end
 end
