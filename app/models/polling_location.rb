@@ -1,7 +1,9 @@
 class PollingLocation < ActiveRecord::Base
-  attr_accessible :line1, :line2, :line3, :city, :state, :zip, :name, :location_name,  :county, :latitude, :longitude, :properties
-  validates_presence_of :line1, :city, :state
-  validates :state, :format => { :with => /^[A-Z][A-Z]$/ }
+  attr_accessible :line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county, :latitude, :longitude, :properties
+  validates :line1, presence: true, unless: lambda { |f| f.line1 == "" }
+  validates :city, presence: true, unless: lambda { |f| f.city == "" }
+  validates :zip, presence: true, unless: lambda { |f| f.zip == "" }
+  validates :state, :format => { :with => /^[A-Z][A-Z]$/ }, presence: true, unless: lambda { |f| f.state == "" }
   serialize :properties, JSON
   UNIQUE_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
   ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county, :latitude, :longitude]
@@ -63,6 +65,7 @@ class PollingLocation < ActiveRecord::Base
   end
 
   def PollingLocation.update_or_create_from_xml!(node)
+    puts "Loading id #{node["id"]}"
     nodes = node.xpath(".//*[count(*)=0]")
     attribs = {:properties => {}}
     nodes.each do |n|
