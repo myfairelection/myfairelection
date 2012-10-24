@@ -21,14 +21,18 @@ describe PollingLocation do
     @pl.should be_valid
   end
   [:line1, :city, :state, :zip].each do |param|
-      it "is not valid without #{param}" do
-        @pl.send("#{param}=", nil)
-        @pl.should_not be_valid
-      end
-      it "is valid if #{param} is blank" do
-        @pl.send("#{param}=", "")
-        @pl.should be_valid
-      end
+    it "is not valid without #{param}" do
+      @pl.send("#{param}=", nil)
+      @pl.should_not be_valid
+    end
+    it "is valid if #{param} is blank" do
+      @pl.send("#{param}=", "")
+      @pl.should be_valid
+    end
+    it "is valid if #{param} is '  '" do
+      @pl.send("#{param}=", '  ')
+      @pl.should be_valid
+    end
   end
   [:name, :location_name, :line2, :line3, :county, :latitude, :longitude, :properties, :feed].each do |param|
     it "is valid without #{param}" do
