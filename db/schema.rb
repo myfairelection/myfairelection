@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121023213822) do
+ActiveRecord::Schema.define(:version => 20121024164918) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20121023213822) do
     t.text    "properties"
     t.integer "feed_id"
   end
+
+  add_index "polling_locations", ["state", "city", "zip", "line1"], :name => "index_polling_locations_on_address"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false
