@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe PollingLocation do
+  ADDRESS_FIELDS = [:line1, :line2, :line3, :city, :state, :zip]
+  STRING_FIELDS = [:line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county]
   before(:each) do
     @pl = PollingLocation.new(
       :name => "Precinct 235253 Polling Place",
@@ -20,28 +22,50 @@ describe PollingLocation do
   it "is valid with valid parameters" do
     @pl.should be_valid
   end
-  [:line1, :city, :state, :zip].each do |param|
-    it "is not valid without #{param}" do
-      @pl.send("#{param}=", nil)
+  context "for fields which are part of the address" do
+    it "is invalid if none of the address fields are set" do
+      ADDRESS_FIELDS.each do |param|
+        @pl.send("#{param}=", nil)
+      end
       @pl.should_not be_valid
     end
-    it "is valid if #{param} is blank" do
-      @pl.send("#{param}=", "")
-      @pl.should be_valid
-    end
-    it "is valid if #{param} is '  '" do
-      @pl.send("#{param}=", '  ')
-      @pl.should be_valid
+    ADDRESS_FIELDS.each do |param|
+      it "is valid if only #{param} is set" do
+        pl = PollingLocation.new
+        pl.send("#{param}=", "CA")
+        pl.should be_valid
+      end
+      it "can be saved if only #{param} is set" do
+        pl = PollingLocation.new
+        pl.send("#{param}=", "CA")
+        pl.save.should be_true
+      end
     end
   end
-  [:name, :location_name, :line2, :line3, :county, :latitude, :longitude, :properties, :feed].each do |param|
-    it "is valid without #{param}" do
-      @pl.send("#{param}=", nil)
-      @pl.should be_valid
+  context "for other fields" do
+    [:name, :location_name, :county, :latitude, :longitude, :properties, :feed].each do |param|
+      it "is valid without #{param}" do
+        @pl.send("#{param}=", nil)
+        @pl.should be_valid
+      end
+      it "can be saved without #{param}" do
+        @pl.send("#{param}=", nil)
+        @pl.save.should be_true
+      end
     end
-    it "can be saved without #{param}" do
-      @pl.send("#{param}=", nil)
-      @pl.save.should be_true
+  end
+  context "for string fields" do
+    STRING_FIELDS.each do |param|
+      it "converts blank string to nil for #{param}" do
+        @pl.send("#{param}=", ' ')
+        @pl.save
+        @pl.send("#{param}").should be_nil
+      end
+      it "converts empty string to nil for #{param}" do
+        @pl.send("#{param}=", '')
+        @pl.save
+        @pl.send("#{param}").should be_nil
+      end
     end
   end
   it "returns the properties in a hash" do
@@ -62,6 +86,9 @@ describe PollingLocation do
     end
   end
 
+  describe "::find_by_address" do
+    it "fills in missing attribs with nil"
+  end   
   describe "::find_or_create_from_google!" do
     let (:location_hash) {
       {

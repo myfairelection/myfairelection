@@ -1,22 +1,31 @@
 class PollingLocation < ActiveRecord::Base
   attr_accessible :line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county, :latitude, :longitude, :properties
-  validates :line1, presence: true, unless: lambda { |f| !f.line1.nil? && f.line1.blank? }
-  validates :city, presence: true, unless: lambda { |f| !f.city.nil? && f.city.blank? }
-  validates :zip, presence: true, unless: lambda { |f| !f.zip.nil? && f.zip.blank? }
-  validates :state, :format => { :with => /^[A-Z][A-Z]$/ }, presence: true, unless: lambda { |f| !f.state.nil? && f.state.blank? }
+  validates :state, :format => { :with => /^[A-Z][A-Z]$/ }, :allow_nil => true
+  validate :at_least_one_address_field_must_be_present
   serialize :properties, JSON
-  UNIQUE_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
-  ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county, :latitude, :longitude]
+  ADDRESS_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
+  STRING_ATTRIBS = ADDRESS_ATTRIBS + [:name, :location_name, :county]
+  ATTRIBS = STRING_ATTRIBS + [:latitude, :longitude]
   belongs_to :feed
 
   # This model is designed to correspond to both "pollingLocation" and
   # "earlyVoteSite" objects from the Google API/VIP Feed
 
+  STRING_ATTRIBS.each do |attrib|
+    define_method "#{attrib}=" do |s|
+      write_attribute(attrib, s.blank? ? nil : s)
+    end
+  end
   # state should always be all caps. 
   def state=(s)
-    write_attribute(:state, s ? s.upcase : nil)
+    write_attribute(:state, s.blank? ? nil : s.upcase)
   end
 
+  def at_least_one_address_field_must_be_present
+    unless ADDRESS_ATTRIBS.inject(false) { |ret, field| ret || self.send(field) }
+      errors[:base] << "At least one address field must be present"
+    end
+  end
   # Builds and saves a new PollingLocation using the JSON returned by the Google Civic Information API.
   # Sample:
   # {
@@ -54,7 +63,7 @@ class PollingLocation < ActiveRecord::Base
         attribs[:properties][key.to_sym] = location_hash[key]
       end
     end
-    address = attribs.select {|k,v| UNIQUE_ATTRIBS.include?(k)}
+    address = attribs.select {|k,v| ADDRESS_ATTRIBS.include?(k)}
     pl = PollingLocation.where(address).first
     if pl
       pl.update_attributes!(attribs)
@@ -82,7 +91,7 @@ class PollingLocation < ActiveRecord::Base
         end
       end
     end
-    address = attribs.select {|k,v| UNIQUE_ATTRIBS.include?(k)}
+    address = attribs.select {|k,v| ADDRESS_ATTRIBS.include?(k)}
     pl = PollingLocation.where(address).first
     if pl
       attribs.each do |k,v|

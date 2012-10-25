@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024202659) do
+ActiveRecord::Schema.define(:version => 20121024230657) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -27,11 +27,11 @@ ActiveRecord::Schema.define(:version => 20121024202659) do
   create_table "polling_locations", :force => true do |t|
     t.string  "name"
     t.string  "location_name"
-    t.string  "line1",         :null => false
+    t.string  "line1"
     t.string  "line2"
     t.string  "line3"
-    t.string  "city",          :null => false
-    t.string  "state",         :null => false
+    t.string  "city"
+    t.string  "state"
     t.string  "zip"
     t.string  "county"
     t.float   "latitude"
