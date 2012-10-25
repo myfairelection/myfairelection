@@ -34,6 +34,20 @@ class PollingLocation < ActiveRecord::Base
     end
     self.where(search).first
   end
+
+  def PollingLocation.update_or_create_from_attribs_and_properties(attribs, properties)
+    pl = PollingLocation.find_by_address(attribs)
+    if pl
+      pl.update_attributes!(attribs)
+      pl.properties = pl.properties.merge(properties)
+      pl.save!
+      pl
+    else
+      attribs[:properties] = properties
+      PollingLocation.create!(attribs)
+    end
+  end
+
   # Builds and saves a new PollingLocation using the JSON returned by the Google Civic Information API.
   # Sample:
   # {
@@ -53,7 +67,8 @@ class PollingLocation < ActiveRecord::Base
   #      ]
   #     }
   def PollingLocation.find_or_create_from_google!(location_hash)
-    attribs = {:properties =>{}}
+    attribs = {}
+    properties = {}
     location_hash.keys.each do |key|
       case key
       when "address"
@@ -68,21 +83,16 @@ class PollingLocation < ActiveRecord::Base
       when "name"
         attribs[key.to_sym] = location_hash[key]
       else
-        attribs[:properties][key.to_sym] = location_hash[key]
+        properties[key.to_sym] = location_hash[key]
       end
     end
-    pl = PollingLocation.find_by_address(attribs)
-    if pl
-      pl.update_attributes!(attribs)
-      pl
-    else
-      PollingLocation.create!(attribs)
-    end
+    update_or_create_from_attribs_and_properties(attribs, properties)
   end
 
   def PollingLocation.update_or_create_from_xml!(node)
     nodes = node.xpath(".//*[count(*)=0]")
-    attribs = {:properties => {}}
+    attribs = {}
+    properties = {}
     nodes.each do |n|
       case n.name
       when "lat"
@@ -94,16 +104,10 @@ class PollingLocation < ActiveRecord::Base
         if ATTRIBS.include?(sym)
           attribs[sym] = n.text
         else
-          attribs[:properties][sym] = n.text
+          properties[sym] = n.text
         end
       end
     end
-    pl = PollingLocation.find_by_address(attribs)
-    if pl
-      pl.update_attributes!(attribs)
-      pl
-    else
-      PollingLocation.create!(attribs)
-    end
+    update_or_create_from_attribs_and_properties(attribs, properties)
   end
 end

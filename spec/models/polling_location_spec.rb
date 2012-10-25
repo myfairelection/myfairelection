@@ -176,6 +176,7 @@ describe PollingLocation do
           "notes" => "New notes!",
           "pollingHours" => "New polling hours!",
           "name" => "New name!",
+          "somethingElse" => "andMore!"
          }
       }
       before(:each) do
@@ -189,6 +190,11 @@ describe PollingLocation do
         @loc2.name.should eq "New name!"
         @loc2.properties["notes"].should eq "New notes!"
         @loc2.properties["pollingHours"].should eq "New polling hours!"
+      end
+      it "merges the properties" do
+        ["notes", "pollingHours", "voterServices", "startDate", "endDate", "sources", "somethingElse"].each do |attrib|
+          @loc2.properties[attrib].should_not be_nil
+        end
       end
     end
     it "creates two polling locations with inputs with different addresses" do
