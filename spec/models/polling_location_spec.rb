@@ -347,7 +347,7 @@ POLLING_LOCATION
       PollingLocation.count.should eq 2
     end
     it "works correctly when loading from a file" do
-      feed_file = open("spec/fixtures/test_feeds/sample_feed_for_v4.0.xml")
+      feed_file = open("spec/fixtures/test_feeds/sample_feed_for_v3.0.xml")
       feed_xml = Nokogiri::XML(feed_file)
 
       ["//polling_location", "//early_vote_site"].each do |xpath|

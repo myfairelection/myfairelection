@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Feed do
   describe "::load_from_file" do
-    let (:filename) { "spec/fixtures/test_feeds/sample_feed_for_v4.0.xml" }
+    let (:filename) { "spec/fixtures/test_feeds/sample_feed_for_v3.0.xml" }
     it "creates a new feed object with the file" do
       expect {
         Feed.load_from_file filename
@@ -48,12 +48,12 @@ describe Feed do
   describe '#load_objects' do
     context "with a file url" do
       before(:each) do
-        @feed = Feed.create!({:url => "spec/fixtures/test_feeds/sample_feed_for_v4.0.xml"})
+        @feed = Feed.create!({:url => "spec/fixtures/test_feeds/sample_feed_for_v3.0.xml"})
         PollingLocation.should_receive(:update_or_create_from_xml!).with(any_args()).exactly(6).times.and_return(FactoryGirl.create(:polling_location))
       end
       it "populates the version field" do
         @feed.load_objects
-        @feed.version.should eq("4.0")
+        @feed.version.should eq("3.0")
       end
       it "populates the vip_id field" do
         @feed.load_objects
