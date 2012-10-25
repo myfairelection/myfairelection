@@ -26,6 +26,14 @@ class PollingLocation < ActiveRecord::Base
       errors[:base] << "At least one address field must be present"
     end
   end
+
+  def PollingLocation.find_by_address(address)
+    search = ADDRESS_ATTRIBS.inject({}) do |result, attrib| 
+      result[attrib] = address[attrib] 
+      result
+    end
+    self.where(search).first
+  end
   # Builds and saves a new PollingLocation using the JSON returned by the Google Civic Information API.
   # Sample:
   # {
@@ -63,8 +71,7 @@ class PollingLocation < ActiveRecord::Base
         attribs[:properties][key.to_sym] = location_hash[key]
       end
     end
-    address = attribs.select {|k,v| ADDRESS_ATTRIBS.include?(k)}
-    pl = PollingLocation.where(address).first
+    pl = PollingLocation.find_by_address(attribs)
     if pl
       pl.update_attributes!(attribs)
       pl
@@ -91,24 +98,12 @@ class PollingLocation < ActiveRecord::Base
         end
       end
     end
-    address = attribs.select {|k,v| ADDRESS_ATTRIBS.include?(k)}
-    pl = PollingLocation.where(address).first
+    pl = PollingLocation.find_by_address(attribs)
     if pl
-      attribs.each do |k,v|
-        pl.send("#{k}=",v)
-      end
-    else
-      pl = PollingLocation.new(attribs)
-    end
-    if pl.valid?
-      pl.save!
+      pl.update_attributes!(attribs)
       pl
     else
-      puts "Node #{node['id']} is invalid because:"
-      pl.errors.to_a.each do |message|
-        puts "    #{message}"
-      end
-      nil
+      PollingLocation.create!(attribs)
     end
   end
 end

@@ -87,7 +87,25 @@ describe PollingLocation do
   end
 
   describe "::find_by_address" do
-    it "fills in missing attribs with nil"
+    class Foo
+      def first
+      end
+    end
+    before(:each) do       
+      PollingLocation.should_receive(:where).with({line1: "1040 W Addison St",
+                                                   line2: nil,
+                                                   line3: nil,
+                                                   city: "Chicago",
+                                                   state: nil,
+                                                   zip: nil
+                                                  }).and_return(Foo.new)
+    end
+    it "fills in missing attribs with nil" do
+      PollingLocation.find_by_address({line1: "1040 W Addison St", city: "Chicago"})
+    end
+    it "strips out fields not in the address" do
+      PollingLocation.find_by_address({line1: "1040 W Addison St", city: "Chicago", foo: :bar})
+    end
   end   
   describe "::find_or_create_from_google!" do
     let (:location_hash) {
