@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe PollingLocation do
-  ADDRESS_FIELDS = [:line1, :line2, :line3, :city, :state, :zip]
-  STRING_FIELDS = [:line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county]
+  ADDRESS_VALUES = { :line1 => "230 Shazam Lane",
+      :line2 => "4th Floor",
+      :line3 => "Suite 400",
+      :city => "San Diego",
+      :state => "CA",
+      :zip => "92003" }
+  ADDRESS_FIELDS = ADDRESS_VALUES.keys
+  STRING_FIELDS = ADDRESS_FIELDS + [:name, :location_name, :county]
   before(:each) do
     @pl = PollingLocation.new(
       :name => "Precinct 235253 Polling Place",
@@ -30,15 +36,15 @@ describe PollingLocation do
       @pl.should_not be_valid
     end
     ADDRESS_FIELDS.each do |param|
+      before(:each) do
+        @pl = PollingLocation.new
+        @pl.send("#{param}=", ADDRESS_VALUES[param])
+      end        
       it "is valid if only #{param} is set" do
-        pl = PollingLocation.new
-        pl.send("#{param}=", "CA")
-        pl.should be_valid
+        @pl.should be_valid
       end
       it "can be saved if only #{param} is set" do
-        pl = PollingLocation.new
-        pl.send("#{param}=", "CA")
-        pl.save.should be_true
+        @pl.save.should be_true
       end
     end
   end
@@ -86,6 +92,20 @@ describe PollingLocation do
       @pl.should be_valid
     end
   end
+  context "for the zip property" do
+    it "is valid for 5-digit zips" do
+      @pl.zip = "80014"
+      @pl.should be_valid
+    end
+    it "is valid for 9-digit zips" do
+      @pl.zip = "80014-1233"
+      @pl.should be_valid
+    end
+    it "is not valid for other things" do
+      @pl.zip = "000IL"
+      @pl.should_not be_valid
+    end
+  end
 
   describe "::find_by_address" do
     class Foo
@@ -118,7 +138,7 @@ describe PollingLocation do
           "line3" => "string",
           "city" => "string",
           "state" => "NV",
-          "zip" => "string",
+          "zip" => "80014",
         },
         "notes" => "string",
         "pollingHours" => "string",
@@ -172,7 +192,7 @@ describe PollingLocation do
             "line3" => "string",
             "city" => "string",
             "state" => "NV",
-            "zip" => "string",
+            "zip" => "80014",
           },
           "notes" => "New notes!",
           "pollingHours" => "New polling hours!",
