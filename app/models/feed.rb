@@ -54,14 +54,16 @@ class Feed < ActiveRecord::Base
     puts "Loaded #{locations_loaded} polling locations"
   end
 
-  def self.load_from_file(filename = nil)
-    filename = ARGV[0] unless filename
-    f = self.find_or_create_by_url(filename)
-    if f.loaded?
-      puts "Already loaded #{filename}, skipping"
-    else
-      puts "Loading #{filename}"
-      f.load_objects
+  def self.load_from_file(*filenames)
+    filenames = ARGV if filenames.blank?
+    filenames.each do |filename|
+      f = self.find_or_create_by_url(filename)
+      if f.loaded?
+        puts "Already loaded #{filename}, skipping"
+      else
+        puts "Loading #{filename}"
+        f.load_objects
+      end
     end
   end
 
