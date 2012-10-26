@@ -12,25 +12,43 @@ class Feed < ActiveRecord::Base
   end
 
   def load_objects
-    feed_file = open(url)
-    feed_xml = Nokogiri::XML(feed_file)
-    locations_loaded = 0
+      feed_file = open("spec/fixtures/test_feeds/sample_feed_for_v3.0.xml")
+      feed_xml = Nokogiri::XML::Reader(feed_file)
 
-    ["//polling_location", "//early_vote_site"].each do |xpath|
-      pl_nodes = feed_xml.xpath(xpath)
-
-      pl_nodes.each do |pl_node|
-        pl = PollingLocation.update_or_create_from_xml!(pl_node)
-        if pl
-          pl.feed = self
-          pl.save!
-          locations_loaded += 1
+      vip_id = ""
+      in_vip_id = false
+      locations_loaded = 0
+      
+      while feed_xml.read != nil
+        case feed_xml.node_type
+        when Nokogiri::XML::Reader::TYPE_ELEMENT
+          next if feed_xml.self_closing?
+          case feed_xml.name
+          when "polling_location", "early_vote_site"
+            pl = PollingLocation.update_or_create_from_xml!(feed_xml)
+            if pl
+              pl.feed = self
+              pl.save!
+              locations_loaded += 1
+            end
+          when "vip_object"
+            version = feed_xml.attribute("schemaVersion")
+          when "vip_id"
+            in_vip_id = true
+          else
+            # do nothing
+          end
+        when Nokogiri::XML::Reader::TYPE_TEXT
+          vip_id << feed_xml.value if in_vip_id
+        when Nokogiri::XML::Reader::TYPE_END_ELEMENT
+          in_vip_id = false if feed_xml.name == "vip_id"
+        else
+          #do nothing
         end
-      end   
-    end
+      end
     
-    self.version = feed_xml.xpath("//vip_object/@schemaVersion").to_s
-    self.vip_id = feed_xml.xpath("//vip_id/text()").to_s
+    self.version = version
+    self.vip_id = vip_id
     self.loaded = true
     self.save
     puts "Loaded #{locations_loaded} polling locations"
