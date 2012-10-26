@@ -89,25 +89,60 @@ class PollingLocation < ActiveRecord::Base
     update_or_create_from_attribs_and_properties(attribs, properties)
   end
 
-  def PollingLocation.update_or_create_from_xml!(node)
-    nodes = node.xpath(".//*[count(*)=0]")
-    attribs = {}
-    properties = {}
-    nodes.each do |n|
-      case n.name
-      when "lat"
-        attribs[:latitude] = n.text.to_f
-      when "long"
-        attribs[:longitude] = n.text.to_f
-      else
-        sym = n.name.to_sym
-        if ATTRIBS.include?(sym)
-          attribs[sym] = n.text
+  class Reader
+    attr_accessor :attributes, :properties, :reader
+
+    def initialize(reader)
+      @reader = reader
+      @attributes = {}
+      @properties = {}
+      @elements = []
+      @values = []
+    end
+
+    def parse
+      begin        
+        case @reader.node_type
+        when Nokogiri::XML::Reader::TYPE_ELEMENT
+          unless @reader.self_closing?
+            @elements.unshift(@reader.name)
+            @values.unshift('')
+          end
+        when Nokogiri::XML::Reader::TYPE_END_ELEMENT
+          save_value(@elements[0].to_sym, @values[0])
+          @elements.shift
+          @values.shift
+        when Nokogiri::XML::Reader::TYPE_TEXT
+          @values[0] << @reader.value 
         else
-          properties[sym] = n.text
+          # do nothing
         end
+        @reader.read
+      end until @elements.length == 0
+    end
+
+    def save_value(name, value)
+      return if value.blank?
+      case
+      when name == :locationName
+        @attributes[:location_name] = value
+      when name == :lat
+        @attributes[:latitude] = value
+      when name == :long
+        @attributes[:longitude] = value
+      when ATTRIBS.include?(name.to_sym)
+        @attributes[name.to_sym] = value
+      else
+        @properties[name.to_sym] = value  
       end
     end
-    update_or_create_from_attribs_and_properties(attribs, properties)
+  end
+
+  # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned at
+  # the first polling_location (or early_vote_location) element.
+  def PollingLocation.update_or_create_from_xml!(reader)
+    r = Reader.new(reader)
+    r.parse
+    update_or_create_from_attribs_and_properties(r.attributes, r.properties)
   end
 end

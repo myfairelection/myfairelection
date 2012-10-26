@@ -223,8 +223,7 @@ describe PollingLocation do
   end
 
   describe "::update_or_create_from_xml!" do
-    let (:location_xml) {
-      Nokogiri::XML <<POLLING_LOCATION
+    let (:location_xml) { <<POLLING_LOCATION
 <early_vote_site id="30203">
   <name>Adams Early Vote Center</name>
   <address>
@@ -232,8 +231,8 @@ describe PollingLocation do
     <line1>321 Main St.</line1>
     <line2>Suite 200</line2>
     <city>Adams</city>
-    <state>OH</state>
-    <zip>42224</zip>
+    <state> </state>
+    <zip />
     <point>
       <lat>39.03991</lat>
       <long>-76.99542</long>
@@ -248,7 +247,7 @@ describe PollingLocation do
 POLLING_LOCATION
     }
     context "with a new polling place" do
-      let (:location) { PollingLocation.update_or_create_from_xml!(location_xml) }
+      let (:location) { PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read) }
       it "sets location_name" do
         location.location_name.should eq "Adams County Government Center"
       end
@@ -272,16 +271,21 @@ POLLING_LOCATION
           location.properties.keys.include?(field).should be_true
         end
       end
+      it "sets value to nil for empty tag" do
+        location.state.should be_nil
+      end
+      it "sets value to nil for self closing tag" do
+        location.zip.should be_nil
+      end
     end
     context "with a duplicate polling place" do
       it "returns the existing polling place" do
-        loc1 = PollingLocation.update_or_create_from_xml!(location_xml)
-        PollingLocation.update_or_create_from_xml!(location_xml).should eq loc1
+        loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read)
+        PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read).should eq loc1
       end
     end
     context "with an identical address, but other has changed" do
-      let(:updated_location_xml) {
-      Nokogiri::XML <<POLLING_LOCATION
+      let(:updated_location_xml) { <<POLLING_LOCATION
 <early_vote_site id="30203">
   <name>New name!</name>
   <address>
@@ -289,8 +293,8 @@ POLLING_LOCATION
     <line1>321 Main St.</line1>
     <line2>Suite 200</line2>
     <city>Adams</city>
-    <state>OH</state>
-    <zip>42224</zip>
+    <state> </state>
+    <zip />
     <point>
       <lat>39.03991</lat>
       <long>-76.99542</long>
@@ -305,8 +309,8 @@ POLLING_LOCATION
 POLLING_LOCATION
       }
       before(:each) do
-        @loc1 = PollingLocation.update_or_create_from_xml!(location_xml)
-        @loc2 = PollingLocation.update_or_create_from_xml!(updated_location_xml)
+        @loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read)
+        @loc2 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(updated_location_xml).read)
       end
       it "returns the existing object" do
         @loc1.should eq @loc2
@@ -317,8 +321,7 @@ POLLING_LOCATION
       end
     end
     it "creates two polling locations with inputs with different addresses" do
-      xml1 = 
-      Nokogiri::XML <<POLLING_LOCATION
+      xml1 = <<POLLING_LOCATION
 <early_vote_site id="30203">
   <address>
     <location_name>Adams County Government Center</location_name>
@@ -330,8 +333,7 @@ POLLING_LOCATION
   </address>
 </early_vote_site>
 POLLING_LOCATION
-      xml2 = 
-      Nokogiri::XML <<POLLING_LOCATION
+      xml2 = <<POLLING_LOCATION
 <early_vote_site id="30203">
   <address>
     <location_name>The White House</location_name>
@@ -342,21 +344,21 @@ POLLING_LOCATION
   </address>
 </early_vote_site>
 POLLING_LOCATION
-      PollingLocation.update_or_create_from_xml!(xml1)
-      PollingLocation.update_or_create_from_xml!(xml2)
+      PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(xml1).read)
+      PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(xml2).read)
       PollingLocation.count.should eq 2
     end
     it "works correctly when loading from a file" do
       feed_file = open("spec/fixtures/test_feeds/sample_feed_for_v3.0.xml")
-      feed_xml = Nokogiri::XML(feed_file)
+      feed_xml = Nokogiri::XML::Reader(feed_file)
 
-      ["//polling_location", "//early_vote_site"].each do |xpath|
-        pl_nodes = feed_xml.xpath(xpath)
-
-        pl_nodes.each do |pl_node|
-          pl = PollingLocation.update_or_create_from_xml!(pl_node)
-          pl.save!
-        end   
+      while feed_xml.read != nil
+        if feed_xml.node_type == Nokogiri::XML::Reader::TYPE_ELEMENT
+          if ["polling_location", "early_vote_site"].include?(feed_xml.name)
+            pl = PollingLocation.update_or_create_from_xml!(feed_xml)
+            pl.save!
+          end
+        end
       end
 
       PollingLocation.count.should eq 6
