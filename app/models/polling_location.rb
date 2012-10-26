@@ -141,8 +141,17 @@ class PollingLocation < ActiveRecord::Base
   # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned at
   # the first polling_location (or early_vote_location) element.
   def PollingLocation.update_or_create_from_xml!(reader)
+    id = reader.attribute("id")
     r = Reader.new(reader)
     r.parse
-    update_or_create_from_attribs_and_properties(r.attributes, r.properties)
+    begin
+      update_or_create_from_attribs_and_properties(r.attributes, r.properties)
+    rescue ActiveRecord::RecordInvalid => err
+      puts "Location #{id} is invalid: "
+      err.record.errors.each do |attr, error|
+        puts "  #{attr}: #{error}"
+      end
+      return nil
+    end
   end
 end

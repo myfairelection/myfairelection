@@ -12,13 +12,13 @@ class Feed < ActiveRecord::Base
   end
 
   def load_objects
-      feed_file = open("spec/fixtures/test_feeds/sample_feed_for_v3.0.xml")
+      feed_file = open(url)
       feed_xml = Nokogiri::XML::Reader(feed_file)
 
       vip_id = ""
       in_vip_id = false
       locations_loaded = 0
-      
+
       while feed_xml.read != nil
         case feed_xml.node_type
         when Nokogiri::XML::Reader::TYPE_ELEMENT
