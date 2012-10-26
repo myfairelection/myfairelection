@@ -18,7 +18,7 @@ class PollingLocation < ActiveRecord::Base
   end
   # state should always be all caps. 
   def state=(s)
-    write_attribute(:state, s.blank? ? nil : s.upcase)
+    write_attribute(:state, s.blank? ? nil : s.upcase[0..1])
   end
 
   def at_least_one_address_field_must_be_present

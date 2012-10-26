@@ -80,9 +80,10 @@ describe PollingLocation do
       @pl.state= "a"
       @pl.should_not be_valid
     end
-    it "is invalid if state is too long" do
-      @pl.state = "Louisiana"
-      @pl.should_not be_valid
+    it "chops the string if state is too long" do
+      @pl.state = "Ca."
+      @pl.state.should eq "CA"
+      @pl.should be_valid
     end
   end
 
