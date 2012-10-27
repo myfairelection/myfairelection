@@ -86,6 +86,8 @@
         <a href="#">Contact Us</a>
         <span class="divider">&bull;</span>
 -->
+        <%= link_to_unless_current "About", info_about_path %>
+        <span class="divider">&bull;</span>
         <%= link_to_unless_current "Credits", info_credits_path %>
         <span class="divider">&bull;</span>
         <%= link_to_unless_current "Terms of Use", info_terms_of_use_path %>

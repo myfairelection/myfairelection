@@ -108,6 +108,10 @@ ul.clean {
 	display: block;
 }
 
+.hide_sm {
+	display: none;
+}
+
 .no-top {
 	margin-top: 0;
 }
@@ -541,6 +545,9 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 /* 800 px */
 @media only screen and (min-width: 50em) {
 	.block_sm {
+		display: inline;
+	}
+	.hide_sm {
 		display: inline;
 	}
 	input[type="file"].btn-inline,

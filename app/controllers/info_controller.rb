@@ -13,4 +13,7 @@ class InfoController < ApplicationController
 
   def terms_of_use
   end
+
+  def about
+  end
 end

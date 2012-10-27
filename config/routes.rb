@@ -9,6 +9,8 @@ Myfairelection::Application.routes.draw do
 
   get "info/terms_of_use"
 
+  get "info/about"
+
   devise_for :users, :controllers => {:confirmations => 'users/confirmations',
                                       :registrations => 'users/registrations' }
   
