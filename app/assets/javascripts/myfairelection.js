@@ -5,6 +5,30 @@
 (function(m){var l=m.document;if(!l.querySelector){return}var n=l.querySelector("meta[name=viewport]"),a=n&&n.getAttribute("content"),k=a+",maximum-scale=1",d=a+",maximum-scale=10",g=true,j,i,h,c;if(!n){return}function f(){n.setAttribute("content",d);g=true}function b(){n.setAttribute("content",k);g=false}function e(o){c=o.accelerationIncludingGravity;j=Math.abs(c.x);i=Math.abs(c.y);h=Math.abs(c.z);if(!m.orientation&&(j>7||((h>6&&i<8||h<8&&i>6)&&j>5))){if(g){b()}}else{if(!g){f()}}}m.addEventListener("orientationchange",f,false);m.addEventListener("devicemotion",e,false)})(this); 
 
 (function(w){
+	//form toggle for radio buttons
+	$('body').on('click','.radio-group .radio-btn', function() {
+		$(this).children('input[type=radio]').attr('checked',true);
+		$(this).closest('.radio-group').children().removeClass('btn-inverse');
+		$(this).closest('.radio-btn').addClass('btn-inverse');
+	});
+
+	//star rating
+	$('body').on('click','.rating-group .rating-btn', function() {
+		$(this).children('input[type=radio]').attr('checked',true);
+		$(this).closest('.rating-group').children().removeClass('active');
+		//loop through each button
+		var x = true;
+		$(this).closest('.rating-group').children('.rating-btn').each(function() {
+			//turn on buttons until this is reached
+			if (x) {
+				$(this).addClass('active');
+				if ($(this).children('input[type=radio]').attr('checked')) {
+					x = false;
+				}
+			}
+		});
+	});
+
 	var cw = document.body.clientWidth;
 
 	$(document).ready(function() {

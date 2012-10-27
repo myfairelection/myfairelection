@@ -2129,7 +2129,7 @@ input[type="submit"].btn.btn-mini {
           border-radius: 0 0 6px 6px;
 }
 
-.radio-group input[type=radio] {
+body.js .radio-group input[type=radio] {
   position: absolute;
   top: 0;
   left: -999px;

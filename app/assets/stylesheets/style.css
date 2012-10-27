@@ -513,6 +513,37 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 	width: 10px;
 }
 
+/* star ratings
+=========================*/
+.rating-group .rating-btn {
+	float: left;
+	width: 47px;
+	height: 45px;
+	margin-right: 4px;
+	background-image: url('img/star_off.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+body.js .rating-group .rating-btn {
+	text-indent: -9999px;
+}
+
+body.svg .rating-group .rating-btn {
+	background-image: url('img/star_off.svg');
+}
+
+.rating-group .rating-btn.active {
+	background-image: url('img/star_on.png');
+}
+
+body.svg .rating-group .rating-btn.active {
+	background-image: url('img/star_on.svg');
+}
+
 @media only screen and (max-width: 50em) {
 	select,
 	textarea,

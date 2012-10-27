@@ -155,18 +155,32 @@
     <div class="control-group">
         <label class="control-label"><strong>How would you rate the voting location?</strong></label>
         <div class="controls">
-            <input type="radio" name="rate" value="1" />
-            <input type="radio" name="rate" value="2" />
-            <input type="radio" name="rate" value="3" />
-            <input type="radio" name="rate" value="4" />
-            <input type="radio" name="rate" value="5" />
+            <div class="rating-group clearfix">
+                <div class="rating-btn">
+                    <input type="radio" name="rate" value="1" />
+                </div>
+                <div class="rating-btn">
+                    <input type="radio" name="rate" value="2" />
+                </div>
+                <div class="rating-btn">
+                    <input type="radio" name="rate" value="3" />
+                </div>
+                <div class="rating-btn">
+                    <input type="radio" name="rate" value="4" />
+                </div>
+                <div class="rating-btn">
+                    <input type="radio" name="rate" value="5" />
+                </div>
+            </div>
         </div>
     </div>
     <br />
     <div class="control-group">
-        <label class="control-label"><strong>Comments</strong><br />Any comments that you would like to express to others that will be voting at the same location?</label>
+        <label class="control-label"><strong>Any Comments?</strong></label>
         <div class="controls">
             <textarea class="span8" rows="6"></textarea>
         </div>
     </div>
+    <br />
+    <input type="submit" name="submit" class="btn btn-primary" value="Send Feedback" />
 <% end %>
