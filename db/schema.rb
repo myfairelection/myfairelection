@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026230921) do
+ActiveRecord::Schema.define(:version => 20121027182238) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -42,6 +42,18 @@ ActiveRecord::Schema.define(:version => 20121026230921) do
   end
 
   add_index "polling_locations", ["early_vote", "state", "city", "zip", "line1"], :name => "index_polling_locations_on_address"
+
+  create_table "reviews", :force => true do |t|
+    t.datetime "voted_at"
+    t.integer  "wait_time"
+    t.boolean  "able_to_vote"
+    t.integer  "rating"
+    t.text     "comments"
+    t.integer  "polling_location_id"
+    t.integer  "user_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false
