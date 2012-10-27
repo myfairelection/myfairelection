@@ -37,6 +37,11 @@ describe VoterInfo do
             pl.should be_persisted
           end
         end
+        it "contains objects which are not early vote locations" do
+          vi.polling_locations.each do |pl|
+            pl.early_vote?.should be_false
+          end
+        end
         it "created these new objects" do
           expect {
             VoterInfo.lookup("KS").polling_locations
@@ -50,6 +55,11 @@ describe VoterInfo do
         it "contains activerecord objects" do
           vi.early_voting_places.each do |pl|
             pl.should be_persisted
+          end
+        end
+        it "contains objects which are early vote locations" do
+          vi.early_voting_places.each do |pl|
+            pl.early_vote?.should be_true
           end
         end
         it "created these new objects" do

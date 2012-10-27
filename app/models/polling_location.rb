@@ -1,5 +1,6 @@
 class PollingLocation < ActiveRecord::Base
-  attr_accessible :line1, :line2, :line3, :city, :state, :zip, :name, :location_name, :county, :latitude, :longitude, :properties
+  attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip, 
+                  :name, :location_name, :county, :latitude, :longitude, :properties
   validates :state, :format => { :with => /^[A-Z][A-Z]$/ }, :allow_nil => true
   validates :zip, :format => { :with => /^\d{5}(-\d{4})?$/ }, :allow_nil => true
   validate :at_least_one_address_field_must_be_present
@@ -19,7 +20,26 @@ class PollingLocation < ActiveRecord::Base
   end
   # state should always be all caps. 
   def state=(s)
-    write_attribute(:state, s.blank? ? nil : s.upcase[0..1])
+    write_attribute(:state, PollingLocation.normalize_state(s))
+  end
+  def zip=(s)
+    write_attribute(:zip, PollingLocation.normalize_zip(s))
+  end
+
+  def self.normalize_zip(zip)
+    return nil if zip.blank?
+    case zip
+    when /^(\d{5})(\d{4})$/
+      "#{$1}-#{$2}"
+    when /^(\d{5})-$/
+      "#{$1}"
+    else
+      zip    
+    end
+  end
+
+  def self.normalize_state(state)
+    state.blank? ? nil : state.upcase[0..1]
   end
 
   def at_least_one_address_field_must_be_present
@@ -28,11 +48,19 @@ class PollingLocation < ActiveRecord::Base
     end
   end
 
-  def PollingLocation.find_by_address(address)
+  def self.find_by_address(address)
     search = ADDRESS_ATTRIBS.inject({}) do |result, attrib| 
-      result[attrib] = address[attrib] 
+      case attrib
+      when :zip
+        result[attrib] = self.normalize_zip(address[attrib])
+      when :state
+        result[attrib] = self.normalize_state(address[attrib])
+      else
+        result[attrib] = address[attrib]
+      end
       result
     end
+    search[:early_vote] = address[:early_vote] ? true : false
     self.where(search).first
   end
 
@@ -67,7 +95,7 @@ class PollingLocation < ActiveRecord::Base
   #       }
   #      ]
   #     }
-  def PollingLocation.find_or_create_from_google!(location_hash)
+  def PollingLocation.find_or_create_from_google!(location_hash, early_vote = false)
     attribs = {}
     properties = {}
     location_hash.keys.each do |key|
@@ -87,6 +115,7 @@ class PollingLocation < ActiveRecord::Base
         properties[key.to_sym] = location_hash[key]
       end
     end
+    attribs[:early_vote] = early_vote
     update_or_create_from_attribs_and_properties(attribs, properties)
   end
 
@@ -123,6 +152,9 @@ class PollingLocation < ActiveRecord::Base
     end
 
     def save_value(name, value)
+      if name == :early_vote_site
+        @attributes[:early_vote] = true
+      end
       return if value.blank?
       case
       when name == :locationName
@@ -150,7 +182,7 @@ class PollingLocation < ActiveRecord::Base
     rescue ActiveRecord::RecordInvalid => err
       puts "Location #{id} is invalid: "
       err.record.errors.each do |attr, error|
-        puts "  #{attr}: #{error}"
+        puts "  #{attr}: #{err.record.read_attribute(attr)} #{error}"
       end
       return nil
     end

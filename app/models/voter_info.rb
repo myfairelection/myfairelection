@@ -28,7 +28,7 @@ class VoterInfo
     else
       locations = @response["pollingLocations"]
       if locations
-        @polling_locations = locations.map { |e| PollingLocation.find_or_create_from_google!(e) }
+        @polling_locations = locations.map { |e| PollingLocation.find_or_create_from_google!(e, false) }
       else
         @polling_locations = []
       end
@@ -42,7 +42,7 @@ class VoterInfo
     else
       evplaces = @response["earlyVoteSites"]
       if evplaces
-        @early_voting_places = evplaces.map { |e| PollingLocation.find_or_create_from_google!(e) }
+        @early_voting_places = evplaces.map { |e| PollingLocation.find_or_create_from_google!(e, true) }
       else
         @early_voting_places = []
       end

@@ -1,119 +1,142 @@
 require 'spec_helper'
 
 describe PollingLocation do
-  ADDRESS_VALUES = { :line1 => "230 Shazam Lane",
-      :line2 => "4th Floor",
-      :line3 => "Suite 400",
-      :city => "San Diego",
-      :state => "CA",
-      :zip => "92003" }
-  ADDRESS_FIELDS = ADDRESS_VALUES.keys
-  STRING_FIELDS = ADDRESS_FIELDS + [:name, :location_name, :county]
-  before(:each) do
-    @pl = PollingLocation.new(
-      :name => "Precinct 235253 Polling Place",
-      :location_name => "My house",
-      :line1 => "230 Shazam Lane",
-      :line2 => "4th Floor",
-      :line3 => "Suite 400",
-      :city => "San Diego",
-      :state => "CA",
-      :zip => "92003",
-      :county => "06073",
-      :latitude => 32.7153, 
-      :longitude => 117.1564,
-      :properties => {"foo" => "bar", "photo" => "http://myfairelection.com/favicon.ico"})
-    @pl.feed = FactoryGirl.create(:feed)
-  end
-  it "is valid with valid parameters" do
-    @pl.should be_valid
-  end
-  context "for fields which are part of the address" do
-    it "is invalid if none of the address fields are set" do
+  describe "field validation" do
+    ADDRESS_VALUES = { :line1 => "230 Shazam Lane",
+        :line2 => "4th Floor",
+        :line3 => "Suite 400",
+        :city => "San Diego",
+        :state => "CA",
+        :zip => "92003" }
+    ADDRESS_FIELDS = ADDRESS_VALUES.keys
+    STRING_FIELDS = ADDRESS_FIELDS + [:name, :location_name, :county]
+    before(:each) do
+      @pl = PollingLocation.new(
+        :name => "Precinct 235253 Polling Place",
+        :location_name => "My house",
+        :line1 => "230 Shazam Lane",
+        :line2 => "4th Floor",
+        :line3 => "Suite 400",
+        :city => "San Diego",
+        :state => "CA",
+        :zip => "92003",
+        :county => "06073",
+        :latitude => 32.7153, 
+        :longitude => 117.1564,
+        :properties => {"foo" => "bar", "photo" => "http://myfairelection.com/favicon.ico"},
+        :early_vote => true)
+      @pl.feed = FactoryGirl.create(:feed)
+    end
+    it "is valid with valid parameters" do
+      @pl.should be_valid
+    end
+    context "for fields which are part of the address" do
+      it "is invalid if none of the address fields are set" do
+        ADDRESS_FIELDS.each do |param|
+          @pl.send("#{param}=", nil)
+        end
+        @pl.should_not be_valid
+      end
       ADDRESS_FIELDS.each do |param|
-        @pl.send("#{param}=", nil)
+        before(:each) do
+          @pl = PollingLocation.new
+          @pl.send("#{param}=", ADDRESS_VALUES[param])
+        end        
+        it "is valid if only #{param} is set" do
+          @pl.should be_valid
+        end
+        it "can be saved if only #{param} is set" do
+          @pl.save.should be_true
+        end
       end
-      @pl.should_not be_valid
     end
-    ADDRESS_FIELDS.each do |param|
-      before(:each) do
-        @pl = PollingLocation.new
-        @pl.send("#{param}=", ADDRESS_VALUES[param])
-      end        
-      it "is valid if only #{param} is set" do
+    context "for other fields" do
+      [:name, :location_name, :county, :latitude, :longitude, :properties, :feed].each do |param|
+        it "is valid without #{param}" do
+          @pl.send("#{param}=", nil)
+          @pl.should be_valid
+        end
+        it "can be saved without #{param}" do
+          @pl.send("#{param}=", nil)
+          @pl.save.should be_true
+        end
+      end
+    end
+    context "for string fields" do
+      STRING_FIELDS.each do |param|
+        it "converts blank string to nil for #{param}" do
+          @pl.send("#{param}=", ' ')
+          @pl.save
+          @pl.send("#{param}").should be_nil
+        end
+        it "converts empty string to nil for #{param}" do
+          @pl.send("#{param}=", '')
+          @pl.save
+          @pl.send("#{param}").should be_nil
+        end
+      end
+    end
+    it "returns the properties in a hash" do
+      @pl.properties.should be_a(Hash)
+    end
+    context "for the early_vote property" do
+      it "defaults to false" do
+        pl = PollingLocation.new
+        pl.early_vote.should be_false
+      end
+      it "does not default to nil!" do
+        pl = PollingLocation.new
+        pl.early_vote.should_not be_nil
+      end
+    end
+    context "for the state property" do
+      it "converts the state to all caps" do
+        @pl.state = "dc"
+        @pl.state.should eq "DC"
+      end
+      it "is invalid if state is too short" do
+        @pl.state= "a"
+        @pl.should_not be_valid
+      end
+      it "chops the string if state is too long" do
+        @pl.state = "Ca."
+        @pl.state.should eq "CA"
         @pl.should be_valid
       end
-      it "can be saved if only #{param} is set" do
-        @pl.save.should be_true
-      end
     end
-  end
-  context "for other fields" do
-    [:name, :location_name, :county, :latitude, :longitude, :properties, :feed].each do |param|
-      it "is valid without #{param}" do
-        @pl.send("#{param}=", nil)
+    context "for the zip property" do
+      it "is valid for 5-digit zips" do
+        @pl.zip = "80014"
         @pl.should be_valid
       end
-      it "can be saved without #{param}" do
-        @pl.send("#{param}=", nil)
-        @pl.save.should be_true
+      it "is valid for 9-digit zips" do
+        @pl.zip = "80014-1233"
+        @pl.should be_valid
+      end
+      it "adds a hyphen to 9-digit zips without them" do
+        @pl.zip = "123456789"
+        @pl.should be_valid
+        @pl.zip.should eq "12345-6789"
+      end
+      it "removes a hyphen from 5-digit zips with them" do
+        @pl.zip = "12345-"
+        @pl.should be_valid
+        @pl.zip.should eq "12345"
+      end
+      it "is not valid for other things" do
+        @pl.zip = "000IL"
+        @pl.should_not be_valid
       end
     end
   end
-  context "for string fields" do
-    STRING_FIELDS.each do |param|
-      it "converts blank string to nil for #{param}" do
-        @pl.send("#{param}=", ' ')
-        @pl.save
-        @pl.send("#{param}").should be_nil
-      end
-      it "converts empty string to nil for #{param}" do
-        @pl.send("#{param}=", '')
-        @pl.save
-        @pl.send("#{param}").should be_nil
-      end
-    end
-  end
-  it "returns the properties in a hash" do
-    @pl.properties.should be_a(Hash)
-  end
-  context "for the state property" do
-    it "converts the state to all caps" do
-      @pl.state = "dc"
-      @pl.state.should eq "DC"
-    end
-    it "is invalid if state is too short" do
-      @pl.state= "a"
-      @pl.should_not be_valid
-    end
-    it "chops the string if state is too long" do
-      @pl.state = "Ca."
-      @pl.state.should eq "CA"
-      @pl.should be_valid
-    end
-  end
-  context "for the zip property" do
-    it "is valid for 5-digit zips" do
-      @pl.zip = "80014"
-      @pl.should be_valid
-    end
-    it "is valid for 9-digit zips" do
-      @pl.zip = "80014-1233"
-      @pl.should be_valid
-    end
-    it "is not valid for other things" do
-      @pl.zip = "000IL"
-      @pl.should_not be_valid
-    end
-  end
-
   describe "::find_by_address" do
     class Foo
       def first
       end
     end
     before(:each) do       
-      PollingLocation.should_receive(:where).with({line1: "1040 W Addison St",
+      PollingLocation.should_receive(:where).with({early_vote: false,
+                                                   line1: "1040 W Addison St",
                                                    line2: nil,
                                                    line3: nil,
                                                    city: "Chicago",
@@ -121,7 +144,7 @@ describe PollingLocation do
                                                    zip: nil
                                                   }).and_return(Foo.new)
     end
-    it "fills in missing attribs with nil" do
+    it "fills in missing attribs with nil or false" do
       PollingLocation.find_by_address({line1: "1040 W Addison St", city: "Chicago"})
     end
     it "strips out fields not in the address" do
@@ -170,9 +193,18 @@ describe PollingLocation do
           location.send(field).should be_nil
         end
       end
+      it "leaves early_vote false" do
+        location.early_vote?.should be_false
+      end
       it "puts everything else in properties" do
         ["notes", "pollingHours", "voterServices", "startDate", "endDate", "sources"].each do |field|
           location.properties.keys.include?(field).should be_true
+        end
+      end
+      context "if early_vote is set" do
+        let (:location) { PollingLocation.find_or_create_from_google!(location_hash, true) }
+        it "returns true for early_vote" do
+          location.early_vote.should be_true
         end
       end
     end
@@ -180,6 +212,10 @@ describe PollingLocation do
       it "returns the existing polling place" do
         loc1 = PollingLocation.find_or_create_from_google!(location_hash)
         PollingLocation.find_or_create_from_google!(location_hash).should eq loc1
+      end
+      it "returns a different polling place if early_vote is different" do
+        loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
+        PollingLocation.find_or_create_from_google!(location_hash, false).should_not eq loc1
       end
     end
     context "with an identical address, but other has changed" do
@@ -244,7 +280,7 @@ describe PollingLocation do
   end
 
   describe "::update_or_create_from_xml!" do
-    let (:location_xml) { <<POLLING_LOCATION
+    let (:early_location_xml) { <<POLLING_LOCATION
 <early_vote_site id="30203">
   <name>Adams Early Vote Center</name>
   <address>
@@ -267,8 +303,34 @@ describe PollingLocation do
 </early_vote_site>
 POLLING_LOCATION
     }
-    context "with a new polling place" do
-      let (:location) { PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read) }
+    let (:day_of_xml) { <<POLLING_LOCATION
+<polling_location id="30203">
+  <name>Adams Early Vote Center</name>
+  <address>
+    <location_name>Adams County Government Center</location_name>
+    <line1>321 Main St.</line1>
+    <line2>Suite 200</line2>
+    <city>Adams</city>
+    <state> </state>
+    <zip />
+    <point>
+      <lat>39.03991</lat>
+      <long>-76.99542</long>
+    </point>
+  </address>
+  <directions>Follow signs to early vote</directions>
+  <voter_services>Early voting is available.</voter_services>
+  <start_date>2012-10-01</start_date>
+  <end_date>2012-11-04</end_date>
+  <days_times_open>Mon-Fri: 9am - 6pm. Sat. and Sun.: 10am - 7pm.</days_times_open>
+</polling_location>
+POLLING_LOCATION
+    }
+    context "with a new polling place which is an early vote site" do
+      let (:location) { PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(early_location_xml).read) }
+      it "sets early_vote" do
+        location.early_vote?.should be_true
+      end
       it "sets location_name" do
         location.location_name.should eq "Adams County Government Center"
       end
@@ -299,10 +361,22 @@ POLLING_LOCATION
         location.zip.should be_nil
       end
     end
+    context "with a new polling place which is a day of site" do
+      let (:location) { PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(day_of_xml).read) }
+      it "sets early_vote" do
+        location.early_vote?.should be_false
+      end
+    end      
     context "with a duplicate polling place" do
       it "returns the existing polling place" do
-        loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read)
-        PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read).should eq loc1
+        loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(early_location_xml).read)
+        PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(early_location_xml).read).should eq loc1
+      end
+    end
+    context "with same address but different early_vote" do
+      it "returns a different polling place" do
+        loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(early_location_xml).read)
+        PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(day_of_xml).read).should_not eq loc1
       end
     end
     context "with an identical address, but other has changed" do
@@ -330,7 +404,7 @@ POLLING_LOCATION
 POLLING_LOCATION
       }
       before(:each) do
-        @loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(location_xml).read)
+        @loc1 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(early_location_xml).read)
         @loc2 = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(updated_location_xml).read)
       end
       it "returns the existing object" do
