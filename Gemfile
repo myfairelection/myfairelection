@@ -26,6 +26,7 @@ gem 'settingslogic'
 gem 'devise'
 gem 'simplecov', :require => false, :group => :test
 gem 'google-analytics-rails'
+gem 'nokogiri'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
