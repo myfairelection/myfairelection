@@ -459,4 +459,27 @@ POLLING_LOCATION
       PollingLocation.count.should eq 6
     end
   end
+  it "leaves lat/long in the object on updates" do
+    xml = <<POLLING_LOCATION
+<early_vote_site id="30203">
+  <address>
+    <location_name>Adams County Government Center</location_name>
+    <line1>321 Main St.</line1>
+    <line2>Suite 200</line2>
+    <city>Adams</city>
+    <state>OH</state>
+    <zip>42224</zip>
+  </address>
+</early_vote_site>
+POLLING_LOCATION
+    pl = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(xml).read)
+    pl.latitude = 100
+    pl.longitude = 100
+    pl.county = "Columbiana"
+    pl.save!
+    pl = PollingLocation.update_or_create_from_xml!(Nokogiri::XML::Reader(xml).read)
+    pl.latitude.should == 100
+    pl.longitude.should == 100
+    pl.county.should == "Columbiana"
+  end
 end
