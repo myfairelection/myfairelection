@@ -129,6 +129,12 @@ describe PollingLocation do
       end
     end
   end
+  it "knows its reviews" do
+    pl = FactoryGirl.create(:polling_location)
+    review = FactoryGirl.create(:review, :polling_location => pl, :user => FactoryGirl.create(:user))
+    pl.reviews.length.should be 1
+    pl.reviews.first.id.should eq review.id
+  end
   describe "::find_by_address" do
     class Foo
       def first
@@ -217,6 +223,33 @@ describe PollingLocation do
         loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
         PollingLocation.find_or_create_from_google!(location_hash, false).should_not eq loc1
       end
+    end
+    it "works with SF city hall twice" do
+      location_hash = {
+        "address" => {
+          "locationName" => "San Francisco City Hall",
+          "line1" => "1 Dr. Carlton B Goodlett Place",
+          "line2" => "",
+          "city" => "San Francisco",
+          "state" => "ca",
+          "zip" => "94102"
+        },
+        "notes" => "Enter City Hall at Grove Street, Room 48",
+        "pollingHours" =>"M-F 8-5 and 10/27 10-4 and 10/28 10-4 and 11/3 10-4 and 11/4 10-4 ",
+        "name" => "Early Voting Center",
+        "voterServices" => "",
+        "startDate" => "9-Oct",
+        "endDate" => "5-Nov",
+        "sources" => [
+          {
+            "name"=> "Ballot Information Project",
+            "official"=> false
+          }
+        ]
+      }
+      loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
+      loc2 = PollingLocation.find_or_create_from_google!(location_hash, true)
+      loc1.should eq loc2
     end
     context "with an identical address, but other has changed" do
       let(:updated_location_hash) {

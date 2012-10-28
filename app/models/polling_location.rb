@@ -9,6 +9,7 @@ class PollingLocation < ActiveRecord::Base
   STRING_ATTRIBS = ADDRESS_ATTRIBS + [:name, :location_name, :county]
   ATTRIBS = STRING_ATTRIBS + [:latitude, :longitude]
   belongs_to :feed
+  has_many :reviews
 
   # This model is designed to correspond to both "pollingLocation" and
   # "earlyVoteSite" objects from the Google API/VIP Feed
@@ -50,10 +51,12 @@ class PollingLocation < ActiveRecord::Base
 
   def self.find_by_address(address)
     search = ADDRESS_ATTRIBS.inject({}) do |result, attrib| 
-      case attrib
-      when :zip
+      case 
+      when address[attrib].blank?
+        result[attrib] = nil
+      when attrib == :zip
         result[attrib] = self.normalize_zip(address[attrib])
-      when :state
+      when attrib == :state
         result[attrib] = self.normalize_state(address[attrib])
       else
         result[attrib] = address[attrib]
