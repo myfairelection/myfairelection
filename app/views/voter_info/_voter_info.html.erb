@@ -7,6 +7,6 @@
       <% if voter_info.early_voting_places.length > 0 %>
         <p>Before election day, you may vote early at any of the following places:</p>
         <% voter_info.early_voting_places.each do |pl| %>
-          <%= render "polling_locations/polling_location", polling_location: pl %>
+          <%= render "polling_locations/summary", polling_location: pl %>
         <% end %>
       <% end %>
