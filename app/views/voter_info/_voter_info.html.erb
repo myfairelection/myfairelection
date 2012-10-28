@@ -4,7 +4,7 @@
           <%= render "polling_locations/summary", polling_location: pl %>
           <%= link_to 'Details', polling_location_path(pl) %>
           <% if current_user %>
-            <%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
+            <%= link_to 'Review this location', new_polling_location_review_path(pl) %>
           <% else %>
             <%= link_to 'Sign in to review this location', new_user_session_path %>
           <% end %>        
@@ -16,7 +16,7 @@
           <%= render "polling_locations/summary", polling_location: pl %>
           <%= link_to 'Details', polling_location_path(pl) %>
           <% if current_user %>
-            <%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
+            <%= link_to 'Review this location', new_polling_location_review_path(pl) %>
           <% else %>
             <%= link_to 'Sign in to review this location', new_user_session_path %>
           <% end %>        
