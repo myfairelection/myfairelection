@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  before_filter :authenticate_user!
   def create
     polling_location = PollingLocation.find(params[:polling_location_id])
     user = current_user

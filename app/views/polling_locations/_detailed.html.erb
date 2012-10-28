@@ -5,4 +5,8 @@
 <% if polling_location.properties["pollingHours"] %>
   <p>Hours: <%= polling_location.properties["pollingHours"] %></p>
 <% end %> 
-<%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
+<% if current_user %>
+  <%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
+<% else %>
+  <%= link_to 'Sign in to review this location', new_user_session_path %>
+<% end %>
