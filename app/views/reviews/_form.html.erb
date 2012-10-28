@@ -1,4 +1,4 @@
-<%= form_tag(voter_info_find_path, method: "post") do %>
+<%= form_for [review.polling_location, review] do |f| %>
     <div class="control-group">
         <label class="control-label"><strong>When did you arrive to vote?</strong></label>
         <div class="controls">
@@ -132,7 +132,7 @@
     <br />
     <div class="control-group">
         <label class="control-label"><strong>How long did you have to wait?</strong></label>
-        <div class="controls"><input type="number" class="span1" name="wait" value="" placeholder="0" /> Minutes
+        <div class="controls"><%= f.text_field :wait_time, class: "span1", type: "number", placeholder: 0  %> Minutes
         </div>
     </div>
     <br />

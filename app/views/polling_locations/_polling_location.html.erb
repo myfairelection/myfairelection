@@ -2,7 +2,7 @@
   <% if a %><p><%= polling_location.send(a) %></p><% end %>
 <% end %>
 <p><%= "#{polling_location.city}, #{polling_location.state} #{polling_location.zip}" %></p>
-
-        <% if polling_location.properties["pollingHours"] %>
-          <p>Hours: <%= polling_location.properties["pollingHours"] %></p>
-        <% end %> 
+<% if polling_location.properties["pollingHours"] %>
+  <p>Hours: <%= polling_location.properties["pollingHours"] %></p>
+<% end %> 
+<%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
