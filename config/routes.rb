@@ -1,4 +1,5 @@
 Myfairelection::Application.routes.draw do
+
   get "info/contact_us"
 
   get "info/credits"
@@ -22,7 +23,9 @@ Myfairelection::Application.routes.draw do
 
   root :to => 'home#index'
 
-  resources :reviews, :only => [:create]
+  resources :polling_locations, :only => [:show] do
+    resources :reviews, :only => [:create, :new]
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,3 +1,6 @@
 class Review < ActiveRecord::Base
-  attr_accessible :able_to_vote, :comments, :polling_location_id, :rating, :user_id, :voted_at, :wait_time
+  attr_accessible :able_to_vote, :comments, :polling_location, :rating, :user, :voted_at, :wait_time
+  validates_presence_of :polling_location, :user
+  belongs_to :polling_location
+  belongs_to :user
 end
