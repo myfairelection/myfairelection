@@ -32,4 +32,8 @@ describe Review do
   it "knows its user" do
     expect(@review.user).to eq user
   end
+  it "only allows one review per location/user combo" do
+    Review.new(user: user, polling_location: polling_location).save
+    Review.new(user: user, polling_location: polling_location).should_not be_valid
+  end
 end
