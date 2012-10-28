@@ -23,6 +23,26 @@ describe ReviewsController do
         post 'create', params
         response.should redirect_to polling_location_path(polling_location)
       end
+      it "passes the current user to the model" do
+        Review.should_receive(:create!).with(include(user: @user))
+        post 'create', params
+      end
+      context "with the ip address" do
+        context "if the request header is set" do
+          it "passes the source ip from the header to the model" do
+            @request.env['REMOTE_ADDR'] = "127.0.0.1"
+            @request.env['HTTP_X-REAL-IP'] = "128.32.42.10"
+            Review.should_receive(:create!).with(include(ip_address: "128.32.42.10"))
+            post 'create', params
+          end
+        context "if the request header is not set"
+          it "passes some other ip address to the model" do
+            request.env['REMOTE_ADDR'] = "10.0.0.1"
+            Review.should_receive(:create!).with(include(ip_address: "10.0.0.1"))
+            post 'create', params
+          end
+        end
+      end
     end
   end
   describe 'GET new' do
