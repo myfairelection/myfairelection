@@ -24,6 +24,10 @@ describe ReviewsController do
         post 'create', params
         response.should redirect_to polling_location_path(polling_location)
       end
+      it "sets the notice flash" do
+        post 'create', params
+        flash[:notice].should_not be_nil
+      end
       it "passes the current user to the model" do
         Review.should_receive(:create!).with(include(user: @user))
         post 'create', params
