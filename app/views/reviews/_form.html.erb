@@ -2,7 +2,7 @@
     <div class="control-group">
         <label class="control-label"><strong>When did you arrive to vote?</strong></label>
         <div class="controls">
-            Day: <select name="day">
+            Day: <select name="review[voted_day]">
                 <option value="10-15">October 15</option>
                 <option value="10-16">October 16</option>
                 <option value="10-17">October 17</option>
@@ -28,7 +28,7 @@
                 <option value="11-06">November 6</option>
             </select><br class="hide_sm" />
             Time: 
-            <select name="time">
+            <select name="review[voted_time]">
                 <option value="">Select One</option>
                 <option value="00:00">12:00 AM</option>
                 <option value="00:15">12:15 AM</option>
@@ -141,11 +141,11 @@
         <div class="controls">
             <div class="btn-group radio-group">
                 <div class="btn radio-btn">
-                    <input type="radio" name="able_vote" id="able_y" value="y"  />
+                    <%= f.radio_button(:able_to_vote, true) %>
                     Yes
                 </div>
                 <div class="btn radio-btn">
-                    <input type="radio" name="able_vote" id="able_n" value="n"  />
+                    <%= f.radio_button(:able_to_vote, false) %>
                     No
                 </div>
             </div>
@@ -157,19 +157,19 @@
         <div class="controls">
             <div class="rating-group clearfix">
                 <div class="rating-btn">
-                    <input type="radio" name="rate" value="1" />
+                    <%= f.radio_button(:rating, 1) %>
                 </div>
                 <div class="rating-btn">
-                    <input type="radio" name="rate" value="2" />
+                    <%= f.radio_button(:rating, 2) %>
                 </div>
                 <div class="rating-btn">
-                    <input type="radio" name="rate" value="3" />
+                    <%= f.radio_button(:rating, 3) %>
                 </div>
                 <div class="rating-btn">
-                    <input type="radio" name="rate" value="4" />
+                    <%= f.radio_button(:rating, 4) %>
                 </div>
                 <div class="rating-btn">
-                    <input type="radio" name="rate" value="5" />
+                    <%= f.radio_button(:rating, 5) %>
                 </div>
             </div>
         </div>
@@ -178,9 +178,9 @@
     <div class="control-group">
         <label class="control-label"><strong>Any Comments?</strong></label>
         <div class="controls">
-            <textarea class="span8" rows="6"></textarea>
+            <%= f.text_area :comments, :rows => "6", :class => "span8" %>
         </div>
     </div>
     <br />
-    <input type="submit" name="submit" class="btn btn-primary" value="Send Feedback" />
+    <%= f.submit "Send Feedback", :class => "btn btn-primary" %>
 <% end %>
