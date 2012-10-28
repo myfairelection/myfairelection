@@ -45,6 +45,12 @@ describe ReviewsController do
         end
       end
     end
+    context 'without a signed in user' do
+      it 'is not successful' do
+        post 'create', params
+        response.should_not be_success
+      end
+    end
   end
   describe 'GET new' do
     let(:params) { { "polling_location_id" => polling_location.to_param} }
@@ -64,6 +70,12 @@ describe ReviewsController do
       end
       it "has the user field set already" do
         expect(assigns[:review].user).to eq @user
+      end
+    end
+    context 'without a signed in user' do
+      it 'is not successful' do
+        post 'create', params
+        response.should_not be_success
       end
     end
   end
