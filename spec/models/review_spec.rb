@@ -11,7 +11,8 @@ describe Review do
       rating: 4,
       user: user,
       voted_at: Time.now,
-      wait_time: 15
+      wait_time: 15,
+      ip_address: "128.32.47.18"
     )
   end
   it "is valid with valid parameters" do
