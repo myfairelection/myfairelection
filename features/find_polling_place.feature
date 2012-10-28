@@ -14,7 +14,6 @@ Feature: Find My Polling Place
     And I fill in "address" with "1263 Pacific Ave. Kansas City KS"
     And I click the "Show" button
     Then I should see "National Guard Armory"
-    And I should see "8:00am to 8:00pm"
     And I should see "Kansas City Ballot Center"
 
   Scenario: Look up address with no polling place information
