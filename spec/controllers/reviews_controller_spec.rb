@@ -5,7 +5,8 @@ describe ReviewsController do
   describe 'POST create' do
     let(:params) { 
       { "review" => 
-        { "voted_at" => "2012-11-06 16:35",
+        { "voted_day" => "11-06",
+          "voted_time" => "13:45",
           "wait_time" => "15",
           "able_to_vote" => true,
           "rating" => 4,

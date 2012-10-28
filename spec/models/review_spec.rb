@@ -10,7 +10,8 @@ describe Review do
       polling_location: polling_location,
       rating: 4,
       user: user,
-      voted_at: Time.now,
+      voted_day: "11-06",
+      voted_time: "22:30",
       wait_time: 15,
       ip_address: "128.32.47.18"
     )
@@ -35,5 +36,29 @@ describe Review do
   it "only allows one review per location/user combo" do
     Review.new(user: user, polling_location: polling_location).save
     Review.new(user: user, polling_location: polling_location).should_not be_valid
+  end
+  describe "voted_day" do
+    it "is invalid if not in right format" do
+      @review.voted_day = "12323554"
+      @review.should_not be_valid
+    end
+    it "is invalid if not a legal date" do
+      @review.voted_day = "23-83"
+      @review.should_not be_valid
+    end
+    it "is valid if it's election day" do
+      @review.voted_day = "11-06"
+      @review.should be_valid
+    end
+  end
+  describe "voted_time" do
+    it "is invalid if not in right format" do
+      @review.voted_time = "232325"
+      @review.should_not be_valid
+    end
+    it "is invalid if not a legal time" do
+      @review.voted_time = "35:73"
+      @review.should_not be_valid
+    end
   end
 end
