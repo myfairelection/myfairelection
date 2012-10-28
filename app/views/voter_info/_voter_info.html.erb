@@ -1,12 +1,16 @@
       <% if voter_info.polling_locations.length > 0 %>
         <p>On election day, you may vote at any of the following places:</p>
         <% voter_info.polling_locations.each do |pl| %>
-          <%= render "polling_locations/polling_location", polling_location: pl %>
+          <%= render "polling_locations/summary", polling_location: pl %>
+          <%= link_to 'Details', polling_location_path(pl) %>
+          <%= link_to 'Review this location', new_polling_location_review_path(pl) %>
         <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length > 0 %>
         <p>Before election day, you may vote early at any of the following places:</p>
         <% voter_info.early_voting_places.each do |pl| %>
           <%= render "polling_locations/summary", polling_location: pl %>
+          <%= link_to 'Details', polling_location_path(pl) %>
+          <%= link_to 'Review this location', new_polling_location_review_path(pl) %>
         <% end %>
       <% end %>
