@@ -1,4 +1,4 @@
 <% [:name, :location_name, :line1, :line2, :line3].each do |a| %>
-  <% if a %><p><%= polling_location.send(a) %></p><% end %>
+  <% if a %><% unless polling_location.send(a).blank? %><%= polling_location.send(a) %><br /><% end %><% end %>
 <% end %>
-<p><%= "#{polling_location.city}, #{polling_location.state} #{polling_location.zip}" %></p>
+<%= "#{polling_location.city}, #{polling_location.state} #{polling_location.zip}" %><br />

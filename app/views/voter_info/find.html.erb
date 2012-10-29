@@ -1,7 +1,13 @@
 <div class="section">
-  <%= render "form" %>
-  <hr />
-  <p>We looked up your address:</p>
+  <div id="address-form" class="js-hide">
+    <%= render "form" %>
+    <hr />
+  </div>
+  <div class="pull-right js-show">
+    <a href="#" data-target="address-form" class="btn slide-toggle">Change Address</a>
+  </div>
+  <h2>Your location information</h2>
+  <strong>We found your address:</strong><br />
   <% address = @voter_info.normalized_address %>
   <%= render "address", :address => address %>
   <%= form_tag(users_address_path, method: :post) do %>
@@ -11,5 +17,6 @@
     <br />
     <%= submit_tag "Save this information", :class => "btn btn-primary" %>
   <% end %>
+  <br />
   <%= render "voter_info", voter_info: @voter_info %>
 </div>
