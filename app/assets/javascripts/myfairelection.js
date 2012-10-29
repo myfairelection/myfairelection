@@ -29,6 +29,14 @@
 		});
 	});
 
+	//slide toggle
+	$('body').on('click','.slide-toggle', function() {
+		var x = $(this).attr('data-target');
+		if ($('#'+x)) {
+			$('#'+x).slideToggle();
+		}
+	});
+
 	var cw = document.body.clientWidth;
 
 	$(document).ready(function() {
