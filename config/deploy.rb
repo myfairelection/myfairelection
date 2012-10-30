@@ -1,17 +1,16 @@
+set :stages, %w(production staging)
+set :default_stage, "staging"
+require 'capistrano/ext/multistage'
 require "bundler/capistrano"
 
 set :application, "myfairelection"
 set :repository,  "git://github.com/myfairelection/myfairelection.git"
 
 set :scm, :git
-set :branch, 'master'
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 default_run_options[:pty] = true
 
 set :user, "myfairelection"
-role :web, "198.61.213.70", "198.101.255.157" # Your HTTP server, Apache/etc
-role :app, "198.61.213.70", "198.101.255.157" # This may be the same as your `Web` server
-role :db,  "198.61.213.70", :primary => true # This is where Rails migrations will run
 set :deploy_to, "/home/#{user}/apps/#{application}"
 
 #role :db,  "your slave db-server here"
@@ -28,7 +27,7 @@ namespace :deploy do
   end
 
   task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
+    sudo "ln -nfs #{current_path}/config/#{stage}.nginx.conf /etc/nginx/sites-enabled/#{application}"
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
     run "mkdir -p #{shared_path}/config"
     put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
@@ -45,8 +44,8 @@ namespace :deploy do
 
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/master`
-      puts "WARNING: HEAD is not the same as origin/master"
+    unless `git rev-parse HEAD` == `git rev-parse origin/#{branch}`
+      puts "WARNING: HEAD is not the same as origin/#{branch}"
       puts "Run `git push` to sync changes."
       exit
     end

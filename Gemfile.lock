@@ -219,6 +219,7 @@ DEPENDENCIES
   google-analytics-rails
   jquery-rails
   mysql2
+  nokogiri
   rails (= 3.2.8)
   rest-client
   rspec-rails
