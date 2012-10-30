@@ -32,6 +32,10 @@ describe ReviewsController do
         Review.should_receive(:create!).with(include(user: @user))
         post 'create', params
       end
+      it "logs an event" do
+        post 'create', params
+        session[:events].should be_include({category: "Review", action: "Create", label: ""})
+      end
       context "with the ip address" do
         context "if the request header is set" do
           it "passes the source ip from the header to the model" do
