@@ -16,7 +16,7 @@ Feature: Authentication
     When I am on the home page
     And I fill in "user_email" in the form "signin" with "voter@example.org"
     And I fill in "user_password" in the form "signin" with "foobar"
-    And I click the "Sign In" button in the form "signin"
+    And I click the "Log In" button in the form "signin"
     Then I should see "Signed in successfully."
 
   Scenario: Confirm my email address
