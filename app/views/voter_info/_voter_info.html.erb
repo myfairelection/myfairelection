@@ -1,14 +1,20 @@
       <% if voter_info.polling_locations.length > 0 %>
-        <p>On election day, you may vote at any of the following places:</p>
+        <h3>On election day</h3>
+        <p><strong>You may vote at any of the following places:</strong></p>
         <% voter_info.polling_locations.each do |pl| %>
           <%= render "polling_locations/summary", polling_location: pl %>
-          <%= link_to 'Details', polling_location_path(pl) %>
+          <%= link_to 'More information about this location >', polling_location_path(pl) %>
+          <br />
+          <br />
           <% if current_user %>
-            <%= link_to 'Review this location', new_polling_location_review_path(pl) %>
+            <%= link_to 'Review this location', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
           <% else %>
-            <%= link_to 'Sign in to review this location', new_user_session_path %>
+            <h4>Give feedback about this location:</h4>
+            <%= link_to 'Log in', new_user_session_path, :class => "btn btn-primary" %>
+            &nbsp; or &nbsp;
+            <%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-primary" %>
           <% end %>        
-        <% end %>
+         <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length > 0 %>
         <h3>Before election day</h3>
