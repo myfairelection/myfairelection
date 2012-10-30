@@ -1,6 +1,7 @@
-<p>Voted at: <%= "#{review.voted_day} #{review.voted_time}" %></p>
-<p>Rating: <%= review.rating %> </p>
-<p>Able to vote: <%= review.able_to_vote? ? "Yes" : "No" %></p>
-<p>Comments:</p>
-<p><%= review.comments %></p>
-
+<p>
+	Voted at: <%= "#{review.voted_day} #{review.voted_time}" %><br />
+	Rating: <%= review.rating %><br />
+	Able to vote: <%= review.able_to_vote? ? "Yes" : "No" %><br />
+	Comments:<br />
+	<%= review.comments %>
+</p>

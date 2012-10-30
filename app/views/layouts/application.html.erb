@@ -37,7 +37,7 @@
 		<% if user_signed_in? %>
 	        <div class="memberinfo pull-right">
 	            <%= current_user.email %> &nbsp;
-	            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-primary btn-small" %>
+	            <%= link_to "Log Out", destroy_user_session_path, method: :delete, class: "btn btn-primary btn-small" %>
 	        </div>
         <% else %>
 	        <div class="signin-btn clearfix"><a href="#" class="click_toggle" data-target="signin">Log In</a></div>
@@ -51,7 +51,7 @@
 	 			  	<label>Password:</label>
 				    <%= f.password_field :password, class: "input-small" %>
 	 			  </div>
-				  <%= f.submit "Sign In", class: "btn btn-primary" %>
+				  <%= f.submit "Log In", class: "btn btn-primary" %>
 				<% end %>
 	        </div>
         <% end %>

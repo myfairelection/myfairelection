@@ -2,13 +2,13 @@
 <% if current_user %>
 	<% current_user_review = @polling_location.reviews.where(:user_id => current_user.id).first %>
 	<% if current_user_review %>
-	  <p>Your review was:</p>
+	  <strong>Your review was:</strong><br />
 	  <%= render "reviews/review", review: current_user_review %>
 	<% end %>
 <% end %>
 <% other_reviews = @polling_location.reviews.where('user_id != ?', current_user ? current_user.id : 0) %>
 <% if other_reviews.length > 0 %>
-	<p>Other reviews for this location:</p>
+	<p><strong>Other reviews for this location:</strong></p>
 	<% other_reviews.each do |review| %>
 		<%= render "reviews/review", review: review %>
 	<% end %>
