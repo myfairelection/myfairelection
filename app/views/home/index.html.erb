@@ -60,17 +60,18 @@
         <% else %>
             <div class="alert alert-warn">
                 <strong>Confirm Your Email Address</strong><br />
-                To be able to send you an email reminder to vote, we need you to confirm your email address.
+                To be able to receive a friendly email reminder to vote.
             </div>
             <p>
-                Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address.<br />
-                <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
+                Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address. <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
             </p>
+            <br />
+            <br />
             <p>
                 <strong>Didn't receive the email from My Fair Election?</strong><br />
                 <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
                     <%= f.hidden_field :email, :value => current_user.email %>
-                    <div><%= f.submit "Resend confirmation instructions" %></div>
+                    <div><%= f.submit "Resend confirmation instructions", :class => "btn btn-primary" %></div>
                 <% end %>
             </p>
         <% end %>
