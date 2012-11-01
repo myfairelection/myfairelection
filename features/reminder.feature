@@ -7,7 +7,7 @@ Feature: Reminder
   Scenario: See reminder to confirm
     Given I am a registered user
     And I log in
-    Then I should see "To be able to send you an email reminder to vote, we need you to confirm your email address."
+    Then I should see "To be able to receive a friendly email reminder to vote."
 
   Scenario: Resend confirmation email
     Given I am a registered user with email "voter@example.org" and password "foobar"
