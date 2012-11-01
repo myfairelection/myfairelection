@@ -29,6 +29,7 @@ class PollingLocation < ActiveRecord::Base
 
   def self.normalize_zip(zip)
     return nil if zip.blank?
+    zip.strip!
     case zip
     when /^(\d{5})(\d{4})$/
       "#{$1}-#{$2}"
@@ -107,13 +108,13 @@ class PollingLocation < ActiveRecord::Base
         location_hash[key].keys.each do |addr_key|
           case addr_key
           when "locationName"
-            attribs[:location_name] = location_hash[key][addr_key]
+            attribs[:location_name] = location_hash[key][addr_key].strip
           else
-            attribs[addr_key.to_sym] = location_hash[key][addr_key]
+            attribs[addr_key.to_sym] = location_hash[key][addr_key].strip
           end
         end
       when "name"
-        attribs[key.to_sym] = location_hash[key]
+        attribs[key.to_sym] = location_hash[key].strip
       else
         properties[key.to_sym] = location_hash[key]
       end

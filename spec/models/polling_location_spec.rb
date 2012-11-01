@@ -127,6 +127,11 @@ describe PollingLocation do
         @pl.zip = "000IL"
         @pl.should_not be_valid
       end
+      it "removes leading spaces from 5-digit zips" do
+        @pl.zip = "  55405"
+        @pl.should be_valid
+        @pl.zip.should eq "55405"
+      end
     end
   end
   it "knows its reviews" do
@@ -250,6 +255,30 @@ describe PollingLocation do
       loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
       loc2 = PollingLocation.find_or_create_from_google!(location_hash, true)
       loc1.should eq loc2
+    end
+    context "with minnesota result, stripping whitespace" do
+      let(:location_hash) {
+        {
+          "address" => {
+            "line1" => "252 UPTON AVE S",
+            "city" => "MINNEAPOLIS ",
+            "state" => "MN",
+            "zip" => "  55405"
+          },
+          "notes" => "",
+          "pollingHours" => "",
+          "sources" => [
+            {
+              "name" => "Voting Information Project",
+              "official" => true
+            }
+          ]
+        }
+      }
+      let (:pl) { PollingLocation.find_or_create_from_google!(location_hash, true) }
+      it "strips whitespace from the city" do
+        pl.city.should eq "MINNEAPOLIS"
+      end
     end
     context "with an identical address, but other has changed" do
       let(:updated_location_hash) {
