@@ -24,9 +24,9 @@ describe Review do
     @review.polling_location = nil
     @review.should_not be_valid
   end
-  it "is invalid without a user" do
+  it "is valid without a user" do
     @review.user = nil
-    @review.should_not be_valid
+    @review.should be_valid
   end
   it "knows its polling location" do
     expect(@review.polling_location).to eq polling_location

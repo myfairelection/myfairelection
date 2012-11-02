@@ -7,7 +7,6 @@ describe HomeController do
       get 'index'
       response.should be_success
     end
-    it "renders the review form partial"
     it "passes a new review" do
       get 'index'
       expect(assigns[:review]).to be_new_record
