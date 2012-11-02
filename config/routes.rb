@@ -23,9 +23,9 @@ Myfairelection::Application.routes.draw do
 
   root :to => 'home#index'
 
-  resources :polling_locations, :only => [:show] do
-    resources :reviews, :only => [:create, :new]
-  end
+  resources :polling_locations, :only => [:show]
+
+  resources :reviews, :only => [:create, :new]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

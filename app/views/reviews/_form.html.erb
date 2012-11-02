@@ -1,4 +1,10 @@
-<%= form_for [review.polling_location, review] do |f| %>
+<%= form_for review do |f| %>
+    <div class="control-group">
+        <label class="control-label"><strong>Where did you vote?</strong> Enter your zip code and we'll let you pick a location on the next page.</label>
+        <div class="controls"><%= f.text_field :zip, class: "span1" %> 
+        </div>
+    </div>
+
     <div class="control-group">
         <label class="control-label"><strong>When did you arrive to vote?</strong></label>
         <div class="controls">

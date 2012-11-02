@@ -13,7 +13,8 @@ describe Review do
       voted_day: "11-06",
       voted_time: "22:30",
       wait_time: 15,
-      ip_address: "128.32.47.18"
+      ip_address: "128.32.47.18",
+      zip: "80014"
     )
   end
   it "is valid with valid parameters" do
