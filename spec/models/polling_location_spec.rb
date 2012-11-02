@@ -123,9 +123,10 @@ describe PollingLocation do
         @pl.should be_valid
         @pl.zip.should eq "12345"
       end
-      it "is not valid for other things" do
+      # Google seems to return garbage for zip code on occaision.
+      it "is valid for other things" do
         @pl.zip = "000IL"
-        @pl.should_not be_valid
+        @pl.should be_valid
       end
       it "removes leading spaces from 5-digit zips" do
         @pl.zip = "  55405"

@@ -2,7 +2,6 @@ class PollingLocation < ActiveRecord::Base
   attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip, 
                   :name, :location_name, :county, :latitude, :longitude, :properties
   validates :state, :format => { :with => /^[A-Z][A-Z]$/ }, :allow_nil => true
-  validates :zip, :format => { :with => /^\d{5}(-\d{4})?$/ }, :allow_nil => true
   validate :at_least_one_address_field_must_be_present
   serialize :properties, JSON
   ADDRESS_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
