@@ -1,1 +1,139 @@
+<% content_for :address_form do %>
+                <% if !user_signed_in? %>
+                <div class="section div-decor">
+                    <div class="subsec-location">
+                        <div class="content">
+                            <%= render "voter_info/form" %>
+                        </div>
+                    </div>
+                </div>
+                <% end %>
+<% end %>
+
 <%= render 'reviews/form', :review => @review %>
+
+
+       <% if user_signed_in? %>
+          <% if !current_user.address.blank? %>
+            <h2>Your current voting information</h2>
+            <p>
+                <strong>Your home address:</strong><br />
+                <%= render "address", :address => current_user.address %>
+                <br />
+                <a href="#" class="btn click_toggle js-show" data-target="change_address">Change Address</a>
+            </p>
+            <br />
+            <div id="change_address" class="js-hide">
+                <hr class="no-top" />
+                <%= render "voter_info/form_change" %>
+                <hr class="no-top" />
+            </div>
+            <p>
+                <%= render "voter_info/voter_info", voter_info: VoterInfo.new(current_user.address.to_s) %>
+            </p>
+          <% else %>
+            <%= render "voter_info/form" %>
+          <% end %>
+
+        <br /><br />
+
+        <h2>Reminder to&nbsp;vote</h2>
+        <% if current_user.confirmed? %>
+            <% if current_user.wants_reminder? %>
+                <p>
+                    <strong>Thanks for signing up for a reminder to vote</strong><br />
+                    On November 6th, we will send you an email to remind you to vote and tell us how well your polling place did.
+                </p>
+            <% else %>
+                <p>
+                    <strong>On voting day, receive an reminder from us to vote and tell us how your polling place did.</strong><br />
+                    We promise to only send you the reminder and to not share it with others. <em>(we don't like junk email either)</em>
+                </p>
+    <!--
+                <div class="alert alert-success inline">
+                    <strong>Success!</strong> On election day, we will send an email to blah@domain.com and remind you to vote.
+                </div>
+    -->
+                <%= form_for current_user, :url => users_reminder_path do |f| %>
+                    <%= f.hidden_field :wants_reminder, :value => true %>
+                    <%= f.submit "Remind Me", :class => "btn btn-primary" %>
+                <% end %>
+            <% end %>
+        <% else %>
+            <div class="alert alert-warn">
+                <strong>Confirm Your Email Address</strong><br />
+                To be able to receive a friendly email reminder to vote.
+            </div>
+            <p>
+                Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address. <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
+            </p>
+            <br />
+            <br />
+            <p>
+                <strong>Didn't receive the email from My Fair Election?</strong><br />
+                <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
+                    <%= f.hidden_field :email, :value => current_user.email %>
+                    <div><%= f.submit "Resend confirmation instructions", :class => "btn btn-primary" %></div>
+                <% end %>
+            </p>
+        <% end %>
+
+        <% else %>
+
+        <h2>Let's tell voting locations how&nbsp;they&nbsp;did</h2>
+        <h4>Sign up to give important feedback about your voting experience</h4>
+        <p>
+            After election day we'll compile all of the information we gathered and deliver it to polling places across the country to help move towards a more efficient experience for everyone.
+        </p>
+        <div class="row-fluid">
+            <div class="span6 txt-center">
+                <div class="signup">
+                    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>  
+                        <p>
+                            Sign up with your email address:
+                        </p>
+                        <label for="email_field">Email:</label>
+                        <%= f.email_field :email %>
+                        <label for="password">Password:</label>
+                        <%= f.password_field :password %>
+                        <label for="password_confirmation">Confirm Password:</label>
+                        <%= f.password_field :password_confirmation %>
+                        <%= f.submit "Sign up", class: "btn btn-primary" %>
+                        By signing up, you affirm that you agree to the <a href="/info/terms_of_use/">terms of use</a>.
+                    <% end %>
+                </div>
+            </div>
+            <div class="span5">
+                <ul class="signup_questions">
+                    <lh>After voting, log in to&nbsp;tell&nbsp;us...</lh>
+                    <li>Was it easy for you to vote?</li>
+                    <li>Were there long lines, closed polling places, or broken machines?</li>
+                    <li>Do you have comments about your voting place?</li>
+                    <li>How long did you have to wait to vote?</li>
+                </ul>
+                <h4>Check-in reminder</h4>
+                <p>
+                    If you forget to check-in here on voting day we'll send you a short 5 question survey about your voting experience the day after election day. We promise to only send you that reminder, and we will never share your personal information with others. <%= link_to_unless_current "View our privacy policy.", info_privacy_policy_path %>
+                </p>
+            </div>
+        </div>
+
+        <% end %>
+<%
+=begin %>
+    <hr />
+    <div class="section section-reminder">
+        <h2>Reminder to&nbsp;vote</h2>
+        <p>
+            On voting day, receive an email reminder from us to vote. We promise to only send you the reminder and to not share it with others. <em>(we don't like junk email either)</em>
+        </p>
+        <div class="alert alert-success inline">
+            <strong>Success!</strong> On election day, we will send an email to blah@domain.com and remind you to vote.
+        </div>
+        <form id="" name="" action="index.html" method="POST">
+            Email: <input type="text" name="address" value="" class="span4" placeholder="Example: email@address.com" />
+            <input type="submit" name="submit" value="Remind Me" class="btn btn-primary" /><br />
+        </form>
+    </div>
+<% 
+=end %>
