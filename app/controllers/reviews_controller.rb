@@ -1,13 +1,20 @@
 class ReviewsController < ApplicationController
   def create
-    polling_location = PollingLocation.find(params[:polling_location_id])
+    unless params[:review][:polling_location_id].blank?
+      polling_location = PollingLocation.find(params[:review][:polling_location_id])
+    end
+    params[:review].delete(:polling_location_id)
     user = current_user
     ip_address = request.env['HTTP_X-REAL-IP'] 
     ip_address ||= request.env['REMOTE_ADDR']
-    Review.create!(params[:review].merge({user: user, polling_location: polling_location, ip_address: ip_address}))
-    flash[:notice] = "Thank you for your review!"
-    log_event("Review", "Create")
-    redirect_to polling_location_path(polling_location)
+    @review = Review.new params[:review].merge({user: user, polling_location: polling_location, ip_address: ip_address})
+    if @review.save
+      flash[:notice] = "Thank you for your review!"
+      log_event("Review", "Create")
+      redirect_to polling_location_path(polling_location)
+    else
+      render action: "new"
+    end
   end
   def new
     polling_location = PollingLocation.find(params[:polling_location_id])
