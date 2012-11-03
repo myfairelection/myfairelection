@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121028204551) do
+ActiveRecord::Schema.define(:version => 20121103163150) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -58,6 +58,13 @@ ActiveRecord::Schema.define(:version => 20121028204551) do
   end
 
   add_index "reviews", ["user_id", "polling_location_id"], :name => "index_reviews_on_user_id_and_polling_location_id", :unique => true
+
+  create_table "state_map_data", :id => false, :force => true do |t|
+    t.string  "name",      :limit => 2
+    t.float   "wait_time"
+    t.float   "rating"
+    t.integer "n"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false
