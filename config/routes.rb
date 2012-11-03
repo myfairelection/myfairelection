@@ -21,6 +21,9 @@ Myfairelection::Application.routes.draw do
 
   match "users/reminder" => "users#reminder"
 
+  match "map" => "state_map#index"
+  match "map/states" => "state_map#states"
+
   root :to => 'home#index'
 
   resources :polling_locations, :only => [:show] do
