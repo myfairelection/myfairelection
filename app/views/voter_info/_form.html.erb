@@ -1,11 +1,11 @@
 <%= form_tag(voter_info_find_path, method: "get") do %>
-	<h2>Find out about&nbsp;your voting&nbsp;location</h2>
+	<h2>Let's tell voting locations how they did</h2>
 	<p>
-	 	<strong>Many polling locations have changed. Enter your home address to&nbsp;get&nbsp;started.</strong><br />
+	 	<strong>Start by entering your address so we can find where you voted.</strong><br />
 		<em class="light small">Example: 555 Smith St, Walla Walla, WA 55512</em>
 	</p>
 	<%= text_field_tag :address, nil, :class => 'span5' %> <%= submit_tag("Show Information", :class => 'btn btn-primary') %>
     <p>
-        We'll tell you where you'll need to go to vote, the voter ID rules in&nbsp;your&nbsp;state, and more!<br />
+        After finding your polling your location, we will ask you for your rating.<br />
     </p>
 <% end %>

@@ -25,7 +25,7 @@
                 <option value="11-03">November 3</option>
                 <option value="11-04">November 4</option>
                 <option value="11-05">November 5</option>
-                <option value="11-06">November 6</option>
+                <option value="11-06" selected="selected">November 6</option>
             </select><br class="hide_sm" />
             Time: 
             <select name="review[voted_time]">
@@ -132,7 +132,7 @@
     <br />
     <div class="control-group">
         <label class="control-label"><strong>How long did you have to wait?</strong></label>
-        <div class="controls"><%= f.text_field :wait_time, class: "span1", type: "number", placeholder: 0  %> Minutes
+        <div class="controls"><%= f.text_field :wait_time, class: "span1", type: "number"  %> Minutes
         </div>
     </div>
     <br />

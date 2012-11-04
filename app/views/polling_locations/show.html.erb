@@ -1,6 +1,7 @@
 <%= render "polling_locations/detailed", polling_location: @polling_location %>
 <% if current_user %>
 	<% current_user_review = @polling_location.reviews.where(:user_id => current_user.id).first %>
+	<br />
 	<% if current_user_review %>
 	  <strong>Your review was:</strong><br />
 	  <%= render "reviews/review", review: current_user_review %>

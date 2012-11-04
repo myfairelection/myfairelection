@@ -8,12 +8,10 @@
   Hours: <%= polling_location.properties["pollingHours"] %>
 <% end %> 
 </p>
-<br />
 <% if current_user %>
-  <%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
+  <%= link_to 'Review this location', new_polling_location_review_path(polling_location), :class => "btn btn-primary" %><br />
 <% else %>
-	<h4>Give feedback about this location:</h4>
-	<%= link_to 'Log in', new_user_session_path, :class => "btn btn-primary" %>
-	&nbsp; or &nbsp;
-	<%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-primary" %>
+    <%= link_to 'Give Feedback', new_user_registration_path, :class => "btn btn-primary" %><br />
+    <br />
+    <em class="light">(Email address is required to give feedback)</em>
 <% end %>

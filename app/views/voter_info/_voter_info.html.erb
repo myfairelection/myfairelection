@@ -1,18 +1,18 @@
       <% if voter_info.polling_locations.length > 0 %>
-        <h3>On election day</h3>
-        <p><strong>You may vote at any of the following places:</strong></p>
+        <h2>On election day</h2>
+        <h4>You may vote at any of the following places:</h4>
         <% voter_info.polling_locations.each do |pl| %>
+          <hr />
           <%= render "polling_locations/summary", polling_location: pl %>
           <%= link_to 'More information about this location >', polling_location_path(pl) %>
           <br />
           <br />
           <% if current_user %>
-            <%= link_to 'Review this location', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
+            <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
           <% else %>
-            <h4>Give feedback about this location:</h4>
-            <%= link_to 'Log in', new_user_session_path, :class => "btn btn-primary" %>
-            &nbsp; or &nbsp;
-            <%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-primary" %>
+            <%= link_to 'Give Feedback', new_user_registration_path, :class => "btn btn-primary" %><br />
+            <br />
+            <em class="light">(Email address is required to give feedback)</em>
           <% end %>        
          <% end %>
       <% end %>
@@ -25,12 +25,11 @@
           <br />
           <br />
           <% if current_user %>
-            <%= link_to 'Review this location', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
+            <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
           <% else %>
-            <h4>Give feedback about this location:</h4>
-            <%= link_to 'Log in', new_user_session_path, :class => "btn btn-primary" %>
-            &nbsp; or &nbsp;
-            <%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-primary" %>
+            <%= link_to 'Give Feedback', new_user_registration_path, :class => "btn btn-primary" %><br />
+            <br />
+            <em class="light">(Email address is required to give feedback)</em>
           <% end %>        
         <% end %>
       <% end %>
