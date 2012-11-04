@@ -9,5 +9,5 @@ Feature: Review a Polling Location
     And the Google API is stubbed to return "ks_response.json"
     And I log in
     And I am on the home page
-    And I follow "Review this location"
+    And I follow "Give Feedback"
     Then I should see "When did you arrive to vote?"
