@@ -7,10 +7,8 @@
           <%= link_to 'More information about this location >', polling_location_path(pl) %>
           <br />
           <br />
-          <% if current_user %>
-            <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
-          <% else %>
-            <%= link_to 'Give Feedback', new_user_registration_path, :class => "btn btn-primary" %><br />
+          <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
+          <% unless current_user %><br />
             <br />
             <em class="light">(Email address is required to give feedback)</em>
           <% end %>        
@@ -24,10 +22,8 @@
           <%= link_to 'More information about this location >', polling_location_path(pl) %>
           <br />
           <br />
-          <% if current_user %>
-            <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
-          <% else %>
-            <%= link_to 'Give Feedback', new_user_registration_path, :class => "btn btn-primary" %><br />
+          <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
+          <% unless current_user %><br />
             <br />
             <em class="light">(Email address is required to give feedback)</em>
           <% end %>        
