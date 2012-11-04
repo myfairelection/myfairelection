@@ -35,8 +35,8 @@
 
          <br /><br />
 
-        <h2>Email Confirmation</h2>
-        <% if current_user.confirmed? %>
+         <h2>Email Confirmation</h2>
+         <% if current_user.confirmed? %>
 <%
 =begin %>
             <% if current_user.wants_reminder? %>
@@ -61,26 +61,29 @@
             <% end %>
 <% 
 =end %>
-        <% else %>
-            <div class="alert alert-warn">
-                <strong>Confirm Your Email Address</strong><br />
-                To be able to receive a friendly email reminder to vote.
-            </div>
-            <p>
-                Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address. <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
-            </p>
-            <br />
-            <br />
-            <p>
-                <strong>Didn't receive the email from My Fair Election?</strong><br />
-                <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
-                    <%= f.hidden_field :email, :value => current_user.email %>
-                    <div><%= f.submit "Resend Confirmation Instructions", :class => "btn btn-primary" %></div>
-                <% end %>
-            </p>
-        <% end %>
+            <% else %>
+                <div class="alert alert-warn">
+                    <strong>Confirm Your Email Address</strong><br />
+                    To be able to receive a friendly email reminder to vote.
+                </div>
+                <p>
+                    Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address. <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
+                </p>
+                <br />
+                <br />
+                <p>
+                    <strong>Didn't receive the email from My Fair Election?</strong><br />
+                    <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
+                        <%= f.hidden_field :email, :value => current_user.email %>
+                        <div><%= f.submit "Resend Confirmation Instructions", :class => "btn btn-primary" %></div>
+                    <% end %>
+                </p>
+            <% end %>
 
         <% else %>
+
+        <% end %>
+
         <h2>Wait Times By State</h2>
         <div id="map">
         </div>
@@ -105,8 +108,6 @@
                 </a>
             </div>
         </div>
-
-        <% end %>
 <%
 =begin %>
     <hr />
