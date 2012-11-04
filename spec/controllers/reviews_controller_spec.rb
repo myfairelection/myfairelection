@@ -29,7 +29,7 @@ describe ReviewsController do
         flash[:notice].should_not be_nil
       end
       it "passes the current user to the model" do
-        Review.should_receive(:create!).with(include(user: @user))
+        Review.should_receive(:new, &Review.method(:new)).with(include(user: @user))
         post 'create', params
       end
       it "logs an event" do
@@ -41,15 +41,41 @@ describe ReviewsController do
           it "passes the source ip from the header to the model" do
             @request.env['REMOTE_ADDR'] = "127.0.0.1"
             @request.env['HTTP_X-REAL-IP'] = "128.32.42.10"
-            Review.should_receive(:create!).with(include(ip_address: "128.32.42.10"))
+            Review.should_receive(:new, &Review.method(:new)).with(include(ip_address: "128.32.42.10"))
             post 'create', params
           end
         context "if the request header is not set"
           it "passes some other ip address to the model" do
             request.env['REMOTE_ADDR'] = "10.0.0.1"
-            Review.should_receive(:create!).with(include(ip_address: "10.0.0.1"))
+            Review.should_receive(:new, &Review.method(:new)).with(include(ip_address: "10.0.0.1"))
             post 'create', params
           end
+        end
+      end
+      context "without voted time" do
+        let(:params) { 
+          { "review" => 
+            { "voted_day" => "11-06",
+              "voted_time" => "",
+              "wait_time" => "15",
+              "able_to_vote" => true,
+              "rating" => 4,
+              "comments" => "This polling place smelled of cheese."
+            },
+            "polling_location_id" => polling_location.to_param
+          }
+        } 
+        it "does not create a new review" do        
+          expect {post 'create', params}.to change{Review.count}.by(0)
+        end
+        it "renders the new page" do
+          post 'create', params
+          response.should render_template('reviews/new')
+        end
+        it "passes a review object with errors" do
+          post 'create', params
+          assigns[:review].should_not be_valid
+          assigns[:review].should be_new_record
         end
       end
     end
