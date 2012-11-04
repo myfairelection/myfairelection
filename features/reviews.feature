@@ -11,3 +11,32 @@ Feature: Review a Polling Location
     And I am on the home page
     And I follow "Give Feedback"
     Then I should see "When did you arrive to vote?"
+
+  Scenario: Election day workflow with new user
+    Given the Google API is stubbed to return "ks_response.json"
+    When I am on the home page
+    And I fill in "address" with "1263 Pacific Ave. Kansas City KS"
+    And I click the "Show" button
+    And I should see "National Guard Armory"
+    And I follow "Give Feedback"
+    And I should see "Please Register First"
+    And I fill in "user_email" in the form "new_user" with "voter@example.org"
+    And I fill in "user_password" in the form "new_user" with "voter123"
+    And I fill in "user_password_confirmation" in the form "new_user" with "voter123"
+    And I click the "Register" button in the form "new_user"
+    And I should see "Giving feedback for:"
+
+  Scenario: Election day workflow with existing user
+    Given I am a registered user with email "voter@example.org" and password "foobar"
+    And the Google API is stubbed to return "ks_response.json"
+    When I am on the home page
+    And I fill in "address" with "1263 Pacific Ave. Kansas City KS"
+    And I click the "Show" button
+    And I should see "National Guard Armory"
+    And I follow "Give Feedback"
+    And I should see "Please Register First"
+    And I fill in "user_email" in the form "signin" with "voter@example.org"
+    And I fill in "user_password" in the form "signin" with "foobar"
+    And I click the "Log In" button in the form "signin"
+    And I should see "Giving feedback for:"
+
