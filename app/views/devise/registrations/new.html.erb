@@ -20,6 +20,26 @@
 			<br />
 			<div><%= f.submit "Register", :class => "btn btn-primary" %></div>
 		<% end %>
-		<br />
+		<hr />
+		<h2>Or, Log In</h2>
+
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+			<div><%= f.label :email %>
+			<%= f.email_field :email %></div>
+
+			<div><%= f.label :password %>
+			<%= f.password_field :password %></div>
+
+			<% if devise_mapping.rememberable? %>
+				<div>
+					<%= f.label :remember_me, :class => "checkbox" do %>
+						<%= f.check_box :remember_me %>Remember Me
+					<% end %>
+				</div>
+				<br />
+			<% end %>
+			<div><%= f.submit "Log in", :class => "btn btn-primary" %></div>
+		<% end %>
+		<hr />
 		<%= render "devise/shared/links" %>
 	</div>
