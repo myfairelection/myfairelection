@@ -42,6 +42,11 @@ namespace :deploy do
   end
   after "deploy:finalize_update", "deploy:symlink_config"
 
+  task :install_crontab, roles: :db do
+    run "crontab #{release_path}/config/myfairelection.crontab"
+  end
+  after "deploy:finalize_update", "deploy:symlink_config"
+
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
     unless `git rev-parse HEAD` == `git rev-parse origin/#{branch}`
