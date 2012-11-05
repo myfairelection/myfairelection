@@ -1,11 +1,23 @@
 <p>We might not have been able to find your polling location in our database&mdash;but we still
 	want to hear about voting conditions where you did vote.</p>
 <%= form_for @polling_location do |f| %>
+  <% if @polling_location.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@polling_location.errors.count, "error") %> prohibited this polling location from being saved:</h2>
+
+      <ul>
+      <% @polling_location.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="control-group">
-  	<label class="control-label">Where did you vote? Give the full address if you have it,
+    <label class="control-label">Start by describing where you voted. Give the full address if you have it,
   		otherwise give the name of the location, such as <em>Springfield Elementary School</em>,
   		and the city.
-  		We'll do our best after the election to make sure your feedback is counted.</label>
+      You can give feedback about this location next.</label>
   	<div class="controls"><%= f.text_area :description, :rows => 6, :class => "span8" %></div>
   </div>
   <%= f.hidden_field :state, :value => @polling_location.state %>
