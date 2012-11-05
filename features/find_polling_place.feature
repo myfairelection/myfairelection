@@ -21,7 +21,7 @@ Feature: Find My Polling Place
     When I am on the home page
     And I fill in "address" with "1600 Pennsylvania Avenue NW, Washington, DC 20500"
     And I click the "Show" button
-    Then I should see "we could not find information for the address you provided."
+    Then I should see "My polling location is not listed"
 
   Scenario: Look up empty string
     Given the Google API is stubbed to return "no_address.json"
@@ -51,6 +51,3 @@ Feature: Find My Polling Place
     Then I should see "Your current voting information"
     And I should see "National Guard Armory"
     And I should see "Kansas City Ballot Center"
-
-
-

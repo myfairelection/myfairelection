@@ -11,7 +11,7 @@
           <% unless current_user %><br />
             <br />
             <em class="light">(Email address is required to give feedback)</em>
-          <% end %>        
+          <% end %>
          <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length > 0 %>
@@ -26,18 +26,19 @@
           <% unless current_user %><br />
             <br />
             <em class="light">(Email address is required to give feedback)</em>
-          <% end %>        
+          <% end %>
         <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length + voter_info.polling_locations.length == 0 %>
         <p>We're sorry. Your address is valid, but we couldn't find your polling place. This could
            be because:
            <ul>
-            <li>We don't have information for your location yet. New information is coming in 
-                daily, so you may want to check back again.</li>
+            <li>You voted early, but our providers have stopped providing information about early
+              voting locations.</li>
+            <li>You signed up to vote by mail, or live in Oregon or Washington, where all voting is by mail.</li>
             <li>Your state only provides polling place information for registered voters. If you
-              have not registered to vote, or there is an issue with your registration, you may not
-              see a result.</li>
+              have not registered to vote, registered late, or there is an issue with your registration,
+              you may not see a result.</li>
             </ul>
           If you are concerned about this, please contact your local elections officials, or one or
           more of <%= link_to 'these organizations.', info_fraud_path %>
