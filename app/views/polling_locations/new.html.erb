@@ -3,7 +3,7 @@
 <%= form_for @polling_location do |f| %>
   <% if @polling_location.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@polling_location.errors.count, "error") %> prohibited this polling location from being saved:</h2>
+      <h2><%= pluralize(@polling_location.errors.count, "error") %> prevented us from saving this polling location:</h2>
 
       <ul>
       <% @polling_location.errors.full_messages.each do |msg| %>
@@ -14,12 +14,10 @@
   <% end %>
 
   <div class="control-group">
-    <label class="control-label">Start by describing where you voted. Give the full address if you have it,
-  		otherwise give the name of the location, such as <em>Springfield Elementary School</em>,
-  		and the city.
-      You can give feedback about this location next.</label>
+    <label class="control-label">Tell us where you voted:<br />
+      <em class="light">(The full address is helpful if you have it. Otherwise, please be sure to tell us the city and name of location.)</em></label>
   	<div class="controls"><%= f.text_area :description, :rows => 6, :class => "span8" %></div>
   </div>
   <%= f.hidden_field :state, :value => @polling_location.state %>
-  <%= f.submit "Give Feedback" %>
+  <%= f.submit "Give Feedback", :class => "btn btn-primary" %>
 <% end %>
