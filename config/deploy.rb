@@ -45,7 +45,7 @@ namespace :deploy do
   task :install_crontab, roles: :db do
     run "crontab #{release_path}/config/myfairelection.crontab"
   end
-  after "deploy:finalize_update", "deploy:symlink_config"
+  after "deploy:finalize_update", "deploy:install_crontab"
 
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
