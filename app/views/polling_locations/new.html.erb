@@ -1,0 +1,13 @@
+<p>We might not have been able to find your polling location in our database&mdash;but we still
+	want to hear about voting conditions where you did vote.</p>
+<%= form_for @polling_location do |f| %>
+  <div class="control-group">
+  	<label class="control-label">Where did you vote? Give the full address if you have it,
+  		otherwise give the name of the location, such as <em>Springfield Elementary School</em>,
+  		and the city.
+  		We'll do our best after the election to make sure your feedback is counted.</label>
+  	<div class="controls"><%= f.text_area :description, :rows => 6, :class => "span8" %></div>
+  </div>
+  <%= f.hidden_field :state, :value => @polling_location.state %>
+  <%= f.submit "Give Feedback" %>
+<% end %>

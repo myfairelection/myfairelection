@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121103163150) do
+ActiveRecord::Schema.define(:version => 20121105033258) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -25,20 +25,23 @@ ActiveRecord::Schema.define(:version => 20121103163150) do
   add_index "feeds", ["url"], :name => "index_feeds_on_url", :unique => true
 
   create_table "polling_locations", :force => true do |t|
-    t.string  "name"
-    t.string  "location_name"
-    t.string  "line1"
-    t.string  "line2"
-    t.string  "line3"
-    t.string  "city"
-    t.string  "state",         :limit => 2
-    t.string  "zip",           :limit => 10
-    t.string  "county"
-    t.float   "latitude"
-    t.float   "longitude"
-    t.text    "properties"
-    t.integer "feed_id"
-    t.boolean "early_vote",                  :default => false
+    t.string   "name"
+    t.string   "location_name"
+    t.string   "line1"
+    t.string   "line2"
+    t.string   "line3"
+    t.string   "city"
+    t.string   "state",         :limit => 2
+    t.string   "zip",           :limit => 10
+    t.string   "county"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.text     "properties"
+    t.integer  "feed_id"
+    t.boolean  "early_vote",                  :default => false
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "polling_locations", ["early_vote", "state", "city", "zip", "line1"], :name => "index_polling_locations_on_address"

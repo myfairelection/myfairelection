@@ -26,6 +26,7 @@ describe PollingLocation do
         :properties => {"foo" => "bar", "photo" => "http://myfairelection.com/favicon.ico"},
         :early_vote => true)
       @pl.feed = FactoryGirl.create(:feed)
+      @pl.description = nil
     end
     it "is valid with valid parameters" do
       @pl.should be_valid
@@ -132,6 +133,24 @@ describe PollingLocation do
         @pl.zip = "  55405"
         @pl.should be_valid
         @pl.zip.should eq "55405"
+      end
+    end
+    context "for the description property" do
+      before(:each) do
+        @pl = PollingLocation.new(
+          :state => "CA")
+        @pl.description = "I voted at the card wash"
+      end
+      it "is valid if state, and no other address field, is present" do
+        @pl.should be_valid
+      end
+      ADDRESS_FIELDS.each do |param|
+        it "is invalid if address field #{param} is present" do
+          unless param == :state
+            @pl.send("#{param}=", ADDRESS_VALUES[param])
+            @pl.should_not be_valid
+          end
+        end
       end
     end
   end

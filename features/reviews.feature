@@ -40,3 +40,14 @@ Feature: Review a Polling Location
     And I click the "Log In" button in the form "signin"
     And I should see "Giving feedback for:"
 
+  Scenario: Review a polling location other than what's found
+    Given I am a registered user
+    And the Google API is stubbed to return "ks_response.json"
+    And I log in
+    When I am on the home page
+    And I fill in "address" with "631 San Bruno Ave, SF, CA"
+    And I click the "Show" button
+    And I follow "My polling location is not listed"
+    And I fill in "polling_location_description" with "I voted in a food truck on Folsom and 22nd"
+    And I click the "Give Feedback" button
+    Then I should see "Giving feedback for:"

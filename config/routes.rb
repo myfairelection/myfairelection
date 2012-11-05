@@ -26,7 +26,7 @@ Myfairelection::Application.routes.draw do
 
   root :to => 'home#index'
 
-  resources :polling_locations, :only => [:show] do
+  resources :polling_locations, :only => [:show, :new, :create] do
     resources :reviews, :only => [:create, :new]
   end
 
