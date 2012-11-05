@@ -1,0 +1,8 @@
+<h1>Current Status</h1>
+<p>Total users: <%= User.count %></p>
+<p>Total reviews: <%= Review.count %></p>
+<h3>Latest reviews</h3>
+<% @reviews.each do |review| %>
+  <%= render 'reviews/review', review: review %>
+  <p><%= link_to "location", review.polling_location %></p>
+<% end %>

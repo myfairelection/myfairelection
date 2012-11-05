@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121105033258) do
+ActiveRecord::Schema.define(:version => 20121105070904) do
 
   create_table "feeds", :force => true do |t|
     t.string   "url"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20121105033258) do
     t.datetime "confirmation_sent_at"
     t.text     "address"
     t.boolean  "wants_reminder",         :default => false
+    t.boolean  "admin",                  :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

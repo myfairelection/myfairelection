@@ -24,6 +24,8 @@ Myfairelection::Application.routes.draw do
   match "map" => "state_map#index"
   match "map/states" => "state_map#states"
 
+  match "admin" => "admin#index"
+
   root :to => 'home#index'
 
   resources :polling_locations, :only => [:show, :new, :create] do

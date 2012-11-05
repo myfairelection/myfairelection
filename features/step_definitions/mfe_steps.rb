@@ -2,6 +2,10 @@ Given /^I am a registered user$/ do
   @user = FactoryGirl.create(:user)
 end
 
+Given /^I am a registered admin user$/ do
+  @user = FactoryGirl.create(:admin)
+end
+
 Given /^I am a registered user with email "([^"]*)" and password "([^"]*)"$/ do |email, password|
   @user = FactoryGirl.create(:user, email: email, password: password)
 end
