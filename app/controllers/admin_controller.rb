@@ -3,7 +3,7 @@ class AdminController < ApplicationController
   before_filter :authorize
 
   def index
-    @reviews = Review.order('created_at DESC').limit(10)
+    @reviews = Review.order('id DESC').limit(10)
   end
 
   def authorize
