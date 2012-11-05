@@ -6,7 +6,6 @@
   <div class="pull-right js-show">
     <a href="#" data-target="address-form" class="btn slide-toggle">Change Address</a>
   </div>
-  <h2>Your location information</h2>
   <strong>We found your address:</strong><br />
   <% address = @voter_info.normalized_address %>
   <%= render "address", :address => address %>
@@ -14,9 +13,11 @@
     <% address.to_h.keys.each do |key| %>
       <%= hidden_field_tag key, address.to_h[key] %>
     <% end %>
-    <br />
-    <%= submit_tag "Save this information", :class => "btn btn-primary" %>
   <% end %>
   <br />
   <%= render "voter_info", voter_info: @voter_info %>
+</div>
+<div class="section">
+  <p>If your polling location is not listed, we still want your feedback! Click below to get started.</p>
+  <%= link_to 'My polling location is not listed', new_polling_location_path(state: @voter_info.normalized_address.state), :class => "btn btn-primary" %>
 </div>

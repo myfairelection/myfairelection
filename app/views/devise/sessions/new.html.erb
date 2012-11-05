@@ -1,23 +1,45 @@
-<div class="section">
-	<h2>Log in</h2>
+    <div class="section">
+		<h2>Please Register First</h2>
+		<p>
+			We are asking for this information to improve data integrity. We will not share your email or use it for any other purpose. See our <a href="/info/privacy_policy/">privacy policy</a>.
+		</p>
 
-	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-		<div><%= f.label :email %>
-		<%= f.email_field :email %></div>
+		<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+			<%= devise_error_messages! %>
 
-		<div><%= f.label :password %>
-		<%= f.password_field :password %></div>
+			<div><%= f.label :email %>
+			<%= f.email_field :email %></div>
 
-		<% if devise_mapping.rememberable? %>
-			<div>
-				<%= f.label :remember_me, :class => "checkbox" do %>
-					<%= f.check_box :remember_me %>Remember Me
-				<% end %>
-			</div>
+			<div><%= f.label :password %>
+			<%= f.password_field :password %></div>
+
+			<div><%= f.label :password_confirmation %>
+			<%= f.password_field :password_confirmation %></div>
+
+			By signing up, you affirm that you agree to the <a href="/info/terms_of_use/">terms of use</a>.<br />
 			<br />
+			<div><%= f.submit "Register", :class => "btn btn-primary" %></div>
 		<% end %>
-		<div><%= f.submit "Log in", :class => "btn btn-primary" %></div>
-	<% end %>
-	<br />
-	<%= render "devise/shared/links" %>
-</div>
+		<hr />
+		<h2>Or, Log In</h2>
+
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+			<div><%= f.label :email %>
+			<%= f.email_field :email %></div>
+
+			<div><%= f.label :password %>
+			<%= f.password_field :password %></div>
+
+			<% if devise_mapping.rememberable? %>
+				<div>
+					<%= f.label :remember_me, :class => "checkbox" do %>
+						<%= f.check_box :remember_me %>Remember Me
+					<% end %>
+				</div>
+				<br />
+			<% end %>
+			<div><%= f.submit "Log in", :class => "btn btn-primary" %></div>
+		<% end %>
+		<hr />
+		<%= render "devise/shared/links" %>
+	</div>

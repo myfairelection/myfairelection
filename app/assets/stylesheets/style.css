@@ -561,6 +561,133 @@ body.svg .rating-group .rating-btn.active {
 	background-image: url('img/star_on.svg');
 }
 
+.promo {
+	border: 1px solid #efefef;
+	padding: 6px;
+	margin-bottom: 12px;
+	-webkit-border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+	background-color: #f5f5f5;
+	*background-color: #e6e6e6;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+	background-repeat: repeat-x;
+}
+
+.promo a:hover {
+	text-decoration: none;
+}
+
+.promo h3 {
+	text-align: center;
+	border: 1px solid #0f0;
+	margin: 0 0 6px 0;
+	padding: 6px;
+	font-size: 1.25em;
+	color: #ffffff;
+	text-shadow: 0 -1px 0 #808080;
+	-webkit-border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
+}
+
+.promo h3.facebook {
+	text-shadow: 0 -1px 0 #2e4473;
+	background-color: #304779;
+	*background-color: #304779;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4e73b6), to(#304779));
+	background-image: -webkit-linear-gradient(top, #4e73b6, #304779);
+	background-image: -o-linear-gradient(top, #4e73b6, #304779);
+	background-image: linear-gradient(to bottom, #4e73b6, #304779);
+	background-image: -moz-linear-gradient(top, #4e73b6, #304779);
+	background-repeat: repeat-x;
+	border-color: #4e73b6 #4e73b6 #2e4473;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.4);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#4e73b6', endColorstr='#304779', GradientType=0);
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.promo h3.twitter {
+	text-shadow: 0 -1px 0 #1281ba;
+	background-color: #138bcd;
+	*background-color: #138bcd;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1fc0e4), to(#138bcd));
+	background-image: -webkit-linear-gradient(top, #1fc0e4, #138bcd);
+	background-image: -o-linear-gradient(top, #1fc0e4, #138bcd);
+	background-image: linear-gradient(to bottom, #1fc0e4, #138bcd);
+	background-image: -moz-linear-gradient(top, #1fc0e4, #138bcd);
+	background-repeat: repeat-x;
+	border-color: #138bcd #138bcd #1281ba;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#1fc0e4', endColorstr='#138bcd', GradientType=0);
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.promo h3.photos {
+	text-shadow: 0 -1px 0 #da8a0a;
+	background-color: #fd9d12;
+	*background-color: #fd9d12;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fed640), to(#fd9d12));
+	background-image: -webkit-linear-gradient(top, #fed640, #fd9d12);
+	background-image: -o-linear-gradient(top, #fed640, #fd9d12);
+	background-image: linear-gradient(to bottom, #fed640, #fd9d12);
+	background-image: -moz-linear-gradient(top, #fed640, #fd9d12);
+	background-repeat: repeat-x;
+	border-color: #fd9d12 #fd9d12 #ffaa22;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fed640', endColorstr='#fd9d12', GradientType=0);
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.promo b {
+	display: block;
+	color: #676767;
+	text-shadow: 0 1px 0 #ffffff;
+	font-size: 0.9em;
+	line-height: 1.0em;
+}
+
+/* leaflet
+==================== */
+#map {
+	width: 100%;
+	height: 300px;
+	margin-bottom: 24px;
+}
+
+.info {
+	padding: 6px 8px;
+	font: 14px/16px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.info h4 {
+	margin: 0 0 5px;
+	color: #777;
+}
+
+.legend {
+	text-align: left;
+	line-height: 18px;
+	color: #555;
+}
+.legend i {
+	width: 18px;
+	height: 18px;
+	float: left;
+	margin-right: 8px;
+	opacity: 0.7;
+}
+
 @media only screen and (max-width: 50em) {
 	select,
 	textarea,
@@ -686,6 +813,10 @@ body.svg .rating-group .rating-btn.active {
 
 	#test-size {
 		width: 30px;
+	}
+
+	.promo {
+		margin-bottom: 0;
 	}
 }
 

@@ -75,11 +75,11 @@ When /^I follow "([^"]*)"$/ do |link|
 end
 
 When /^I register as a new user$/ do
-  step 'I am on the home page'
+  step 'I visit the "/users/sign_up" page'
   step 'I fill in "user_email" in the form "new_user" with "voter@example.org"'
   step 'I fill in "user_password" in the form "new_user" with "voter123"'
   step 'I fill in "user_password_confirmation" in the form "new_user" with "voter123"'
-  step 'I click the "Sign up" button in the form "new_user"'
+  step 'I click the "Register" button in the form "new_user"'
 end
 
 When /^I click on the link in the email$/ do

@@ -6,7 +6,7 @@ Feature: Find My Polling Place
 
   Scenario: View home page
     When I am on the home page
-    Then I should see "Find out about your voting location"
+    Then I should see "Start by entering your address so we can find where you voted."
 
   Scenario: Look up polling place with hours and early voting
     Given the Google API is stubbed to return "ks_response.json"
@@ -21,7 +21,7 @@ Feature: Find My Polling Place
     When I am on the home page
     And I fill in "address" with "1600 Pennsylvania Avenue NW, Washington, DC 20500"
     And I click the "Show" button
-    Then I should see "we could not find information for the address you provided."
+    Then I should see "My polling location is not listed"
 
   Scenario: Look up empty string
     Given the Google API is stubbed to return "no_address.json"
@@ -41,18 +41,8 @@ Feature: Find My Polling Place
     Given I am a registered user
     And I log in
     When I am on the home page
-    Then I should see "Find out about your voting location"
+    Then I should see "Start by entering your address so we can find where you voted."
  
-  Scenario: Save polling place info
-    Given I am a registered user
-    And I log in
-    And the Google API is stubbed to return "ks_response.json"
-    When I am on the home page
-    And I fill in "address" with "1263 Pacific Ave. Kansas City KS"
-    And I click the "Show" button
-    And I click the "Save this information" button
-    Then I should see "Your address has been saved"
-
   Scenario: See saved polling place info
     Given I am a registered user with the address "1263 Pacific Ave. Kansas City KS"
     And the Google API is stubbed to return "ks_response.json"
@@ -61,6 +51,3 @@ Feature: Find My Polling Place
     Then I should see "Your current voting information"
     And I should see "National Guard Armory"
     And I should see "Kansas City Ballot Center"
-
-
-

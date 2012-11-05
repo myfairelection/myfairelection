@@ -3,6 +3,7 @@ class PollingLocation < ActiveRecord::Base
                   :name, :location_name, :county, :latitude, :longitude, :properties
   validates :state, :format => { :with => /^[A-Z][A-Z]$/ }, :allow_nil => true
   validate :at_least_one_address_field_must_be_present
+  validate :if_description_set_only_state_can_be_present
   serialize :properties, JSON
   ADDRESS_ATTRIBS = [:line1, :line2, :line3, :city, :state, :zip]
   STRING_ATTRIBS = ADDRESS_ATTRIBS + [:name, :location_name, :county]
@@ -49,6 +50,15 @@ class PollingLocation < ActiveRecord::Base
     end
   end
 
+  def if_description_set_only_state_can_be_present
+    if self.description
+      attribs = ADDRESS_ATTRIBS.dup
+      attribs.delete(:state)
+      if attribs.inject(false) { |ret, field| ret || self.send(field) }
+        errors[:base] << "If description is set, only state may be present"
+      end
+    end
+  end
   def self.find_by_address(address)
     search = ADDRESS_ATTRIBS.inject({}) do |result, attrib| 
       case 

@@ -1,0 +1,4 @@
+RAILS_ENV=production
+APP_HOME=/home/myfairelection/apps/myfairelection/current
+PATH=/home/myfairelection/.rbenv/shims:/home/myfairelection/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+4,14,24,34,44,54 * * * * cd $APP_HOME ; bundle exec rails runner StateMapData.update

@@ -1,19 +1,15 @@
 <p>
-<% [:name, :location_name, :line1, :line2, :line3].each do |a| %>
-  <% if a %><% unless polling_location.send(a).blank? %><%= polling_location.send(a) %><br /><% end %><% end %>
-<% end %>
-<%= "#{polling_location.city}, #{polling_location.state} #{polling_location.zip}" %><br />
-<% if polling_location.properties["pollingHours"] %>
-  <br />
-  Hours: <%= polling_location.properties["pollingHours"] %>
-<% end %> 
-</p>
-<br />
-<% if current_user %>
-  <%= link_to 'Review this location', new_polling_location_review_path(polling_location) %>
+<% if polling_location.description %>
+  <p>A user-submitted polling location in <%= polling_location.state %>:</p>
+  <p><%= polling_location.description %></p>
 <% else %>
-	<h4>Give feedback about this location:</h4>
-	<%= link_to 'Log in', new_user_session_path, :class => "btn btn-primary" %>
-	&nbsp; or &nbsp;
-	<%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-primary" %>
+	<% [:name, :location_name, :line1, :line2, :line3].each do |a| %>
+	  <% if a %><% unless polling_location.send(a).blank? %><%= polling_location.send(a) %><br /><% end %><% end %>
+	<% end %>
+	<%= "#{polling_location.city}, #{polling_location.state} #{polling_location.zip}" %><br />
+	<% if polling_location.properties["pollingHours"] %>
+	  <br />
+	  Hours: <%= polling_location.properties["pollingHours"] %>
+	<% end %>
 <% end %>
+</p>

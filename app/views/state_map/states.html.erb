@@ -1,0 +1,16 @@
+<table>
+	<tr>
+		<td>name</td>
+		<td>rating</td>
+		<td>time</td>
+		<td>n</td>
+	</tr>
+	<% @states.each do |state| %>
+	  <tr>
+	  	<td><%= state.name %></td>
+	  	<td><%= state.rating %></td>
+	  	<td><%= state.wait_time %></td>
+	  	<td><%= state.n %></td>
+	  </tr>
+	<% end %>
+</table>

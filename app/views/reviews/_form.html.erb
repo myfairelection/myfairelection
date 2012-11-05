@@ -1,4 +1,15 @@
 <%= form_for [review.polling_location, review] do |f| %>
+  <% if review.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(review.errors.count, "error") %> prohibited this review from being saved:</h2>
+      <ul>
+      <% review.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
     <div class="control-group">
         <label class="control-label"><strong>When did you arrive to vote?</strong></label>
         <div class="controls">
@@ -25,7 +36,7 @@
                 <option value="11-03">November 3</option>
                 <option value="11-04">November 4</option>
                 <option value="11-05">November 5</option>
-                <option value="11-06">November 6</option>
+                <option value="11-06" selected="selected">November 6</option>
             </select><br class="hide_sm" />
             Time: 
             <select name="review[voted_time]">
@@ -79,60 +90,60 @@
                 <option value="11:30">11:30 AM</option>
                 <option value="11:45">11:45 AM</option>
                 <option value="12:00">12:00 PM</option>
-                <option value="12:15">12:15 AM</option>
-                <option value="12:30">12:30 AM</option>
-                <option value="12:45">12:45 AM</option>
+                <option value="12:15">12:15 PM</option>
+                <option value="12:30">12:30 PM</option>
+                <option value="12:45">12:45 PM</option>
                 <option value="13:00">1:00 PM</option>
-                <option value="13:15">1:15 AM</option>
-                <option value="13:30">1:30 AM</option>
-                <option value="13:45">1:45 AM</option>
+                <option value="13:15">1:15 PM</option>
+                <option value="13:30">1:30 PM</option>
+                <option value="13:45">1:45 PM</option>
                 <option value="14:00">2:00 PM</option>
-                <option value="14:15">2:15 AM</option>
-                <option value="14:30">2:30 AM</option>
-                <option value="14:45">2:45 AM</option>
+                <option value="14:15">2:15 PM</option>
+                <option value="14:30">2:30 PM</option>
+                <option value="14:45">2:45 PM</option>
                 <option value="15:00">3:00 PM</option>
-                <option value="15:15">3:15 AM</option>
-                <option value="15:30">3:30 AM</option>
-                <option value="15:45">3:45 AM</option>
+                <option value="15:15">3:15 PM</option>
+                <option value="15:30">3:30 PM</option>
+                <option value="15:45">3:45 PM</option>
                 <option value="16:00">4:00 PM</option>
-                <option value="16:15">4:15 AM</option>
-                <option value="16:30">4:30 AM</option>
-                <option value="16:45">4:45 AM</option>
+                <option value="16:15">4:15 PM</option>
+                <option value="16:30">4:30 PM</option>
+                <option value="16:45">4:45 PM</option>
                 <option value="17:00">5:00 PM</option>
-                <option value="17:15">5:15 AM</option>
-                <option value="17:30">5:30 AM</option>
-                <option value="17:45">5:45 AM</option>
+                <option value="17:15">5:15 PM</option>
+                <option value="17:30">5:30 PM</option>
+                <option value="17:45">5:45 PM</option>
                 <option value="18:00">6:00 PM</option>
-                <option value="18:15">6:15 AM</option>
-                <option value="18:30">6:30 AM</option>
-                <option value="18:45">6:45 AM</option>
+                <option value="18:15">6:15 PM</option>
+                <option value="18:30">6:30 PM</option>
+                <option value="18:45">6:45 PM</option>
                 <option value="19:00">7:00 PM</option>
-                <option value="19:15">7:15 AM</option>
-                <option value="19:30">7:30 AM</option>
-                <option value="19:45">7:45 AM</option>
+                <option value="19:15">7:15 PM</option>
+                <option value="19:30">7:30 PM</option>
+                <option value="19:45">7:45 PM</option>
                 <option value="20:00">8:00 PM</option>
-                <option value="20:15">8:15 AM</option>
-                <option value="20:30">8:30 AM</option>
-                <option value="20:45">8:45 AM</option>
+                <option value="20:15">8:15 PM</option>
+                <option value="20:30">8:30 PM</option>
+                <option value="20:45">8:45 PM</option>
                 <option value="21:00">9:00 PM</option>
-                <option value="21:15">9:15 AM</option>
-                <option value="21:30">9:30 AM</option>
-                <option value="21:45">9:45 AM</option>
+                <option value="21:15">9:15 PM</option>
+                <option value="21:30">9:30 PM</option>
+                <option value="21:45">9:45 PM</option>
                 <option value="22:00">10:00 PM</option>
-                <option value="22:15">10:15 AM</option>
-                <option value="22:30">10:30 AM</option>
-                <option value="22:45">10:45 AM</option>
+                <option value="22:15">10:15 PM</option>
+                <option value="22:30">10:30 PM</option>
+                <option value="22:45">10:45 PM</option>
                 <option value="23:00">11:00 PM</option>
-                <option value="23:15">11:15 AM</option>
-                <option value="23:30">11:30 AM</option>
-                <option value="23:45">11:45 AM</option>
+                <option value="23:15">11:15 PM</option>
+                <option value="23:30">11:30 PM</option>
+                <option value="23:45">11:45 PM</option>
             </select>
         </div>
     </div>
     <br />
     <div class="control-group">
         <label class="control-label"><strong>How long did you have to wait?</strong></label>
-        <div class="controls"><%= f.text_field :wait_time, class: "span1", type: "number", placeholder: 0  %> Minutes
+        <div class="controls"><%= f.text_field :wait_time, class: "span1", type: "number"  %> Minutes
         </div>
     </div>
     <br />

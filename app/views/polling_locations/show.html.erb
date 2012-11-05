@@ -1,9 +1,16 @@
 <%= render "polling_locations/detailed", polling_location: @polling_location %>
 <% if current_user %>
 	<% current_user_review = @polling_location.reviews.where(:user_id => current_user.id).first %>
+	<br />
 	<% if current_user_review %>
 	  <strong>Your review was:</strong><br />
 	  <%= render "reviews/review", review: current_user_review %>
+	<% else %>
+		<%= link_to 'Give Feedback', new_polling_location_review_path(@polling_location), :class => "btn btn-primary" %>
+		<% unless current_user %><br />
+			<br />
+			<em class="light">(Email address is required to give feedback)</em>
+		<% end %>
 	<% end %>
 <% end %>
 <% other_reviews = @polling_location.reviews.where('user_id != ?', current_user ? current_user.id : 0) %>

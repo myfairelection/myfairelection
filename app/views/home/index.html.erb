@@ -33,10 +33,12 @@
             <%= render "voter_info/form" %>
           <% end %>
 
-        <br /><br />
+         <br /><br />
 
-        <h2>Reminder to&nbsp;vote</h2>
-        <% if current_user.confirmed? %>
+         <h2>Email Confirmation</h2>
+         <% if current_user.confirmed? %>
+<%
+=begin %>
             <% if current_user.wants_reminder? %>
                 <p>
                     <strong>Thanks for signing up for a reminder to vote</strong><br />
@@ -57,66 +59,54 @@
                     <%= f.submit "Remind Me", :class => "btn btn-primary" %>
                 <% end %>
             <% end %>
+<% 
+=end %>
+            <% else %>
+                <div class="alert alert-warn">
+                    <strong>Confirm Your Email Address</strong><br />
+                    To be able to receive a friendly email reminder to vote.
+                </div>
+                <p>
+                    Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address. <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
+                </p>
+                <br />
+                <br />
+                <p>
+                    <strong>Didn't receive the email from My Fair Election?</strong><br />
+                    <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
+                        <%= f.hidden_field :email, :value => current_user.email %>
+                        <div><%= f.submit "Resend Confirmation Instructions", :class => "btn btn-primary" %></div>
+                    <% end %>
+                </p>
+            <% end %>
+
         <% else %>
-            <div class="alert alert-warn">
-                <strong>Confirm Your Email Address</strong><br />
-                To be able to receive a friendly email reminder to vote.
-            </div>
-            <p>
-                Check your email account for a message from My Fair Election. Follow the instructions inside of the message to confirm your email address. <em>Please be sure to check the 'Spam' or 'Junk' folder in your account.</em>
-            </p>
-            <br />
-            <br />
-            <p>
-                <strong>Didn't receive the email from My Fair Election?</strong><br />
-                <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
-                    <%= f.hidden_field :email, :value => current_user.email %>
-                    <div><%= f.submit "Resend confirmation instructions", :class => "btn btn-primary" %></div>
-                <% end %>
-            </p>
+
         <% end %>
 
-        <% else %>
-
-        <h2>Let's tell voting locations how&nbsp;they&nbsp;did</h2>
-        <h4>Sign up to give important feedback about your voting experience</h4>
-        <p>
-            After election day we'll compile all of the information we gathered and deliver it to polling places across the country to help move towards a more efficient experience for everyone.
-        </p>
-        <div class="row-fluid">
-            <div class="span6 txt-center">
-                <div class="signup">
-                    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>  
-                        <p>
-                            Sign up with your email address:
-                        </p>
-                        <label for="email_field">Email:</label>
-                        <%= f.email_field :email %>
-                        <label for="password">Password:</label>
-                        <%= f.password_field :password %>
-                        <label for="password_confirmation">Confirm Password:</label>
-                        <%= f.password_field :password_confirmation %>
-                        <%= f.submit "Sign up", class: "btn btn-primary" %>
-                        By signing up, you affirm that you agree to the <a href="/info/terms_of_use/">terms of use</a>.
-                    <% end %>
-                </div>
+        <div id="map">
+        </div>
+        <h4>Tell Others About My Fair Election</h4>
+        <div class="row-fluid social">
+            <div class="span4 promo">
+                <a href="http://facebook.com/myfairelection" target="_blank">
+                    <h3 class="facebook"><i></i>Facebook</h3>
+                    <b>Encourage your friends to vote and give us their feedback</b>
+                </a>
             </div>
-            <div class="span5">
-                <ul class="signup_questions">
-                    <lh>After voting, log in to&nbsp;tell&nbsp;us...</lh>
-                    <li>Was it easy for you to vote?</li>
-                    <li>Were there long lines, closed polling places, or broken machines?</li>
-                    <li>Do you have comments about your voting place?</li>
-                    <li>How long did you have to wait to vote?</li>
-                </ul>
-                <h4>Check-in reminder</h4>
-                <p>
-                    If you forget to check-in here on voting day we'll send you a short 5 question survey about your voting experience the day after election day. We promise to only send you that reminder, and we will never share your personal information with others. <%= link_to_unless_current "View our privacy policy.", info_privacy_policy_path %>
-                </p>
+            <div class="span4 promo">
+                <a href="http://bbx.me/myfairelection" target="_blank">
+                    <h3 class="photos"><i></i>#ivoted Photos</h3>
+                    <b>Add photos to our photo stream using the #ivoted hastag on Twitter or Instagram</b>
+                </a>
+            </div>
+            <div class="span4 promo">
+                <a href="http://twitter.com/myfairelection" target="_blank">
+                    <h3 class="twitter"><i></i>Twitter</h3>
+                    <b>Encourage your followers to vote and give us their feedback</b>
+                </a>
             </div>
         </div>
-
-        <% end %>
 <%
 =begin %>
     <hr />
