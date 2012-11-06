@@ -40,14 +40,14 @@ Myfairelection::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.sendgrid.net',
+    address:              'this.is.not.an.smtp.server',
     port:                 587,
     domain:               'myfairelection.com',
     user_name:            'myfairelection',
-    password:             Settings.sendgrid_password,
+    password:             '',
     authentication:       'plain',
     enable_starttls_auto: true  }
-  # for google analytics
+   # for google analytics
   GA.tracker = "UA-35559818-2"
 
 end
