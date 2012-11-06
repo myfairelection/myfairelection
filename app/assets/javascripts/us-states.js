@@ -62,7 +62,6 @@ var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{
 	styleId: 22677
 }).addTo(map);
 
-
 // control that shows state info on hover
 var info = L.control();
 
@@ -84,23 +83,27 @@ info.update = function (props) {
 		});
 	}
 
-	this._div.innerHTML = '<h4>Wait Times</h4>' +  (props ?
-		'<b>' + props.name + '</b><br />' + numVal 
-		: 'Hover over a state');
+	if (Modernizr.screenSize == "huge") {
+		this._div.innerHTML = '<h4>Wait Times</h4>' +  (props ?
+			'<b>' + props.name + '</b><br />' + numVal 
+			: 'Hover over a state');
+	}else{
+		this._div.innerHTML = '<h4>Wait Times</h4>';
+	}
 };
 
 info.addTo(map);
 
 // get color depending on population density value
 function getColor(d) {
-	return d > 210 ? '#800026' :
-	       d > 180  ? '#BD0026' :
-	       d > 150  ? '#E31A1C' :
-	       d > 120  ? '#FC4E2A' :
-	       d > 90   ? '#FD8D3C' :
-	       d > 60   ? '#FEB24C' :
-	       d > 30   ? '#FED976' :
-	                  '#FFEDA0';
+	return d > 90 ? '#800026' :
+	       d > 75  ? '#BD0026' :
+	       d > 60  ? '#E31A1C' :
+	       d > 45  ? '#FC4E2A' :
+	       d > 30   ? '#FD8D3C' :
+	       d > 15   ? '#FEB24C' :
+	       d > 1   ? '#FED976' :
+	                  '#9f9f9f';
 }
 
 function style(feature) {
@@ -127,8 +130,8 @@ function highlightFeature(e) {
 	var layer = e.target;
 
 	layer.setStyle({
-		weight: 3,
-		color: '#666',
+		weight: 2,
+		color: '#6F6F6F',
 		dashArray: '',
 		fillOpacity: 0.7
 	});
@@ -164,7 +167,7 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'info legend'),
-		grades = [0, 30, 60, 90, 120, 150, 180, 210],
+		grades = [0, 1, 15, 30, 45, 60, 75, 90],
 		labels = [],
 		from, to;
 
@@ -184,6 +187,10 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 $(document).ready(function() {
+
+	if (Modernizr.screenSize != "huge") {
+		map.setView([37.8, -81], 2);
+	}
 
 	$.ajax({
 		type: 'GET',
