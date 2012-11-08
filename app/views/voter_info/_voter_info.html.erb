@@ -7,11 +7,6 @@
           <%= link_to 'More information about this location >', polling_location_path(pl) %>
           <br />
           <br />
-          <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
-          <% unless current_user %><br />
-            <br />
-            <em class="light">(Email address is required to give feedback)</em>
-          <% end %>
          <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length > 0 %>
@@ -22,11 +17,6 @@
           <%= link_to 'More information about this location >', polling_location_path(pl) %>
           <br />
           <br />
-          <%= link_to 'Give Feedback', new_polling_location_review_path(pl), :class => "btn btn-primary" %>
-          <% unless current_user %><br />
-            <br />
-            <em class="light">(Email address is required to give feedback)</em>
-          <% end %>
         <% end %>
       <% end %>
       <% if voter_info.early_voting_places.length + voter_info.polling_locations.length == 0 %>
