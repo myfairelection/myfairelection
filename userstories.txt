@@ -5,6 +5,7 @@ Finished:
 As a voter, I can look up my polling place with my address.
 As a voter, I can register with my email address and password
 As a voter, I can log in with my registered email address and password
+As a registered voter, I can leave feedback on my polling place.
 
 To do:
 --
@@ -14,3 +15,14 @@ As a voter, I can look up my polling place with
    the location provided by my phone.
 As a registered voter, I can connect my Twitter account
 As a registered voter, I can connect my Facebook account
+As a registered voter, I can connect my Google (Plus) account
+Soft user registration (http://highgroove.com/articles/2012/10/09/lazy-user-registration-for-rails-apps.html)
+As a registered voter, I can edit my polling place feedback
+As a registered voter, I can leave feedback on voting by mail
+As a data analyst, I can see feedback on a particular location across elections
+
+Non-user stories:
+--
+Convert to Strong Parameters
+Ensure asset pipeline is working correctly in production
+Rotate the production Rails log and unicorn logs
