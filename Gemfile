@@ -23,7 +23,7 @@ gem 'jquery-rails'
 
 gem 'rest-client'
 gem 'settingslogic'
-gem 'devise'
+gem 'devise', '2.1.3'
 gem 'simplecov', :require => false, :group => :test
 gem 'google-analytics-rails'
 gem 'nokogiri'
