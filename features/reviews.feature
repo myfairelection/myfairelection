@@ -4,7 +4,6 @@ Feature: Review a Polling Location
   As a voter
   I want to give feedback about my voting experience
 
-  @wip
   Scenario: Navigate to the review form
     Given I am a registered user with the address "1263 Pacific Ave. Kansas City KS"
     And the Google API is stubbed to return "ks_response.json"
@@ -13,7 +12,6 @@ Feature: Review a Polling Location
     And I follow "Give Feedback"
     Then I should see "When did you arrive to vote?"
 
-  @wip
   Scenario: Election day workflow with new user
     Given the Google API is stubbed to return "ks_response.json"
     When I am on the home page
@@ -28,7 +26,6 @@ Feature: Review a Polling Location
     And I click the "Register" button in the form "new_user"
     And I should see "Giving feedback for:"
 
-  @wip
   Scenario: Election day workflow with existing user
     Given I am a registered user with email "voter@example.org" and password "foobar"
     And the Google API is stubbed to return "ks_response.json"
@@ -43,7 +40,6 @@ Feature: Review a Polling Location
     And I click the "Log In" button in the form "signin"
     And I should see "Giving feedback for:"
 
-  @wip
   Scenario: Review a polling location other than what's found
     Given I am a registered user
     And the Google API is stubbed to return "ks_response.json"

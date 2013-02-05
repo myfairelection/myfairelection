@@ -4,5 +4,6 @@ FactoryGirl.define do
     city "San Francisco"
     state "CA"
     zip "94107"
+    properties({})
   end
 end

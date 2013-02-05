@@ -46,12 +46,24 @@ Given /^there is a feed with the url "([^"]*)"$/ do |url|
   Feed.create!(url: url)
 end
 
+Given /^there is a polling location$/ do
+  @polling_location = FactoryGirl.create(:polling_location)
+end
+
+Given /^the site is in shutoff mode$/ do
+  Settings['shutoff'] = true
+end
+
 When /^I am on the "([^"]*)" page$/ do |path|
   visit path
 end
 
 When /^I visit the "([^"]*)" page$/ do |path|
   visit path
+end
+
+When /^I visit the polling location page$/ do
+  visit "/polling_locations/#{@polling_location.id}"
 end
 
 When /^I fill in "([^"]*)" in the form "([^"]*)" with "([^"]*)"$/ do |field, form, value|
@@ -96,6 +108,10 @@ end
 
 Then /^I should see "([^"]*)"$/ do |content|
   expect(page).to have_content(content)
+end
+
+Then /^I should not see "([^"]*)"$/ do |content|
+  expect(page).to_not have_content(content)
 end
 
 Then /^I should see a button named "([^"]*)"$/ do |button|

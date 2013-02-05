@@ -1,14 +1,15 @@
 <% content_for :address_form do %>
-                <% if !user_signed_in? %>
-                <div class="section div-decor">
-                    <div class="subsec-location">
-                        <div class="content">
-                            <%= render "voter_info/form" %>
-                        </div>
-                    </div>
-                </div>
-                <% end %>
-
+<div class="section div-decor">
+    <div class="subsec-location">
+        <div class="content">
+          <% if site_shutoff? %>
+            <%= render "application/thanks" %>
+          <% elsif !user_signed_in? %>
+            <%= render "voter_info/form" %>
+          <% end %>
+        </div>
+    </div>
+</div>
 <% end %>
 
        <% if user_signed_in? %>

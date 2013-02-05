@@ -17,3 +17,7 @@
   <br />
   <%= render "voter_info", voter_info: @voter_info %>
 </div>
+<div class="section">
+  <p>If your polling location is not listed, we still want your feedback! Click below to get started.</p>
+  <%= link_to 'My polling location is not listed', new_polling_location_path(state: @voter_info.normalized_address.state), :class => "btn btn-primary" %>
+</div>
