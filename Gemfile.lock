@@ -116,7 +116,6 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.19)
     multi_json (1.5.0)
-    mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -127,6 +126,7 @@ GEM
       net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
+    pg (0.14.1)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -226,8 +226,8 @@ DEPENDENCIES
   fuubar
   google-analytics-rails
   jquery-rails
-  mysql2
   nokogiri
+  pg
   rails (= 3.2.11)
   rest-client
   rspec-rails
