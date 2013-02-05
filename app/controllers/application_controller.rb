@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
   helper_method :site_shutoff?
 
   # below is per https://github.com/plataformatec/devise/wiki/How-To:-redirect-to-a-specific-page-on-successful-sign-in
-  def after_sign_in_path_for(resource)                                                                                                                      
-    if request.referer.include?("/users")                                                                                                                 
+  def after_sign_in_path_for(resource)
+    if request.referer && request.referer.include?("/users")
       super                                                                                                                                                 
     else         
       stored_location_for(resource) || request.referer || root_path                                                                                         

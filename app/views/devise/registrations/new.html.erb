@@ -23,7 +23,7 @@
 		<hr />
 		<h2>Or, Log In</h2>
 
-		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:id => 'signin'}) do |f| %>
 			<div><%= f.label :email %>
 			<%= f.email_field :email %></div>
 
@@ -38,7 +38,7 @@
 				</div>
 				<br />
 			<% end %>
-			<div><%= f.submit "Log in", :class => "btn btn-primary" %></div>
+			<div><%= f.submit "Log In", :class => "btn btn-primary" %></div>
 		<% end %>
 		<hr />
 		<%= render "devise/shared/links" %>

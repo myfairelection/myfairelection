@@ -51,4 +51,5 @@ group :test, :development do
   gem 'email_spec'
   gem 'factory_girl_rails'
   gem 'fuubar'
+  gem 'launchy'
 end

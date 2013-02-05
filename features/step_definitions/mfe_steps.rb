@@ -90,6 +90,10 @@ When /^I follow "([^"]*)"$/ do |link|
   click_link(link)
 end
 
+When /^I follow the first "([^"]*)" link$/ do |link|
+  first(:link, link).click
+end
+
 When /^I register as a new user$/ do
   step 'I visit the "/users/sign_up" page'
   step 'I fill in "user_email" in the form "new_user" with "voter@example.org"'
@@ -104,6 +108,11 @@ end
 
 When /^I run "([^"]*)"$/ do |command|
   system command
+end
+
+When /^I save and open the page$/ do
+  puts current_path
+  save_and_open_page
 end
 
 Then /^I should see "([^"]*)"$/ do |content|
