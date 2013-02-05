@@ -7,6 +7,8 @@ development:
   google_election_id: 2000
   # Sendgrid is our email delivery service
   sendgrid_password:
+  # Set to true if the site shold go into shutoff mode
+  shutoff: false
 
 test:
   google_api_key: 
