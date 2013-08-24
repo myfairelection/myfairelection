@@ -17,12 +17,12 @@
 # Ignore local databse config. Example is in the source tree
 /config/database.yml
 
-# Ignore application settings file, for credentials which should't be in the source tree
-/config/application.yml
-
 # Ignore where compiled assets end up
 /public/assets
 
 # Ignore coverage data
 /coverage
 /feeds
+
+# Ignore local env settings
+/.env

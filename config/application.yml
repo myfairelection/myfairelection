@@ -1,0 +1,11 @@
+development: &development
+  google_api_key: <%= ENV['GOOGLE_API_KEY'] %>
+  google_election_id: <%= ENV['GOOGLE_ELECTION_ID'] %>
+  sendgrid_password: <%= ENV['SENDGRID_PASSWORD'] %>
+  shutoff: <%= ENV['SITE_SHUTOFF'] %>
+
+test:
+  <<: *development
+
+production:
+  <<: *development
