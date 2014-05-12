@@ -15,7 +15,7 @@ class PollingLocationsController < ApplicationController
     @polling_location.state = params[:polling_location][:state]
     @polling_location.description = params[:polling_location][:description]
     if @polling_location.description.blank?
-      @polling_location.errors[:base] << "Please describe where you voted"
+      @polling_location.errors[:base] << 'Please describe where you voted'
       render action: 'new'
     else
       if @polling_location.save
@@ -24,7 +24,5 @@ class PollingLocationsController < ApplicationController
         render action: 'new'
       end
     end
-
   end
-
 end
