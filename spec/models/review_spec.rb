@@ -1,63 +1,64 @@
 require 'spec_helper'
 
 describe Review do
-  let (:polling_location) { FactoryGirl.create(:polling_location)}
-  let (:user) { FactoryGirl.create(:user) }
+  let(:polling_location) { FactoryGirl.create(:polling_location) }
+  let(:user) { FactoryGirl.create(:user) }
   before(:each) do
     @review = Review.new(
       able_to_vote: true,
-      comments: "This place was smelly.",
+      comments: 'This place was smelly.',
       polling_location: polling_location,
       rating: 4,
       user: user,
-      voted_day: "11-06",
-      voted_time: "22:30",
+      voted_day: '11-06',
+      voted_time: '22:30',
       wait_time: 15,
-      ip_address: "128.32.47.18"
+      ip_address: '128.32.47.18'
     )
   end
-  it "is valid with valid parameters" do
+  it 'is valid with valid parameters' do
     @review.should be_valid
   end
-  it "is invalid without a polling location" do
+  it 'is invalid without a polling location' do
     @review.polling_location = nil
     @review.should_not be_valid
   end
-  it "is invalid without a user" do
+  it 'is invalid without a user' do
     @review.user = nil
     @review.should_not be_valid
   end
-  it "knows its polling location" do
+  it 'knows its polling location' do
     expect(@review.polling_location).to eq polling_location
   end
-  it "knows its user" do
+  it 'knows its user' do
     expect(@review.user).to eq user
   end
-  it "only allows one review per location/user combo" do
+  it 'only allows one review per location/user combo' do
     Review.new(user: user, polling_location: polling_location).save
-    Review.new(user: user, polling_location: polling_location).should_not be_valid
+    Review.new(user: user,
+               polling_location: polling_location).should_not be_valid
   end
-  describe "voted_day" do
-    it "is invalid if not in right format" do
-      @review.voted_day = "12323554"
+  describe 'voted_day' do
+    it 'is invalid if not in right format' do
+      @review.voted_day = '12323554'
       @review.should_not be_valid
     end
-    it "is invalid if not a legal date" do
-      @review.voted_day = "23-83"
+    it 'is invalid if not a legal date' do
+      @review.voted_day = '23-83'
       @review.should_not be_valid
     end
-    it "is valid if it's election day" do
-      @review.voted_day = "11-06"
+    it 'is valid if it is election day' do
+      @review.voted_day = '11-06'
       @review.should be_valid
     end
   end
-  describe "voted_time" do
-    it "is invalid if not in right format" do
-      @review.voted_time = "232325"
+  describe 'voted_time' do
+    it 'is invalid if not in right format' do
+      @review.voted_time = '232325'
       @review.should_not be_valid
     end
-    it "is invalid if not a legal time" do
-      @review.voted_time = "35:73"
+    it 'is invalid if not a legal time' do
+      @review.voted_time = '35:73'
       @review.should_not be_valid
     end
   end
