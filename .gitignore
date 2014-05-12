@@ -14,9 +14,6 @@
 /log/*.log
 /tmp
 
-# Ignore local databse config. Example is in the source tree
-/config/database.yml
-
 # Ignore where compiled assets end up
 /public/assets
 
