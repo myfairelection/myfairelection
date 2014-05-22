@@ -11,6 +11,7 @@ class Feed < ActiveRecord::Base
     url.rpartition('/')[2]
   end
 
+  # rubocop:disable CyclomaticComplexity
   def load_objects
     feed_file = open(url)
     feed_xml = Nokogiri::XML::Reader(feed_file)
@@ -53,6 +54,7 @@ class Feed < ActiveRecord::Base
     save
     puts "Loaded #{locations_loaded} polling locations"
   end
+  # rubocop:enable CyclomaticComplexity
 
   def self.load_from_file(*filenames)
     filenames = ARGV if filenames.blank?

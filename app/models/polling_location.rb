@@ -169,6 +169,7 @@ class PollingLocation < ActiveRecord::Base
       end until @elements.length == 0
     end
 
+    # rubocop:disable CyclomaticComplexity
     def save_value(name, value)
       @attributes[:early_vote] = true if name == :early_vote_site
       return if value.blank?
@@ -185,6 +186,7 @@ class PollingLocation < ActiveRecord::Base
         @properties[name.to_sym] = value
       end
     end
+    # rubocop:enable CyclomaticComplexity
   end
 
   # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned
