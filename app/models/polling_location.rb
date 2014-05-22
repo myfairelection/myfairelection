@@ -1,7 +1,9 @@
 class PollingLocation < ActiveRecord::Base
-  attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip, 
-                  :name, :location_name, :county, :latitude, :longitude, :properties
-  validates :state, :format => { :with => /\A[A-Z][A-Z]\z/ }, :allow_nil => true
+  attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip,
+                  :name, :location_name, :county, :latitude, :longitude,
+                  :properties
+  validates :state, format: { with: /\A[A-Z][A-Z]\z/ },
+                    allow_nil: true
   validate :at_least_one_address_field_must_be_present
   validate :if_description_set_only_state_can_be_present
   serialize :properties, JSON
@@ -19,14 +21,16 @@ class PollingLocation < ActiveRecord::Base
       write_attribute(attrib, s.blank? ? nil : s)
     end
   end
-  # state should always be all caps. 
+  # state should always be all caps.
   def state=(s)
     write_attribute(:state, PollingLocation.normalize_state(s))
   end
+
   def zip=(s)
     write_attribute(:zip, PollingLocation.normalize_zip(s))
   end
 
+  # rubocop:disable PerlBackrefs
   def self.normalize_zip(zip)
     return nil if zip.blank?
     zip.strip!
@@ -36,48 +40,49 @@ class PollingLocation < ActiveRecord::Base
     when /\A(\d{5})-\z/
       "#{$1}"
     else
-      zip    
+      zip
     end
   end
+  # rubocop:enable PerlBackrefs
 
   def self.normalize_state(state)
     state.blank? ? nil : state.upcase[0..1]
   end
 
   def at_least_one_address_field_must_be_present
-    unless ADDRESS_ATTRIBS.inject(false) { |ret, field| ret || self.send(field) }
-      errors[:base] << "At least one address field must be present"
+    field_present = ADDRESS_ATTRIBS.inject(false) do |ret, field|
+      ret || send(field)
     end
+    errors[:base] <<
+      'At least one address field must be present' unless field_present
   end
 
   def if_description_set_only_state_can_be_present
-    if self.description
-      attribs = ADDRESS_ATTRIBS.dup
-      attribs.delete(:state)
-      if attribs.inject(false) { |ret, field| ret || self.send(field) }
-        errors[:base] << "If description is set, only state may be present"
-      end
-    end
+    return unless description
+    attribs = ADDRESS_ATTRIBS.dup
+    attribs.delete(:state)
+    return unless attribs.inject(false) { |ret, field| ret || send(field) }
+    errors[:base] << 'If description is set, only state may be present'
   end
   def self.find_by_address(address)
-    search = ADDRESS_ATTRIBS.inject({}) do |result, attrib| 
-      case 
+    search = ADDRESS_ATTRIBS.each_with_object({}) do |attrib, result|
+      case
       when address[attrib].blank?
         result[attrib] = nil
       when attrib == :zip
-        result[attrib] = self.normalize_zip(address[attrib])
+        result[attrib] = normalize_zip(address[attrib])
       when attrib == :state
-        result[attrib] = self.normalize_state(address[attrib])
+        result[attrib] = normalize_state(address[attrib])
       else
         result[attrib] = address[attrib]
       end
       result
     end
     search[:early_vote] = address[:early_vote] ? true : false
-    self.where(search).first
+    where(search).first
   end
 
-  def PollingLocation.update_or_create_from_attribs_and_properties(attribs, properties)
+  def self.update_or_create_from_attribs_and_properties(attribs, properties)
     pl = PollingLocation.find_by_address(attribs)
     if pl
       pl.update_attributes!(attribs)
@@ -90,7 +95,8 @@ class PollingLocation < ActiveRecord::Base
     end
   end
 
-  # Builds and saves a new PollingLocation using the JSON returned by the Google Civic Information API.
+  # Builds and saves a new PollingLocation using the JSON returned by the
+  # Google Civic Information API.
   # Sample:
   # {
   #      "address" => {
@@ -108,21 +114,21 @@ class PollingLocation < ActiveRecord::Base
   #       }
   #      ]
   #     }
-  def PollingLocation.find_or_create_from_google!(location_hash, early_vote = false)
+  def self.find_or_create_from_google!(location_hash, early_vote = false)
     attribs = {}
     properties = {}
     location_hash.keys.each do |key|
       case key
-      when "address"
+      when 'address'
         location_hash[key].keys.each do |addr_key|
           case addr_key
-          when "locationName"
+          when 'locationName'
             attribs[:location_name] = location_hash[key][addr_key].strip
           else
             attribs[addr_key.to_sym] = location_hash[key][addr_key].strip
           end
         end
-      when "name"
+      when 'name'
         attribs[key.to_sym] = location_hash[key].strip
       else
         properties[key.to_sym] = location_hash[key]
@@ -144,7 +150,7 @@ class PollingLocation < ActiveRecord::Base
     end
 
     def parse
-      begin        
+      loop do
         case @reader.node_type
         when Nokogiri::XML::Reader::TYPE_ELEMENT
           unless @reader.self_closing?
@@ -156,18 +162,18 @@ class PollingLocation < ActiveRecord::Base
           @elements.shift
           @values.shift
         when Nokogiri::XML::Reader::TYPE_TEXT
-          @values[0] << @reader.value 
+          @values[0] << @reader.value
         else
           # do nothing
         end
         @reader.read
-      end until @elements.length == 0
+        break if @elements.length == 0
+      end
     end
 
+    # rubocop:disable CyclomaticComplexity
     def save_value(name, value)
-      if name == :early_vote_site
-        @attributes[:early_vote] = true
-      end
+      @attributes[:early_vote] = true if name == :early_vote_site
       return if value.blank?
       case
       when name == :locationName
@@ -179,15 +185,16 @@ class PollingLocation < ActiveRecord::Base
       when ATTRIBS.include?(name.to_sym)
         @attributes[name.to_sym] = value
       else
-        @properties[name.to_sym] = value  
+        @properties[name.to_sym] = value
       end
     end
+    # rubocop:enable CyclomaticComplexity
   end
 
-  # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned at
-  # the first polling_location (or early_vote_location) element.
-  def PollingLocation.update_or_create_from_xml!(reader)
-    id = reader.attribute("id")
+  # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned
+  # at the first polling_location (or early_vote_location) element.
+  def self.update_or_create_from_xml!(reader)
+    id = reader.attribute('id')
     r = Reader.new(reader)
     r.parse
     begin
