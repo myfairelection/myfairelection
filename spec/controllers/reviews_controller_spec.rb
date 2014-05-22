@@ -100,7 +100,7 @@ describe ReviewsController do
             begin
               post 'create', params
             rescue
-            # no action
+              # no action
             end
           end.to change { Review.count }.by(0)
           # rubocop:enable HandleExceptions
