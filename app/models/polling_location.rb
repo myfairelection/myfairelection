@@ -170,9 +170,7 @@ class PollingLocation < ActiveRecord::Base
     end
 
     def save_value(name, value)
-      if name == :early_vote_site
-        @attributes[:early_vote] = true
-      end
+      @attributes[:early_vote] = true if name == :early_vote_site
       return if value.blank?
       case
       when name == :locationName
