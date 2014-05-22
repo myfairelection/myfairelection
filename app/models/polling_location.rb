@@ -25,6 +25,7 @@ class PollingLocation < ActiveRecord::Base
   def state=(s)
     write_attribute(:state, PollingLocation.normalize_state(s))
   end
+
   def zip=(s)
     write_attribute(:zip, PollingLocation.normalize_zip(s))
   end
