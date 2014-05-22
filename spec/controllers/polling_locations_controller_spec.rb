@@ -75,7 +75,7 @@ describe PollingLocationsController do
               rescue
                 # no action
               end
-            end.to change{Review.count}.by(0)
+            end.to change { Review.count }.by(0)
             # rubocop:enable HandleExceptions
           end
         end
@@ -85,7 +85,7 @@ describe PollingLocationsController do
           { polling_location: {state: 'CA' } }
         }
         it 'does not create a new polling location' do
-          expect {post 'create', params}.to change{PollingLocation.count}.by(0)
+          expect { post 'create', params }.to change { PollingLocation.count }.by(0)
         end
         it 'renders the new page' do
           post 'create', params
