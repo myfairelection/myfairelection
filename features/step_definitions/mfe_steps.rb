@@ -25,7 +25,6 @@ Given(/^I am a confirmed user with email "([^"]*)" and password "([^"]*)"$/) do 
   @user.save
 end
 
-
 Given(/^I am not logged in$/) do
   # nothing to do here
 end
@@ -36,7 +35,6 @@ Given(/^I log in$/) do
   step "I fill in \"user_password\" in the form \"signin\" with \"#{@user.password}\""
   step 'I click the "Log In" button in the form "signin"'
 end
-
 
 Given(/^I am on the home page$/) do
   visit '/'
