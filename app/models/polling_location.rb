@@ -30,6 +30,7 @@ class PollingLocation < ActiveRecord::Base
     write_attribute(:zip, PollingLocation.normalize_zip(s))
   end
 
+  # rubocop:disable PerlBackrefs
   def self.normalize_zip(zip)
     return nil if zip.blank?
     zip.strip!
@@ -42,6 +43,7 @@ class PollingLocation < ActiveRecord::Base
       zip
     end
   end
+  # rubocop:enable PerlBackrefs
 
   def self.normalize_state(state)
     state.blank? ? nil : state.upcase[0..1]

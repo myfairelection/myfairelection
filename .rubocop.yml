@@ -10,6 +10,12 @@ CollectionMethods:
 SingleLineBlockParams:
   Enabled: false
 
+BlockNesting:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
 AllCops:
   Include:
     - Rakefile
