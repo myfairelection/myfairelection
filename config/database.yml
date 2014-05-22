@@ -11,8 +11,6 @@ test: &test
   database: myfairelection_test
   host: localhost
   pool: 5
-  # username: root
-  # password:
 
 production:
   adapter: sqlite3
