@@ -47,21 +47,19 @@ class PollingLocation < ActiveRecord::Base
   end
 
   def at_least_one_address_field_must_be_present
-    unless ADDRESS_ATTRIBS.inject(false) do |ret, field|
-        ret || send(field)
-      end
-      errors[:base] << 'At least one address field must be present'
+    field_present = ADDRESS_ATTRIBS.inject(false) do |ret, field|
+      ret || send(field)
     end
+    errors[:base] <<
+      'At least one address field must be present' unless field_present
   end
 
   def if_description_set_only_state_can_be_present
-    if description
-      attribs = ADDRESS_ATTRIBS.dup
-      attribs.delete(:state)
-      if attribs.inject(false) { |ret, field| ret || send(field) }
-        errors[:base] << 'If description is set, only state may be present'
-      end
-    end
+    return unless description
+    attribs = ADDRESS_ATTRIBS.dup
+    attribs.delete(:state)
+    return unless attribs.inject(false) { |ret, field| ret || send(field) }
+    errors[:base] << 'If description is set, only state may be present'
   end
   def self.find_by_address(address)
     search = ADDRESS_ATTRIBS.each_with_object({}) do |attrib, result|
