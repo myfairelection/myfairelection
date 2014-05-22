@@ -50,7 +50,7 @@ class PollingLocation < ActiveRecord::Base
     unless ADDRESS_ATTRIBS.inject(false) do |ret, field|
         ret || self.send(field)
       end
-      errors[:base] << "At least one address field must be present"
+      errors[:base] << 'At least one address field must be present'
     end
   end
 
@@ -59,7 +59,7 @@ class PollingLocation < ActiveRecord::Base
       attribs = ADDRESS_ATTRIBS.dup
       attribs.delete(:state)
       if attribs.inject(false) { |ret, field| ret || self.send(field) }
-        errors[:base] << "If description is set, only state may be present"
+        errors[:base] << 'If description is set, only state may be present'
       end
     end
   end
@@ -118,16 +118,16 @@ class PollingLocation < ActiveRecord::Base
     properties = {}
     location_hash.keys.each do |key|
       case key
-      when "address"
+      when 'address'
         location_hash[key].keys.each do |addr_key|
           case addr_key
-          when "locationName"
+          when 'locationName'
             attribs[:location_name] = location_hash[key][addr_key].strip
           else
             attribs[addr_key.to_sym] = location_hash[key][addr_key].strip
           end
         end
-      when "name"
+      when 'name'
         attribs[key.to_sym] = location_hash[key].strip
       else
         properties[key.to_sym] = location_hash[key]
@@ -192,7 +192,7 @@ class PollingLocation < ActiveRecord::Base
   # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned
   # at the first polling_location (or early_vote_location) element.
   def PollingLocation.update_or_create_from_xml!(reader)
-    id = reader.attribute("id")
+    id = reader.attribute('id')
     r = Reader.new(reader)
     r.parse
     begin

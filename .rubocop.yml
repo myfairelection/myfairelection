@@ -13,7 +13,6 @@ SingleLineBlockParams:
 LineLength:
   Exclude:
     - features/step_definitions/**/*
-    - features/support/env.rb
 
 AllCops:
   Include:
@@ -26,3 +25,4 @@ AllCops:
     - tmp/**/*
     - log/**/*
     - spec/spec_helper.rb
+    - features/support/env.rb

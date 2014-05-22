@@ -10,12 +10,12 @@ Given /^I am a registered user with email "([^"]*)" and password "([^"]*)"$/ do 
   @user = FactoryGirl.create(:user, email: email, password: password)
 end
 
-Given /^I am a registered user with the address "([^"]*)"$/ do |arg1|
-  step "I am a registered user"
-  @user.address = Address.new({"line1" => "1263 Pacific Avenue",
-                               "city" =>"Kansas City",
-                               "state" => "KS",
-                               "zip" => "66102"})
+Given /^I am a registered user with the address "([^\"]*)"$/ do |arg1|
+  step 'I am a registered user'
+  @user.address = Address.new({'line1' => '1263 Pacific Avenue',
+                               'city' =>'Kansas City',
+                               'state' => 'KS',
+                               'zip' => '66102'})
   @user.save
 end
 
@@ -31,7 +31,7 @@ Given /^I am not logged in$/ do
 end
 
 Given /^I log in$/ do
-  visit "/"
+  visit '/'
   step "I fill in \"user_email\" in the form \"signin\" with \"#{@user.email}\""
   step "I fill in \"user_password\" in the form \"signin\" with \"#{@user.password}\""
   step 'I click the "Log In" button in the form "signin"'
@@ -39,7 +39,7 @@ end
 
 
 Given /^I am on the home page$/ do
-  visit "/"
+  visit '/'
 end
 
 Given /^there is a feed with the url "([^"]*)"$/ do |url|
