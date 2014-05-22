@@ -13,7 +13,7 @@ class StateMapData < ActiveRecord::Base
             'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
   def self.update
-    self.transaction do
+    transaction do
       puts 'transaction started'
       connection.execute('delete from state_map_data;')
       puts 'rows deleted'

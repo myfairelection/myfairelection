@@ -48,17 +48,17 @@ class PollingLocation < ActiveRecord::Base
 
   def at_least_one_address_field_must_be_present
     unless ADDRESS_ATTRIBS.inject(false) do |ret, field|
-        ret || self.send(field)
+        ret || send(field)
       end
       errors[:base] << 'At least one address field must be present'
     end
   end
 
   def if_description_set_only_state_can_be_present
-    if self.description
+    if description
       attribs = ADDRESS_ATTRIBS.dup
       attribs.delete(:state)
-      if attribs.inject(false) { |ret, field| ret || self.send(field) }
+      if attribs.inject(false) { |ret, field| ret || send(field) }
         errors[:base] << 'If description is set, only state may be present'
       end
     end
@@ -69,16 +69,16 @@ class PollingLocation < ActiveRecord::Base
       when address[attrib].blank?
         result[attrib] = nil
       when attrib == :zip
-        result[attrib] = self.normalize_zip(address[attrib])
+        result[attrib] = normalize_zip(address[attrib])
       when attrib == :state
-        result[attrib] = self.normalize_state(address[attrib])
+        result[attrib] = normalize_state(address[attrib])
       else
         result[attrib] = address[attrib]
       end
       result
     end
     search[:early_vote] = address[:early_vote] ? true : false
-    self.where(search).first
+    where(search).first
   end
 
   def self.update_or_create_from_attribs_and_properties(attribs, properties)
