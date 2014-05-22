@@ -149,7 +149,7 @@ class PollingLocation < ActiveRecord::Base
     end
 
     def parse
-      begin
+      loop do
         case @reader.node_type
         when Nokogiri::XML::Reader::TYPE_ELEMENT
           unless @reader.self_closing?
@@ -166,7 +166,8 @@ class PollingLocation < ActiveRecord::Base
           # do nothing
         end
         @reader.read
-      end until @elements.length == 0
+        break if @elements.length == 0
+      end
     end
 
     # rubocop:disable CyclomaticComplexity
