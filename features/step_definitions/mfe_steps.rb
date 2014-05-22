@@ -13,7 +13,7 @@ end
 Given(/^I am a registered user with the address "([^\"]*)"$/) do |arg1|
   step 'I am a registered user'
   @user.address = Address.new('line1' => '1263 Pacific Avenue',
-                              'city' =>'Kansas City',
+                              'city' => 'Kansas City',
                               'state' => 'KS',
                               'zip' => '66102')
   @user.save
