@@ -10,7 +10,7 @@ Given(/^I am a registered user with email "([^"]*)" and password "([^"]*)"$/) do
   @user = FactoryGirl.create(:user, email: email, password: password)
 end
 
-Given(/^I am a registered user with the address "([^\"]*)"$/) do |arg1|
+Given(/^I am a registered user with the address "[^\"]*"$/) do
   step 'I am a registered user'
   @user.address = Address.new('line1' => '1263 Pacific Avenue',
                               'city' => 'Kansas City',
