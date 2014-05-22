@@ -4,6 +4,12 @@ MethodLength:
 Documentation:
   Enabled: false
 
+CollectionMethods:
+  Enabled: false
+
+SingleLineBlockParams:
+  Enabled: false
+
 AllCops:
   Include:
     - Rakefile
