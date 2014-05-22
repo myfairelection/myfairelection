@@ -10,10 +10,6 @@ CollectionMethods:
 SingleLineBlockParams:
   Enabled: false
 
-LineLength:
-  Exclude:
-    - features/step_definitions/**/*
-
 AllCops:
   Include:
     - Rakefile
@@ -25,4 +21,4 @@ AllCops:
     - tmp/**/*
     - log/**/*
     - spec/spec_helper.rb
-    - features/support/env.rb
+    - features/**/*
