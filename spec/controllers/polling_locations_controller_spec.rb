@@ -82,7 +82,7 @@ describe PollingLocationsController do
       end
       context 'without a description' do
         let (:params) {
-          { polling_location: {state: 'CA' } }
+          { polling_location: { state: 'CA' } }
         }
         it 'does not create a new polling location' do
           expect do
