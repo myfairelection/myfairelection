@@ -64,7 +64,7 @@ class PollingLocation < ActiveRecord::Base
     end
   end
   def self.find_by_address(address)
-    search = ADDRESS_ATTRIBS.inject({}) do |result, attrib|
+    search = ADDRESS_ATTRIBS.each_with_object({}) do |attrib, result|
       case
       when address[attrib].blank?
         result[attrib] = nil
