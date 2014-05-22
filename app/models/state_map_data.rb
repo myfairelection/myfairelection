@@ -39,12 +39,12 @@ end
 # insert into state_map_data
 # select polling_locations.state as name, avg(rating) as rating,
 # avg(wait_time) as wait_time,count(*) as n
-#   from reviews, polling_locations 
+#   from reviews, polling_locations
 #   where reviews.polling_location_id = polling_locations.id
 #   group by polling_locations.state;
 
 # select reviews.*, polling_locations.state
-#   from reviews, polling_locations 
+#   from reviews, polling_locations
 #   where reviews.polling_location_id = polling_locations.id
 #   order by polling_locations.state, reviews.voted_day, reviews.voted_time
 #   limit 2;

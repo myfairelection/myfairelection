@@ -8,5 +8,5 @@ describe InfoController do
       response.should render_template("info/#{page}")
     end
   end
-  
+
 end

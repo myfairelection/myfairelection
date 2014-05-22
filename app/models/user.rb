@@ -19,6 +19,6 @@ class User < ActiveRecord::Base
       end
     else
       super
-    end    
+    end
   end
 end

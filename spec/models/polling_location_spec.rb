@@ -570,7 +570,7 @@ POLLING_LOCATION
 
       while feed_xml.read
         next unless (feed_xml.node_type ==
-                     Nokogiri::XML::Reader::TYPE_ELEMENT) and 
+                     Nokogiri::XML::Reader::TYPE_ELEMENT) and
                     (%w(polling_location early_vote_site)
                       .include?(feed_xml.name))
         pl = PollingLocation.update_or_create_from_xml!(feed_xml)

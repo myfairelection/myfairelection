@@ -1,5 +1,5 @@
 class PollingLocation < ActiveRecord::Base
-  attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip, 
+  attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip,
                   :name, :location_name, :county, :latitude, :longitude,
                   :properties
   validates :state, :format => { :with => /\A[A-Z][A-Z]\z/ },
@@ -21,7 +21,7 @@ class PollingLocation < ActiveRecord::Base
       write_attribute(attrib, s.blank? ? nil : s)
     end
   end
-  # state should always be all caps. 
+  # state should always be all caps.
   def state=(s)
     write_attribute(:state, PollingLocation.normalize_state(s))
   end
@@ -38,7 +38,7 @@ class PollingLocation < ActiveRecord::Base
     when /\A(\d{5})-\z/
       "#{$1}"
     else
-      zip    
+      zip
     end
   end
 
@@ -64,8 +64,8 @@ class PollingLocation < ActiveRecord::Base
     end
   end
   def self.find_by_address(address)
-    search = ADDRESS_ATTRIBS.inject({}) do |result, attrib| 
-      case 
+    search = ADDRESS_ATTRIBS.inject({}) do |result, attrib|
+      case
       when address[attrib].blank?
         result[attrib] = nil
       when attrib == :zip
@@ -149,7 +149,7 @@ class PollingLocation < ActiveRecord::Base
     end
 
     def parse
-      begin        
+      begin
         case @reader.node_type
         when Nokogiri::XML::Reader::TYPE_ELEMENT
           unless @reader.self_closing?
@@ -161,7 +161,7 @@ class PollingLocation < ActiveRecord::Base
           @elements.shift
           @values.shift
         when Nokogiri::XML::Reader::TYPE_TEXT
-          @values[0] << @reader.value 
+          @values[0] << @reader.value
         else
           # do nothing
         end
@@ -184,7 +184,7 @@ class PollingLocation < ActiveRecord::Base
       when ATTRIBS.include?(name.to_sym)
         @attributes[name.to_sym] = value
       else
-        @properties[name.to_sym] = value  
+        @properties[name.to_sym] = value
       end
     end
   end
