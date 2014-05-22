@@ -1,7 +1,9 @@
 class PollingLocation < ActiveRecord::Base
   attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip, 
-                  :name, :location_name, :county, :latitude, :longitude, :properties
-  validates :state, :format => { :with => /\A[A-Z][A-Z]\z/ }, :allow_nil => true
+                  :name, :location_name, :county, :latitude, :longitude,
+                  :properties
+  validates :state, :format => { :with => /\A[A-Z][A-Z]\z/ },
+                    :allow_nil => true
   validate :at_least_one_address_field_must_be_present
   validate :if_description_set_only_state_can_be_present
   serialize :properties, JSON
@@ -45,7 +47,9 @@ class PollingLocation < ActiveRecord::Base
   end
 
   def at_least_one_address_field_must_be_present
-    unless ADDRESS_ATTRIBS.inject(false) { |ret, field| ret || self.send(field) }
+    unless ADDRESS_ATTRIBS.inject(false) do |ret, field|
+        ret || self.send(field)
+      end
       errors[:base] << "At least one address field must be present"
     end
   end
@@ -77,7 +81,7 @@ class PollingLocation < ActiveRecord::Base
     self.where(search).first
   end
 
-  def PollingLocation.update_or_create_from_attribs_and_properties(attribs, properties)
+  def self.update_or_create_from_attribs_and_properties(attribs, properties)
     pl = PollingLocation.find_by_address(attribs)
     if pl
       pl.update_attributes!(attribs)
@@ -90,7 +94,8 @@ class PollingLocation < ActiveRecord::Base
     end
   end
 
-  # Builds and saves a new PollingLocation using the JSON returned by the Google Civic Information API.
+  # Builds and saves a new PollingLocation using the JSON returned by the
+  # Google Civic Information API.
   # Sample:
   # {
   #      "address" => {
@@ -108,7 +113,7 @@ class PollingLocation < ActiveRecord::Base
   #       }
   #      ]
   #     }
-  def PollingLocation.find_or_create_from_google!(location_hash, early_vote = false)
+  def self.find_or_create_from_google!(location_hash, early_vote = false)
     attribs = {}
     properties = {}
     location_hash.keys.each do |key|
@@ -184,8 +189,8 @@ class PollingLocation < ActiveRecord::Base
     end
   end
 
-  # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned at
-  # the first polling_location (or early_vote_location) element.
+  # Expects a Nokogiri::XML::Reader or equivalent, with the cursor positioned
+  # at the first polling_location (or early_vote_location) element.
   def PollingLocation.update_or_create_from_xml!(reader)
     id = reader.attribute("id")
     r = Reader.new(reader)

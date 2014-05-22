@@ -19,11 +19,16 @@ class StateMapData < ActiveRecord::Base
       puts 'rows deleted'
       STATES.each do |state|
         connection.execute("insert into state_map_data
-          select '#{state}', avg(wait_time) as wait_time, avg(rating) as rating, count(*) as n from
-            (select r.rating, r.wait_time, pl.state from reviews r, polling_locations pl
+          select '#{state}', avg(wait_time) as wait_time, avg(rating) as
+          rating, count(*) as n from
+            (select r.rating, r.wait_time, pl.state from reviews r,
+                                                         polling_locations pl
               where pl.id = r.polling_location_id
               and pl.state = '#{state}'
-              order by r.voted_day desc, r.voted_time desc, r.created_at desc limit 10) as top_reviews;")
+              order by r.voted_day desc,
+                                   r.voted_time desc,
+                                   r.created_at desc limit 10)
+          as top_reviews;")
       end
       puts 'rows updated'
     end
@@ -32,9 +37,11 @@ class StateMapData < ActiveRecord::Base
 end
 
 # insert into state_map_data
-# select polling_locations.state as name, avg(rating) as rating ,avg(wait_time) as wait_time,count(*) as n
+# select polling_locations.state as name, avg(rating) as rating,
+# avg(wait_time) as wait_time,count(*) as n
 #   from reviews, polling_locations 
-#   where reviews.polling_location_id = polling_locations.id group by polling_locations.state;
+#   where reviews.polling_location_id = polling_locations.id
+#   group by polling_locations.state;
 
 # select reviews.*, polling_locations.state
 #   from reviews, polling_locations 
@@ -42,8 +49,11 @@ end
 #   order by polling_locations.state, reviews.voted_day, reviews.voted_time
 #   limit 2;
 
-# select state, avg(rating) as rating, avg(wait_time) as wait_time, count(*) as n from
-#    (select r.rating, r.wait_time, pl.state from reviews r, polling_locations pl
+# select state, avg(rating) as rating,
+#   avg(wait_time) as wait_time, count(*) as n from
+#    (select r.rating, r.wait_time, pl.state from reviews r,
+#               polling_locations pl
 #     where pl.id = r.polling_location_id
 #         and pl.state = "CA"
-#     order by r.voted_day desc, r.voted_time desc, r.created_at desc limit 10) as top_reviews;
+#     order by r.voted_day desc, r.voted_time desc,
+#              r.created_at desc limit 10) as top_reviews;

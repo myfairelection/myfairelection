@@ -85,7 +85,9 @@ describe PollingLocationsController do
           { polling_location: {state: 'CA' } }
         }
         it 'does not create a new polling location' do
-          expect { post 'create', params }.to change { PollingLocation.count }.by(0)
+          expect do
+            post 'create', params
+          end.to change { PollingLocation.count }.by(0)
         end
         it 'renders the new page' do
           post 'create', params
