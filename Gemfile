@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.2'
 
-gem 'rails', '4.0.5'
+gem 'rails', '4.1.1'
 gem 'rails_12factor'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -27,6 +27,7 @@ gem 'coffee-rails'
 gem 'unicorn'
 
 group :test, :development do
+  gem 'byebug'
   gem "rspec-rails", '~> 2.12'
   gem "cucumber-rails", :require => false
   gem 'database_cleaner'

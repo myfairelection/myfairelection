@@ -58,7 +58,7 @@ class Feed < ActiveRecord::Base
   def self.load_from_file(*filenames)
     filenames = ARGV if filenames.blank?
     filenames.each do |filename|
-      f = find_or_create_by_url(filename)
+      f = find_or_create_by(url: filename)
       if f.loaded?
         puts "Already loaded #{filename}, skipping"
       else
