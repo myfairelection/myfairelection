@@ -1,7 +1,4 @@
 class PollingLocation < ActiveRecord::Base
-  attr_accessible :early_vote, :line1, :line2, :line3, :city, :state, :zip,
-                  :name, :location_name, :county, :latitude, :longitude,
-                  :properties
   validates :state, format: { with: /\A[A-Z][A-Z]\z/ },
                     allow_nil: true
   validate :at_least_one_address_field_must_be_present

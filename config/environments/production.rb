@@ -77,4 +77,6 @@ Myfairelection::Application.configure do
 
   # for google analytics
   GA.tracker = "UA-35559818-1"
+
+  config.eager_load = true
 end

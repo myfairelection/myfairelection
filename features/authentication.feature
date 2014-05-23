@@ -18,6 +18,7 @@ Feature: Authentication
     And I click the "Log In" button in the form "signin"
     Then I should see "Signed in successfully."
 
+  @wip
   Scenario: Confirm my email address
     When I register as a new user
     And "voter@example.org" opens the email

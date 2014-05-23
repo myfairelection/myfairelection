@@ -2,7 +2,6 @@ require 'open-uri'
 require 'nokogiri'
 
 class Feed < ActiveRecord::Base
-  attr_accessible :url, :vip_id
   validates_presence_of :url
   validates_uniqueness_of :url
   has_many :polling_locations

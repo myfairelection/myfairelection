@@ -7,7 +7,7 @@ class ReviewsController < ApplicationController
     user = current_user
     ip_address = request.env['HTTP_X-REAL-IP']
     ip_address ||= request.env['REMOTE_ADDR']
-    @review = Review.new(params[:review]
+    @review = Review.new(safe_params
                            .merge(user: user,
                                   polling_location: polling_location,
                                   ip_address: ip_address))
@@ -24,5 +24,12 @@ class ReviewsController < ApplicationController
     polling_location = PollingLocation.find(params[:polling_location_id])
     @review = Review.new(polling_location: polling_location,
                          user: current_user)
+  end
+
+  private
+
+  def safe_params
+    params.require(:review).permit(:voted_day, :voted_time, :wait_time,
+                                   :able_to_vote, :rating, :comments)
   end
 end

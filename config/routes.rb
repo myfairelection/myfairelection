@@ -12,19 +12,18 @@ Myfairelection::Application.routes.draw do
 
   get "info/about"
 
-  devise_for :users, :controllers => {:confirmations => 'users/confirmations',
-                                      :registrations => 'users/registrations' }
-  
-  match "voter_info/find" => 'voter_info#find'
+  devise_for :users
 
-  match "users/address" => "users#address"
+  get "voter_info/find" => 'voter_info#find'
 
-  match "users/reminder" => "users#reminder"
+  post "users/address" => "users#address"
 
-  match "map" => "state_map#index"
-  match "map/states" => "state_map#states"
+  post "users/reminder" => "users#reminder"
 
-  match "admin" => "admin#index"
+  get "map" => "state_map#index"
+  get "map/states" => "state_map#states"
+
+  get "admin" => "admin#index"
 
   root :to => 'home#index'
 
