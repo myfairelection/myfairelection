@@ -1,0 +1,30 @@
+MethodLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+CollectionMethods:
+  Enabled: false
+
+SingleLineBlockParams:
+  Enabled: false
+
+BlockNesting:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+AllCops:
+  Include:
+    - Rakefile
+    - config.ru
+  Exclude:
+    - script/**/*
+    - db/**/*
+    - config/**/*
+    - tmp/**/*
+    - log/**/*
+    - spec/spec_helper.rb
+    - features/**/*

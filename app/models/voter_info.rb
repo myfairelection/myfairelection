@@ -1,6 +1,6 @@
 require 'ostruct'
 
-class VoterInfo 
+class VoterInfo
   APIKEY = Settings.google_api_key
   ELECTION_ID = Settings.google_election_id
 
@@ -9,26 +9,35 @@ class VoterInfo
   end
 
   def initialize(address)
-    response = RestClient.post "https://www.googleapis.com/civicinfo/us_v1/voterinfo/#{ELECTION_ID}/lookup?key=#{APIKEY}",
-          { "address" => address }.to_json, :content_type => :json, :accept => :json
+    response = RestClient.post 'https://www.googleapis.com/' \
+                               "civicinfo/us_v1/voterinfo/#{ELECTION_ID}/" \
+                               "lookup?key=#{APIKEY}",
+                               { 'address' => address }.to_json,
+                               content_type: :json, accept: :json
     @response = ActiveSupport::JSON.decode(response)
   end
 
   def status
-    @status ||= @response["status"]
+    @status ||= @response['status']
   end
 
   def normalized_address
-    @normalized_address ||= @response["normalizedInput"] ? Address.new(@response["normalizedInput"]) : nil 
+    @normalized_address ||= if @response['normalizedInput']
+                              Address.new(@response['normalizedInput'])
+                            else
+                              nil
+                            end
   end
 
   def polling_locations
     if @polling_locations
       @polling_locations
     else
-      locations = @response["pollingLocations"]
+      locations = @response['pollingLocations']
       if locations
-        @polling_locations = locations.map { |e| PollingLocation.find_or_create_from_google!(e, false) }
+        @polling_locations = locations.map do |e|
+          PollingLocation.find_or_create_from_google!(e, false)
+        end
       else
         @polling_locations = []
       end
@@ -40,9 +49,11 @@ class VoterInfo
     if @early_voting_places
       @early_voting_places
     else
-      evplaces = @response["earlyVoteSites"]
+      evplaces = @response['earlyVoteSites']
       if evplaces
-        @early_voting_places = evplaces.map { |e| PollingLocation.find_or_create_from_google!(e, true) }
+        @early_voting_places = evplaces.map do |e|
+          PollingLocation.find_or_create_from_google!(e, true)
+        end
       else
         @early_voting_places = []
       end

@@ -8,15 +8,18 @@ class VoterInfoController < ApplicationController
     when 'noStreetSegmentFound'
       @voter_info = voter_info
     when 'noAddressParameter'
-      flash[:error] = "Please enter an address."
+      flash[:error] = 'Please enter an address.'
       redirect_to root_path
     when 'addressUnparseable'
-      flash[:error] = "Could not figure out your address. Please check the address you gave us."
+      flash[:error] = 'Could not figure out your address. ' \
+                      'Please check the address you gave us.'
       redirect_to root_path
     else
-      flash[:error] = "A problem happened while looking up your polling place. Please try again."
+      flash[:error] =
+        'A problem happened while looking up your polling place.' \
+        'Please try again.'
       redirect_to root_path
     end
-    log_event("VoterInfo", "Find", voter_info.status)
+    log_event('VoterInfo', 'Find', voter_info.status)
   end
 end

@@ -7,6 +7,7 @@ class AdminController < ApplicationController
   end
 
   def authorize
-    render :text => "403 Permission denied", :status => 403 unless current_user.admin?
+    render text: '403 Permission denied',
+           status: 403 unless current_user.admin?
   end
 end
