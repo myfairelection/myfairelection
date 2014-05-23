@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.2'
 
 gem 'rails', '4.1.1'
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
