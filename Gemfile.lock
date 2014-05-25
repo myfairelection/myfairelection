@@ -204,7 +204,7 @@ DEPENDENCIES
   rails (= 4.1.1)
   rails_12factor
   rest-client
-  rspec-rails (~> 2.12)
+  rspec-rails (~> 2.14)
   settingslogic
   simplecov
   unicorn

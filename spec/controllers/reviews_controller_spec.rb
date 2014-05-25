@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe ReviewsController do
   let(:polling_location) { FactoryGirl.create(:polling_location) }
+  after(:all) do
+    polling_location.destroy
+  end
   describe 'POST create' do
     let(:params) do
       { 'review' =>

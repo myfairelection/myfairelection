@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Review do
   let(:polling_location) { FactoryGirl.create(:polling_location) }
   let(:user) { FactoryGirl.create(:user) }
+  after(:all) do
+    polling_location.destroy
+    user.destroy
+  end
   before(:each) do
     @review = Review.new(
       able_to_vote: true,
