@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Review, :type => :model do
+describe Review, type: :model do
   let(:polling_location) { FactoryGirl.create(:polling_location) }
   let(:user) { FactoryGirl.create(:user) }
   before(:each) do
@@ -36,7 +36,7 @@ describe Review, :type => :model do
   it 'only allows one review per location/user combo' do
     Review.new(user: user, polling_location: polling_location).save
     expect(Review.new(user: user,
-               polling_location: polling_location)).not_to be_valid
+                      polling_location: polling_location)).not_to be_valid
   end
   describe 'voted_day' do
     it 'is invalid if not in right format' do

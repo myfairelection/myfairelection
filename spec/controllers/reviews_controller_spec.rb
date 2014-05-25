@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReviewsController, :type => :controller do
+describe ReviewsController, type: :controller do
   let(:polling_location) { FactoryGirl.create(:polling_location) }
   describe 'POST create' do
     let(:params) do
@@ -39,7 +39,7 @@ describe ReviewsController, :type => :controller do
       it 'logs an event' do
         post 'create', params
         expect(session[:events]).to be_include(category: 'Review',
-                                           action: 'Create', label: '')
+                                               action: 'Create', label: '')
       end
       context 'with the ip address' do
         context 'if the request header is set' do

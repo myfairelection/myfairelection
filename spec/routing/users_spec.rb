@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'routes for setting user info', :type => :routing do
+describe 'routes for setting user info', type: :routing do
   it 'routes post /users/address to users#address' do
     expect(post('/users/address')).to route_to('users#address')
   end

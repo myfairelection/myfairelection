@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AdminController, :type => :controller do
+describe AdminController, type: :controller do
   describe 'GET index' do
     context 'not logged in' do
       it 'is not successful' do

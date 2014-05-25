@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UsersController, :type => :controller do
+describe UsersController, type: :controller do
   describe 'POST address' do
     let(:params) do
       { 'line1' => '631 San Bruno Ave',
@@ -25,7 +25,8 @@ describe UsersController, :type => :controller do
       it 'logs an event' do
         post 'address', params
         expect(session[:events]).to be_include(category: 'User',
-                                           action: 'Save Address', label: '')
+                                               action: 'Save Address',
+                                               label: '')
       end
     end
     context 'without a signed in user' do
@@ -58,7 +59,8 @@ describe UsersController, :type => :controller do
       it 'logs the event' do
         post 'reminder', params
         expect(session[:events]).to be_include(category: 'User',
-                                           action: 'Reminder', label: 'true')
+                                               action: 'Reminder',
+                                               label: 'true')
       end
     end
     context 'without a signed in user' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StateMapController, :type => :controller do
+describe StateMapController, type: :controller do
 
   describe 'GET index' do
     it 'returns http success' do

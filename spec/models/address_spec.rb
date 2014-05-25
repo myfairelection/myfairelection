@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Address, :type => :model do
+describe Address, type: :model do
   describe '#initialize' do
     it 'works with no args' do
       a = Address.new
@@ -34,8 +34,8 @@ describe Address, :type => :model do
       a.zip = '80014'
       a.line1 = '11951 E Yale Ct'
       expect(a.to_h).to eq('line1' => '11951 E Yale Ct',
-                       'city' => 'Denver',
-                       'zip' => '80014')
+                           'city' => 'Denver',
+                           'zip' => '80014')
     end
   end
   describe '#blank?' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Feed, :type => :model do
+describe Feed, type: :model do
   describe '::load_from_file' do
     let(:filename) { 'spec/fixtures/test_feeds/sample_feed_for_v3.0.xml' }
     it 'creates a new feed object with the file' do

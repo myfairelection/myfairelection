@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PollingLocationsController, :type => :controller do
+describe PollingLocationsController, type: :controller do
 
   let(:polling_location) { FactoryGirl.create(:polling_location) }
   describe 'GET show' do

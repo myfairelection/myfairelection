@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe VoterInfo, :type => :model do
+describe VoterInfo, type: :model do
   context 'with a valid address without poll information' do
     before(:each) do
       allow(RestClient).to receive(:post)

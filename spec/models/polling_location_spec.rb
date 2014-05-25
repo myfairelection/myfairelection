@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PollingLocation, :type => :model do
+describe PollingLocation, type: :model do
   describe 'field validation' do
     ADDRESS_VALUES = { line1: '230 Shazam Lane',
                        line2: '4th Floor',
@@ -168,14 +168,10 @@ describe PollingLocation, :type => :model do
       end
     end
     before(:each) do
-      expect(PollingLocation).to receive(:where).with(early_vote: false,
-                                                  line1: '1040 W Addison St',
-                                                  line2: nil,
-                                                  line3: nil,
-                                                  city: 'Chicago',
-                                                  state: nil,
-                                                  zip: nil
-                                                  ).and_return(Foo.new)
+      expect(PollingLocation).to receive(:where)
+        .with(early_vote: false, line1: '1040 W Addison St', line2: nil,
+              line3: nil, city: 'Chicago', state: nil, zip: nil)
+        .and_return(Foo.new)
     end
     it 'fills in missing attribs with nil or false' do
       PollingLocation.find_by_address(line1: '1040 W Addison St',
@@ -256,8 +252,9 @@ describe PollingLocation, :type => :model do
       end
       it 'returns a different polling place if early_vote is different' do
         loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
-        expect(PollingLocation.find_or_create_from_google!(location_hash, false))
-        .not_to eq loc1
+        expect(
+          PollingLocation.find_or_create_from_google!(location_hash, false)
+        ).not_to eq loc1
       end
     end
     it 'works with SF city hall twice' do

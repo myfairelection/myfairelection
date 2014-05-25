@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe VoterInfoController, :type => :controller do
+describe VoterInfoController, type: :controller do
 
   describe 'GET find' do
     context 'with a valid address' do
@@ -30,7 +30,8 @@ describe VoterInfoController, :type => :controller do
       it 'logs a lookup event' do
         get 'find', address: address
         expect(session[:events]).to be_include(category: 'VoterInfo',
-                                           action: 'Find', label: 'success')
+                                               action: 'Find',
+                                               label: 'success')
       end
     end
     context 'with a valid address with no polling locations found' do
@@ -60,8 +61,8 @@ describe VoterInfoController, :type => :controller do
       it 'logs a lookup event' do
         get 'find', address: address
         expect(session[:events]).to be_include(category: 'VoterInfo',
-                                           action: 'Find',
-                                           label: 'noStreetSegmentFound')
+                                               action: 'Find',
+                                               label: 'noStreetSegmentFound')
       end
     end
     context 'with an empty address' do
@@ -85,8 +86,8 @@ describe VoterInfoController, :type => :controller do
       it 'logs a lookup event' do
         get 'find', address: address
         expect(session[:events]).to be_include(category: 'VoterInfo',
-                                           action: 'Find',
-                                           label: 'noAddressParameter')
+                                               action: 'Find',
+                                               label: 'noAddressParameter')
       end
     end
     context 'with an unparseable address' do
@@ -112,8 +113,8 @@ describe VoterInfoController, :type => :controller do
       it 'logs a lookup event' do
         get 'find', address: address
         expect(session[:events]).to be_include(category: 'VoterInfo',
-                                           action: 'Find',
-                                           label: 'addressUnparseable')
+                                               action: 'Find',
+                                               label: 'addressUnparseable')
       end
     end
   end
