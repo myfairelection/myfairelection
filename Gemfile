@@ -28,7 +28,8 @@ gem 'unicorn'
 
 group :test, :development do
   gem 'byebug'
-  gem "rspec-rails", '~> 2.14'
+  gem "rspec-rails", '~> 2.99.0.rc1'
+  gem 'rspec', '~> 2.99.0.rc1'
   gem "cucumber-rails", :require => false
   gem 'database_cleaner'
   gem 'email_spec'
