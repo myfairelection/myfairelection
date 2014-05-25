@@ -3,9 +3,6 @@ require 'spec_helper'
 describe PollingLocationsController, :type => :controller do
 
   let(:polling_location) { FactoryGirl.create(:polling_location) }
-  after(:all) do
-    polling_location.destroy
-  end
   describe 'GET show' do
     before(:each) do
       get 'show', id: polling_location.to_param

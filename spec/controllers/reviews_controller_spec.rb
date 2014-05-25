@@ -2,9 +2,6 @@ require 'spec_helper'
 
 describe ReviewsController, :type => :controller do
   let(:polling_location) { FactoryGirl.create(:polling_location) }
-  after(:all) do
-    polling_location.destroy
-  end
   describe 'POST create' do
     let(:params) do
       { 'review' =>
@@ -34,8 +31,9 @@ describe ReviewsController, :type => :controller do
         expect(flash[:notice]).not_to be_nil
       end
       it 'passes the current user to the model' do
-        expect(Review).to receive(:new, &Review.method(:new))
-          .with(include(user: @user))
+        expect(Review).to receive(:new)
+          .with(hash_including(user: @user))
+          .and_call_original
         post 'create', params
       end
       it 'logs an event' do
@@ -48,16 +46,18 @@ describe ReviewsController, :type => :controller do
           it 'passes the source ip from the header to the model' do
             @request.env['REMOTE_ADDR'] = '127.0.0.1'
             @request.env['HTTP_X-REAL-IP'] = '128.32.42.10'
-            expect(Review).to receive(:new, &Review.method(:new))
-              .with(include(ip_address: '128.32.42.10'))
+            expect(Review).to receive(:new)
+              .with(hash_including(ip_address: '128.32.42.10'))
+              .and_call_original
             post 'create', params
           end
         end
         context 'if the request header is not set' do
           it 'passes some other ip address to the model' do
             request.env['REMOTE_ADDR'] = '10.0.0.1'
-            expect(Review).to receive(:new, &Review.method(:new))
-              .with(include(ip_address: '10.0.0.1'))
+            expect(Review).to receive(:new)
+              .with(hash_including(ip_address: '10.0.0.1'))
+              .and_call_original
             post 'create', params
           end
         end
