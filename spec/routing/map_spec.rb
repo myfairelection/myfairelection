@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'routes for the map' do
+describe 'routes for the map', :type => :routing do
   it 'routes /map to state_map#index' do
-    get('/map').should route_to('state_map#index')
+    expect(get('/map')).to route_to('state_map#index')
   end
   it 'routes /map/states to state_map#states' do
-    get('/map/states').should route_to('state_map#states')
+    expect(get('/map/states')).to route_to('state_map#states')
   end
 end

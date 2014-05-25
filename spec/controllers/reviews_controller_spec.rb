@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReviewsController do
+describe ReviewsController, :type => :controller do
   let(:polling_location) { FactoryGirl.create(:polling_location) }
   after(:all) do
     polling_location.destroy
@@ -27,20 +27,20 @@ describe ReviewsController do
       end
       it 'redirects to the location page' do
         post 'create', params
-        response.should redirect_to polling_location_path(polling_location)
+        expect(response).to redirect_to polling_location_path(polling_location)
       end
       it 'sets the notice flash' do
         post 'create', params
-        flash[:notice].should_not be_nil
+        expect(flash[:notice]).not_to be_nil
       end
       it 'passes the current user to the model' do
-        Review.should_receive(:new, &Review.method(:new))
+        expect(Review).to receive(:new, &Review.method(:new))
           .with(include(user: @user))
         post 'create', params
       end
       it 'logs an event' do
         post 'create', params
-        session[:events].should be_include(category: 'Review',
+        expect(session[:events]).to be_include(category: 'Review',
                                            action: 'Create', label: '')
       end
       context 'with the ip address' do
@@ -48,7 +48,7 @@ describe ReviewsController do
           it 'passes the source ip from the header to the model' do
             @request.env['REMOTE_ADDR'] = '127.0.0.1'
             @request.env['HTTP_X-REAL-IP'] = '128.32.42.10'
-            Review.should_receive(:new, &Review.method(:new))
+            expect(Review).to receive(:new, &Review.method(:new))
               .with(include(ip_address: '128.32.42.10'))
             post 'create', params
           end
@@ -56,7 +56,7 @@ describe ReviewsController do
         context 'if the request header is not set' do
           it 'passes some other ip address to the model' do
             request.env['REMOTE_ADDR'] = '10.0.0.1'
-            Review.should_receive(:new, &Review.method(:new))
+            expect(Review).to receive(:new, &Review.method(:new))
               .with(include(ip_address: '10.0.0.1'))
             post 'create', params
           end
@@ -82,17 +82,17 @@ describe ReviewsController do
         end
         it 'renders the new page' do
           post 'create', params
-          response.should render_template('reviews/new')
+          expect(response).to render_template('reviews/new')
         end
         it 'passes a review object with errors' do
           post 'create', params
-          assigns[:review].should_not be_valid
-          assigns[:review].should be_new_record
+          expect(assigns[:review]).not_to be_valid
+          expect(assigns[:review]).to be_new_record
         end
       end
       context 'when the site is shut off' do
         before(:each) do
-          Settings.stub(:[]) { true }
+          allow(Settings).to receive(:[]) { true }
         end
         it 'is not successful' do
           expect { post 'create', params }.to raise_exception(Exception)
@@ -113,7 +113,7 @@ describe ReviewsController do
     context 'without a signed in user' do
       it 'is not successful' do
         post 'create', params
-        response.should_not be_success
+        expect(response).not_to be_success
       end
     end
   end
@@ -140,7 +140,7 @@ describe ReviewsController do
     context 'without a signed in user' do
       it 'is not successful' do
         post 'create', params
-        response.should_not be_success
+        expect(response).not_to be_success
       end
     end
   end

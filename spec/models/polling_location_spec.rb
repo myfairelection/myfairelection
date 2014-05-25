@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PollingLocation do
+describe PollingLocation, :type => :model do
   describe 'field validation' do
     ADDRESS_VALUES = { line1: '230 Shazam Lane',
                        line2: '4th Floor',
@@ -30,14 +30,14 @@ describe PollingLocation do
       @pl.description = nil
     end
     it 'is valid with valid parameters' do
-      @pl.should be_valid
+      expect(@pl).to be_valid
     end
     context 'for fields which are part of the address' do
       it 'is invalid if none of the address fields are set' do
         ADDRESS_FIELDS.each do |param|
           @pl.send("#{param}=", nil)
         end
-        @pl.should_not be_valid
+        expect(@pl).not_to be_valid
       end
       ADDRESS_FIELDS.each do |param|
         before(:each) do
@@ -45,10 +45,10 @@ describe PollingLocation do
           @pl.send("#{param}=", ADDRESS_VALUES[param])
         end
         it "is valid if only #{param} is set" do
-          @pl.should be_valid
+          expect(@pl).to be_valid
         end
         it "can be saved if only #{param} is set" do
-          @pl.save.should be_true
+          expect(@pl.save).to be_truthy
         end
       end
     end
@@ -57,11 +57,11 @@ describe PollingLocation do
        :latitude, :longitude, :properties, :feed].each do |param|
         it "is valid without #{param}" do
           @pl.send("#{param}=", nil)
-          @pl.should be_valid
+          expect(@pl).to be_valid
         end
         it "can be saved without #{param}" do
           @pl.send("#{param}=", nil)
-          @pl.save.should be_true
+          expect(@pl.save).to be_truthy
         end
       end
     end
@@ -70,71 +70,71 @@ describe PollingLocation do
         it "converts blank string to nil for #{param}" do
           @pl.send("#{param}=", ' ')
           @pl.save
-          @pl.send("#{param}").should be_nil
+          expect(@pl.send("#{param}")).to be_nil
         end
         it "converts empty string to nil for #{param}" do
           @pl.send("#{param}=", '')
           @pl.save
-          @pl.send("#{param}").should be_nil
+          expect(@pl.send("#{param}")).to be_nil
         end
       end
     end
     it 'returns the properties in a hash' do
-      @pl.properties.should be_a(Hash)
+      expect(@pl.properties).to be_a(Hash)
     end
     context 'for the early_vote property' do
       it 'defaults to false' do
         pl = PollingLocation.new
-        pl.early_vote.should be_false
+        expect(pl.early_vote).to be_falsey
       end
       it 'does not default to nil!' do
         pl = PollingLocation.new
-        pl.early_vote.should_not be_nil
+        expect(pl.early_vote).not_to be_nil
       end
     end
     context 'for the state property' do
       it 'converts the state to all caps' do
         @pl.state = 'dc'
-        @pl.state.should eq 'DC'
+        expect(@pl.state).to eq 'DC'
       end
       it 'is invalid if state is too short' do
         @pl.state = 'a'
-        @pl.should_not be_valid
+        expect(@pl).not_to be_valid
       end
       it 'chops the string if state is too long' do
         @pl.state = 'Ca.'
-        @pl.state.should eq 'CA'
-        @pl.should be_valid
+        expect(@pl.state).to eq 'CA'
+        expect(@pl).to be_valid
       end
     end
     context 'for the zip property' do
       it 'is valid for 5-digit zips' do
         @pl.zip = '80014'
-        @pl.should be_valid
+        expect(@pl).to be_valid
       end
       it 'is valid for 9-digit zips' do
         @pl.zip = '80014-1233'
-        @pl.should be_valid
+        expect(@pl).to be_valid
       end
       it 'adds a hyphen to 9-digit zips without them' do
         @pl.zip = '123456789'
-        @pl.should be_valid
-        @pl.zip.should eq '12345-6789'
+        expect(@pl).to be_valid
+        expect(@pl.zip).to eq '12345-6789'
       end
       it 'removes a hyphen from 5-digit zips with them' do
         @pl.zip = '12345-'
-        @pl.should be_valid
-        @pl.zip.should eq '12345'
+        expect(@pl).to be_valid
+        expect(@pl.zip).to eq '12345'
       end
       # Google seems to return garbage for zip code on occaision.
       it 'is valid for other things' do
         @pl.zip = '000IL'
-        @pl.should be_valid
+        expect(@pl).to be_valid
       end
       it 'removes leading spaces from 5-digit zips' do
         @pl.zip = '  55405'
-        @pl.should be_valid
-        @pl.zip.should eq '55405'
+        expect(@pl).to be_valid
+        expect(@pl.zip).to eq '55405'
       end
     end
     context 'for the description property' do
@@ -143,13 +143,13 @@ describe PollingLocation do
         @pl.description = 'I voted at the card wash'
       end
       it 'is valid if state, and no other address field, is present' do
-        @pl.should be_valid
+        expect(@pl).to be_valid
       end
       ADDRESS_FIELDS.each do |param|
         it 'is invalid if address field #{param} is present' do
           unless param == :state
             @pl.send("#{param}=", ADDRESS_VALUES[param])
-            @pl.should_not be_valid
+            expect(@pl).not_to be_valid
           end
         end
       end
@@ -159,8 +159,8 @@ describe PollingLocation do
     pl = FactoryGirl.create(:polling_location)
     review = FactoryGirl.create(:review, polling_location: pl,
                                          user: FactoryGirl.create(:user))
-    pl.reviews.length.should be 1
-    pl.reviews.first.id.should eq review.id
+    expect(pl.reviews.length).to be 1
+    expect(pl.reviews.first.id).to eq review.id
   end
   describe '::find_by_address' do
     class Foo
@@ -168,7 +168,7 @@ describe PollingLocation do
       end
     end
     before(:each) do
-      PollingLocation.should_receive(:where).with(early_vote: false,
+      expect(PollingLocation).to receive(:where).with(early_vote: false,
                                                   line1: '1040 W Addison St',
                                                   line2: nil,
                                                   line3: nil,
@@ -217,26 +217,26 @@ describe PollingLocation do
         PollingLocation.find_or_create_from_google!(location_hash)
       end
       it 'sets location_name' do
-        location.location_name.should eq 'National Guard Armory'
+        expect(location.location_name).to eq 'National Guard Armory'
       end
       it 'sets address' do
-        location.line1.should eq '100 S 20th St'
+        expect(location.line1).to eq '100 S 20th St'
       end
       it 'sets name' do
-        location.name.should eq 'Precinct 23452 Polling Place'
+        expect(location.name).to eq 'Precinct 23452 Polling Place'
       end
       it 'leaves unprovided fields nil' do
         %w(county latitude longitude).each do |field|
-          location.send(field).should be_nil
+          expect(location.send(field)).to be_nil
         end
       end
       it 'leaves early_vote false' do
-        location.early_vote?.should be_false
+        expect(location.early_vote?).to be_falsey
       end
       it 'puts everything else in properties' do
         %w(notes pollingHours voterServices startDate endDate sources)
         .each do |field|
-          location.properties.keys.include?(field).should be_true
+          expect(location.properties.keys.include?(field)).to be_truthy
         end
       end
       context 'if early_vote is set' do
@@ -244,20 +244,20 @@ describe PollingLocation do
           PollingLocation.find_or_create_from_google!(location_hash, true)
         end
         it 'returns true for early_vote' do
-          location.early_vote.should be_true
+          expect(location.early_vote).to be_truthy
         end
       end
     end
     context 'with a duplicate polling place' do
       it 'returns the existing polling place' do
         loc1 = PollingLocation.find_or_create_from_google!(location_hash)
-        PollingLocation.find_or_create_from_google!(location_hash)
-        .should eq loc1
+        expect(PollingLocation.find_or_create_from_google!(location_hash))
+        .to eq loc1
       end
       it 'returns a different polling place if early_vote is different' do
         loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
-        PollingLocation.find_or_create_from_google!(location_hash, false)
-        .should_not eq loc1
+        expect(PollingLocation.find_or_create_from_google!(location_hash, false))
+        .not_to eq loc1
       end
     end
     it 'works with SF city hall twice' do
@@ -286,7 +286,7 @@ describe PollingLocation do
       }
       loc1 = PollingLocation.find_or_create_from_google!(location_hash, true)
       loc2 = PollingLocation.find_or_create_from_google!(location_hash, true)
-      loc1.should eq loc2
+      expect(loc1).to eq loc2
     end
     context 'with minnesota result, stripping whitespace' do
       let(:location_hash) do
@@ -311,7 +311,7 @@ describe PollingLocation do
         PollingLocation.find_or_create_from_google!(location_hash, true)
       end
       it 'strips whitespace from the city' do
-        pl.city.should eq 'MINNEAPOLIS'
+        expect(pl.city).to eq 'MINNEAPOLIS'
       end
     end
     context 'with an identical address, but other has changed' do
@@ -338,17 +338,17 @@ describe PollingLocation do
                   .find_or_create_from_google!(updated_location_hash)
       end
       it 'returns the existing object' do
-        @loc1.should eq @loc2
+        expect(@loc1).to eq @loc2
       end
       it 'updates the object with the new information' do
-        @loc2.name.should eq 'New name!'
-        @loc2.properties['notes'].should eq 'New notes!'
-        @loc2.properties['pollingHours'].should eq 'New polling hours!'
+        expect(@loc2.name).to eq 'New name!'
+        expect(@loc2.properties['notes']).to eq 'New notes!'
+        expect(@loc2.properties['pollingHours']).to eq 'New polling hours!'
       end
       it 'merges the properties' do
         %w(notes pollingHours voterServices startDate
            endDate sources somethingElse).each do |attrib|
-          @loc2.properties[attrib].should_not be_nil
+          expect(@loc2.properties[attrib]).not_to be_nil
         end
       end
     end
@@ -375,7 +375,7 @@ describe PollingLocation do
         }
       PollingLocation.find_or_create_from_google!(hash1)
       PollingLocation.find_or_create_from_google!(hash2)
-      PollingLocation.count.should eq 2
+      expect(PollingLocation.count).to eq 2
     end
   end
 
@@ -436,37 +436,37 @@ POLLING_LOCATION
           Nokogiri::XML::Reader(early_location_xml).read)
       end
       it 'sets early_vote' do
-        location.early_vote?.should be_true
+        expect(location.early_vote?).to be_truthy
       end
       it 'sets location_name' do
-        location.location_name.should eq 'Adams County Government Center'
+        expect(location.location_name).to eq 'Adams County Government Center'
       end
       it 'sets address' do
-        location.line1.should eq '321 Main St.'
+        expect(location.line1).to eq '321 Main St.'
       end
       it 'sets name' do
-        location.name.should eq 'Adams Early Vote Center'
+        expect(location.name).to eq 'Adams Early Vote Center'
       end
       it 'sets latitude' do
-        location.latitude.should eq '39.03991'.to_f
+        expect(location.latitude).to eq '39.03991'.to_f
       end
       it 'sets longitude' do
-        location.longitude.should eq '-76.99542'.to_f
+        expect(location.longitude).to eq '-76.99542'.to_f
       end
       it 'leaves county nil' do
-        location.county.should be_nil
+        expect(location.county).to be_nil
       end
       it 'puts everything else in properties' do
         %w(directions voter_services start_date
            end_date days_times_open).each do |field|
-          location.properties.keys.include?(field).should be_true
+          expect(location.properties.keys.include?(field)).to be_truthy
         end
       end
       it 'sets value to nil for empty tag' do
-        location.state.should be_nil
+        expect(location.state).to be_nil
       end
       it 'sets value to nil for self closing tag' do
-        location.zip.should be_nil
+        expect(location.zip).to be_nil
       end
     end
     context 'with a new polling place which is a day of site' do
@@ -475,23 +475,23 @@ POLLING_LOCATION
           Nokogiri::XML::Reader(day_of_xml).read)
       end
       it 'sets early_vote' do
-        location.early_vote?.should be_false
+        expect(location.early_vote?).to be_falsey
       end
     end
     context 'with a duplicate polling place' do
       it 'returns the existing polling place' do
         loc1 = PollingLocation.update_or_create_from_xml!(
           Nokogiri::XML::Reader(early_location_xml).read)
-        PollingLocation.update_or_create_from_xml!(
-          Nokogiri::XML::Reader(early_location_xml).read).should eq loc1
+        expect(PollingLocation.update_or_create_from_xml!(
+          Nokogiri::XML::Reader(early_location_xml).read)).to eq loc1
       end
     end
     context 'with same address but different early_vote' do
       it 'returns a different polling place' do
         loc1 = PollingLocation.update_or_create_from_xml!(
           Nokogiri::XML::Reader(early_location_xml).read)
-        PollingLocation.update_or_create_from_xml!(
-          Nokogiri::XML::Reader(day_of_xml).read).should_not eq loc1
+        expect(PollingLocation.update_or_create_from_xml!(
+          Nokogiri::XML::Reader(day_of_xml).read)).not_to eq loc1
       end
     end
     context 'with an identical address, but other has changed' do
@@ -527,11 +527,11 @@ POLLING_LOCATION
           Nokogiri::XML::Reader(updated_location_xml).read)
       end
       it 'returns the existing object' do
-        @loc1.should eq @loc2
+        expect(@loc1).to eq @loc2
       end
       it 'updates the object with the new information' do
-        @loc2.name.should eq 'New name!'
-        @loc2.properties['directions'].should eq 'New directions!'
+        expect(@loc2.name).to eq 'New name!'
+        expect(@loc2.properties['directions']).to eq 'New directions!'
       end
     end
     it 'creates two polling locations with inputs with different addresses' do
@@ -562,7 +562,7 @@ POLLING_LOCATION
         Nokogiri::XML::Reader(xml1).read)
       PollingLocation.update_or_create_from_xml!(
         Nokogiri::XML::Reader(xml2).read)
-      PollingLocation.count.should eq 2
+      expect(PollingLocation.count).to eq 2
     end
     it 'works correctly when loading from a file' do
       feed_file = open('spec/fixtures/test_feeds/sample_feed_for_v3.0.xml')
@@ -577,7 +577,7 @@ POLLING_LOCATION
         pl.save!
       end
 
-      PollingLocation.count.should eq 6
+      expect(PollingLocation.count).to eq 6
     end
   end
   it 'leaves lat/long in the object on updates' do
@@ -601,8 +601,8 @@ POLLING_LOCATION
     pl.save!
     pl = PollingLocation.update_or_create_from_xml!(
       Nokogiri::XML::Reader(xml).read)
-    pl.latitude.should eq(100)
-    pl.longitude.should eq(100)
-    pl.county.should eq('Columbiana')
+    expect(pl.latitude).to eq(100)
+    expect(pl.longitude).to eq(100)
+    expect(pl.county).to eq('Columbiana')
   end
 end

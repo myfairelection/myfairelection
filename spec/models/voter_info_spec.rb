@@ -1,51 +1,51 @@
 require 'spec_helper'
 
-describe VoterInfo do
+describe VoterInfo, :type => :model do
   context 'with a valid address without poll information' do
     before(:each) do
-      RestClient.stub(:post)
+      allow(RestClient).to receive(:post)
       .and_return(
         File.open('spec/fixtures/voter_info_responses/white_house.json')
         .read)
     end
     let(:vi) { VoterInfo.lookup('DC') }
     it 'has a status of noStreetSegmentFound' do
-      vi.status.should eq 'noStreetSegmentFound'
+      expect(vi.status).to eq 'noStreetSegmentFound'
     end
     it 'returns an Address object for the normalized address' do
-      vi.normalized_address.should be_a(Address)
+      expect(vi.normalized_address).to be_a(Address)
     end
     it 'has a normalized version of the address' do
-      vi.normalized_address.city.should eq 'Washington'
+      expect(vi.normalized_address.city).to eq 'Washington'
     end
     it 'has an empty array of polling places' do
-      vi.polling_locations.should eq []
+      expect(vi.polling_locations).to eq []
     end
   end
   context 'with a valid address with poll information' do
     context 'with polling places not in the database' do
       before(:each) do
-        RestClient.stub(:post)
+        allow(RestClient).to receive(:post)
         .and_return(
           File.open('spec/fixtures/voter_info_responses/ks_response.json')
           .read)
       end
       let(:vi) { VoterInfo.lookup('KS') }
       it 'has a normalized version of the address' do
-        vi.normalized_address.city.should eq 'Kansas City'
+        expect(vi.normalized_address.city).to eq 'Kansas City'
       end
       it 'returns all the polling places' do
-        vi.polling_locations.length.should eq 1
+        expect(vi.polling_locations.length).to eq 1
       end
       context 'the polling place list' do
         it 'contains activerecord objects' do
           vi.polling_locations.each do |pl|
-            pl.should be_persisted
+            expect(pl).to be_persisted
           end
         end
         it 'contains objects which are not early vote locations' do
           vi.polling_locations.each do |pl|
-            pl.early_vote?.should be_false
+            expect(pl.early_vote?).to be_falsey
           end
         end
         it 'created these new objects' do
@@ -55,17 +55,17 @@ describe VoterInfo do
         end
       end
       it 'returns all the early vote sites' do
-        vi.early_voting_places.length.should eq 1
+        expect(vi.early_voting_places.length).to eq 1
       end
       context 'the early voting site list' do
         it 'contains activerecord objects' do
           vi.early_voting_places.each do |pl|
-            pl.should be_persisted
+            expect(pl).to be_persisted
           end
         end
         it 'contains objects which are early vote locations' do
           vi.early_voting_places.each do |pl|
-            pl.early_vote?.should be_true
+            expect(pl.early_vote?).to be_truthy
           end
         end
         it 'created these new objects' do
@@ -78,22 +78,22 @@ describe VoterInfo do
   end
   context 'with a no address returned message' do
     before(:each) do
-      RestClient.stub(:post)
+      allow(RestClient).to receive(:post)
       .and_return(
         File.open('spec/fixtures/voter_info_responses/no_address.json').read)
     end
     let(:vi) { VoterInfo.lookup('') }
     it 'has a status of noAddressParameter' do
-      vi.status.should eq 'noAddressParameter'
+      expect(vi.status).to eq 'noAddressParameter'
     end
     it 'returns nil for the address' do
-      vi.normalized_address.should be_nil
+      expect(vi.normalized_address).to be_nil
     end
     it 'has an empty polling place array' do
-      vi.polling_locations.length.should eq 0
+      expect(vi.polling_locations.length).to eq 0
     end
     it 'has an empty early voting array' do
-      vi.polling_locations.length.should eq 0
+      expect(vi.polling_locations.length).to eq 0
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PollingLocationsController do
+describe PollingLocationsController, :type => :controller do
 
   let(:polling_location) { FactoryGirl.create(:polling_location) }
   after(:all) do
@@ -65,7 +65,7 @@ describe PollingLocationsController do
         end
         context 'when the site is shut off' do
           before(:each) do
-            Settings.stub(:[]) { true }
+            allow(Settings).to receive(:[]) { true }
           end
           it 'is not successful' do
             expect { post 'create', params }.to raise_exception(Exception)
@@ -106,7 +106,7 @@ describe PollingLocationsController do
     context 'without a logged in user' do
       it 'is not successful' do
         post 'create'
-        response.should_not be_success
+        expect(response).not_to be_success
       end
     end
   end

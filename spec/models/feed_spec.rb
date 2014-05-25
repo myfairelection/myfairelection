@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Feed do
+describe Feed, :type => :model do
   describe '::load_from_file' do
     let(:filename) { 'spec/fixtures/test_feeds/sample_feed_for_v3.0.xml' }
     it 'creates a new feed object with the file' do
@@ -9,7 +9,7 @@ describe Feed do
       end.to change { Feed.count }.by(1)
     end
     it 'calls load on the just created feed object' do
-      Feed.any_instance.should_receive(:load_objects)
+      expect_any_instance_of(Feed).to receive(:load_objects)
       Feed.load_from_file filename
     end
   end
@@ -19,31 +19,31 @@ describe Feed do
                      without_protection: true)
   end
   it 'is valid with valid parameters' do
-    @feed.should be_valid
+    expect(@feed).to be_valid
   end
   it 'is not valid without a url' do
     @feed.url = nil
-    @feed.should_not be_valid
+    expect(@feed).not_to be_valid
   end
   it 'verifies uniqueness of url' do
     @feed.save
     newfeed = Feed.new(url: 'https://example.com/test.txt')
-    newfeed.should_not be_valid
+    expect(newfeed).not_to be_valid
   end
   it 'is valid without a vip_id' do
     @feed.vip_id = nil
-    @feed.should be_valid
+    expect(@feed).to be_valid
   end
   it 'is valid without a version' do
     @feed.version = nil
-    @feed.should be_valid
+    expect(@feed).to be_valid
   end
   it 'has not been loaded at creation' do
-    @feed.loaded?.should be_false
+    expect(@feed.loaded?).to be_falsey
   end
   describe '#url_basename' do
     it 'returns the last part of the path' do
-      @feed.url_basename.should == 'test.txt'
+      expect(@feed.url_basename).to eq('test.txt')
     end
   end
   describe '#load_objects' do
@@ -51,21 +51,21 @@ describe Feed do
       before(:each) do
         @feed = Feed.create!(
           url: 'spec/fixtures/test_feeds/sample_feed_for_v3.0.xml')
-        PollingLocation.should_receive(:update_or_create_from_xml!)
+        expect(PollingLocation).to receive(:update_or_create_from_xml!)
           .with(any_args).exactly(6).times
           .and_return(FactoryGirl.create(:polling_location))
       end
       it 'populates the version field' do
         @feed.load_objects
-        @feed.version.should eq('3.0')
+        expect(@feed.version).to eq('3.0')
       end
       it 'populates the vip_id field' do
         @feed.load_objects
-        @feed.vip_id.should eq('39')
+        expect(@feed.vip_id).to eq('39')
       end
       it 'marks the feed as loaded' do
         @feed.load_objects
-        @feed.should be_loaded
+        expect(@feed).to be_loaded
       end
     end
   end
