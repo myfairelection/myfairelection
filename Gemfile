@@ -9,7 +9,7 @@ gem 'rails_12factor', group: :production
 gem 'pg'
 
 gem 'jquery-rails'
-
+gem 'sass-rails', '~> 4.0.3'
 gem 'rest-client'
 gem 'settingslogic'
 gem 'devise'
