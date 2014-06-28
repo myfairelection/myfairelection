@@ -28,8 +28,8 @@ gem 'unicorn'
 
 group :test, :development do
   gem 'byebug'
-  gem "rspec-rails", '~> 3.0.0.rc1'
-  gem 'rspec', '~> 3.0.0.rc1'
+  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec', '~> 3.0.0'
 #  gem "cucumber-rails", :require => false
   gem 'database_cleaner'
   gem 'email_spec'
